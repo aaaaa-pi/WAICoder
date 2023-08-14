@@ -9,7 +9,7 @@
       <a-menu
         mode="horizontal"
         :selected-keys="selectedKeys"
-        @menu-item-click="doMeunuClick"
+        @menu-item-click="doMenuClick"
       >
         <a-menu-item
           key="0"
@@ -59,7 +59,7 @@ const selectedKeys = ref(["/"]);
 router.afterEach((to, from, failure) => {
   selectedKeys.value = [to.path];
 });
-const doMeunuClick = (key: string) => {
+const doMenuClick = (key: string) => {
   router.push({
     path: key,
   });

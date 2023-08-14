@@ -30,14 +30,14 @@ const cancel = () => {
 };
 </script>
 
-<style scoped>
-:global(.arco-modal-header) {
+<style>
+.arco-modal-header {
   justify-content: end;
 }
-:global(.arco-modal-footer) {
+.arco-modal-footer {
   display: none;
 }
-:global(.arco-modal) {
+.arco-modal {
   max-width: 24.5rem;
 }
 </style>

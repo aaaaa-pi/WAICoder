@@ -13,6 +13,7 @@
     "@bytemd/vue-next": "^1.21.0",
     "axios": "^1.4.0",
     "core-js": "^3.8.3",
+    "highlight.js": "^11.8.0",
     "monaco-editor": "^0.41.0",
     "monaco-editor-webpack-plugin": "^7.1.0",
     "vue": "^3.2.13",

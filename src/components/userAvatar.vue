@@ -6,7 +6,7 @@
   <div v-else>
     <a-dropdown trigger="hover">
       <template v-if="loginUser.userAvatar">
-        <img alt="avatar" :src="loginUser.userAvatar" />
+        <img class="avatar-image" alt="avatar" :src="loginUser.userAvatar" />
       </template>
       <template v-else>
         <a-avatar>
@@ -57,5 +57,11 @@ function controlLogin() {
   display: flex;
   gap: 5px;
   margin: 15px;
+}
+.avatar-image {
+  width: 2.6666666667rem;
+  height: 2.6666666667rem;
+  border-radius: 50%;
+  object-fit: cover;
 }
 </style>

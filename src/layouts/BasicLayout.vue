@@ -19,6 +19,7 @@ import GlobalHeader from "../components/GlobalHeader.vue";
 #basicLayout {
   display: flex;
   flex-direction: column;
+  width: 100vw;
   height: 100vh;
 }
 
@@ -27,7 +28,7 @@ import GlobalHeader from "../components/GlobalHeader.vue";
 
 #basicLayout .content {
   flex: 1;
-  background: bisque;
+  /* background: bisque; */
   padding: 20px;
   margin-bottom: 16px;
 }

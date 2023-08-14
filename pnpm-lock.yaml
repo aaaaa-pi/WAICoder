@@ -20,6 +20,9 @@ dependencies:
   core-js:
     specifier: ^3.8.3
     version: 3.8.3
+  highlight.js:
+    specifier: ^11.8.0
+    version: 11.8.0
   monaco-editor:
     specifier: ^0.41.0
     version: 0.41.0
