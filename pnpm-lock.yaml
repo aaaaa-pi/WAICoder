@@ -23,6 +23,9 @@ dependencies:
   highlight.js:
     specifier: ^11.8.0
     version: 11.8.0
+  moment:
+    specifier: ^2.29.4
+    version: 2.29.4
   monaco-editor:
     specifier: ^0.41.0
     version: 0.41.0
@@ -5915,6 +5918,10 @@ packages:
   /module-alias@2.2.3:
     resolution: {integrity: sha512-23g5BFj4zdQL/b6tor7Ji+QY4pEfNH784BMslY9Qb0UnJWRAt+lQGLYmRaM0KDBwIG23ffEBELhZDP2rhi9f/Q==}
     dev: true
+
+  /moment@2.29.4:
+    resolution: {integrity: sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==}
+    dev: false
 
   /monaco-editor-webpack-plugin@7.1.0(monaco-editor@0.41.0)(webpack@5.88.2):
     resolution: {integrity: sha512-ZjnGINHN963JQkFqjjcBtn1XBtUATDZBMgNQhDQwd78w2ukRhFXAPNgWuacaQiDZsUr4h1rWv5Mv6eriKuOSzA==}

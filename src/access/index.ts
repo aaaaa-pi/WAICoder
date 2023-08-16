@@ -9,8 +9,8 @@ router.beforeEach(async (to, from, next) => {
   // 实现自动登录
   if (!currentUser || !currentUser.userRole) {
     await store.dispatch("user/getLoginUser");
+    currentUser = user.loginUser;
   }
-  currentUser = user.loginUser;
   const needAccess = (to.meta?.access as string) ?? ACCESS_ENUM.NOT_LOGIN;
   // 要跳转的页面必须要登录
   if (needAccess !== ACCESS_ENUM.NOT_LOGIN) {

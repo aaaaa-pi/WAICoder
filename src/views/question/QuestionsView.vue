@@ -1,5 +1,17 @@
 <template>
-  <div id="manageQuestionView">
+  <div id="questionsView">
+    <a-form :model="searchParams" layout="inline">
+      <a-form-item field="title" label="名称" style="min-width: 240px">
+        <a-input v-model="searchParams.title" placeholder="请输入名称" />
+      </a-form-item>
+      <a-form-item field="tags" label="标签" style="min-width: 240px">
+        <a-input-tag v-model="searchParams.tags" placeholder="请输入标签" />
+      </a-form-item>
+      <a-form-item>
+        <a-button type="primary" @click="doSubmit">提交</a-button>
+      </a-form-item>
+    </a-form>
+    <a-divider :size="divederSize" />
     <a-table
       :ref="tableRef"
       :columns="columns"
@@ -19,13 +31,19 @@
           </a-tag>
         </a-space>
       </template>
+      <template #acceptedRate="{ record }">
+        {{
+          `${record.submitNum ? record.acceptedNum / record.submitNum : "0"} %`
+        }}
+      </template>
       <template #createTime="{ record }">
         {{ moment(record.createTime).format("YYYY-MM-DD") }}
       </template>
       <template #optional="{ record }">
         <a-space>
-          <a-button type="primary" @click="doUpdate(record)"> 修改</a-button>
-          <a-button status="danger" @click="doDelete(record)">删除</a-button>
+          <a-button type="primary" @click="toQuestionPage(record)">
+            做题
+          </a-button>
         </a-space>
       </template>
     </a-table>
@@ -34,17 +52,23 @@
 
 <script setup lang="ts">
 import { Message } from "@arco-design/web-vue";
-import { Question, QuestionControllerService } from "../../../generated";
+import {
+  Question,
+  QuestionControllerService,
+  QuestionQueryRequest,
+} from "../../../generated";
 import { ref, watchEffect, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import moment from "moment";
 const tableRef = ref();
 const dataList = ref([]);
 const total = ref(0);
-const searchParams = ref({
+const searchParams = ref<QuestionQueryRequest>({
   pageSize: 10,
   current: 1,
 });
+
+const divederSize = 0;
 
 const loadData = async () => {
   const res = await QuestionControllerService.listQuestionVoByPageUsingPost(
@@ -53,7 +77,6 @@ const loadData = async () => {
   if (res.code === 0) {
     dataList.value = res.data.records;
     total.value = res.data.total;
-    console.log(res.data.records);
   } else {
     Message.error("加载失败" + res.message);
   }
@@ -73,11 +96,11 @@ onMounted(() => {
 
 const columns = [
   {
-    title: "题目id",
+    title: "题号",
     dataIndex: "id",
   },
   {
-    title: "标题",
+    title: "题目名称",
     dataIndex: "title",
   },
   {
@@ -85,45 +108,14 @@ const columns = [
     slotName: "tags",
   },
   {
-    title: "提交数",
-    dataIndex: "submitNum",
-  },
-  {
-    title: "通过数",
-    dataIndex: "acceptedNum",
-  },
-  {
-    title: "判题配置",
-    dataIndex: "judgeConfig",
-    children: [
-      {
-        title: "时间限制",
-        dataIndex: "judgeConfig.timeLimit",
-        width: 100,
-      },
-      {
-        title: "内存限制",
-        dataIndex: "judgeConfig.memoryLimit",
-        width: 100,
-      },
-      {
-        title: "堆栈限制",
-        dataIndex: "judgeConfig.stackLimit",
-        width: 100,
-      },
-    ],
-    width: 300,
-  },
-  {
-    title: "创建用户",
-    dataIndex: "userVO.userName",
+    title: "通过率",
+    slotName: "acceptedRate",
   },
   {
     title: "创建时间",
     slotName: "createTime",
   },
   {
-    title: "操作",
     slotName: "optional",
   },
 ];
@@ -135,28 +127,27 @@ const onPageChange = (page: number) => {
   };
 };
 
-const doDelete = async (question: Question) => {
-  const res = await QuestionControllerService.deleteQuestionUsingPost({
-    id: question.id,
-  });
-  if (res.code === 0) {
-    Message.success("删除成功");
-    loadData();
-  } else {
-    Message.error("删除失败");
-  }
-};
-
 const router = useRouter();
 
-const doUpdate = (question: Question) => {
-  router.push({
-    path: "/update/question",
-    query: {
-      id: question.id,
-    },
-  });
+/**
+ * 跳转到做题页面
+ * @param question
+ */
+const toQuestionPage = (question: Question) => {
+  router.push({ path: `/view/question/${question.id}` });
+};
+
+const doSubmit = () => {
+  searchParams.value = {
+    ...searchParams,
+    current: 1,
+  };
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+#questionsView {
+  max-width: 1080px;
+  margin: 0 auto;
+}
+</style>

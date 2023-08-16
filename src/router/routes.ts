@@ -4,14 +4,24 @@ import ACCESS_ENUM from "@/access/accessEnum";
 export const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    name: "浏览题目",
-    component: () => import("../views/HomeView.vue"),
+    name: "主页",
+    component: () => import("../views/question/QuestionsView.vue"),
+    meta: {
+      hideInMenu: true,
+    },
   },
   {
-    path: "/noAuth",
-    name: "无权限",
-    component: () => import("../views/error/401.vue"),
+    path: "/questions",
+    name: "浏览题目",
+    component: () => import("../views/question/QuestionsView.vue"),
+  },
+  {
+    path: "/view/question/:id",
+    name: "在线做题",
+    component: () => import("../views/question/ViewQuestionView.vue"),
+    props: true,
     meta: {
+      access: ACCESS_ENUM.USER,
       hideInMenu: true,
     },
   },
@@ -28,7 +38,7 @@ export const routes: Array<RouteRecordRaw> = [
     name: "更新题目",
     component: () => import("../views/question/AddQuestionView.vue"),
     meta: {
-      access: ACCESS_ENUM.USER,
+      access: ACCESS_ENUM.ADMIN,
       hideInMenu: true,
     },
   },
@@ -44,6 +54,14 @@ export const routes: Array<RouteRecordRaw> = [
     path: "/about",
     name: "个人中心",
     component: () => import("../views/AboutView.vue"),
+  },
+  {
+    path: "/noAuth",
+    name: "无权限",
+    component: () => import("../views/error/401.vue"),
+    meta: {
+      hideInMenu: true,
+    },
   },
   {
     path: "/404",
