@@ -1,10 +1,5 @@
 <template>
-  <a-row
-    id="globalHeader"
-    style="margin-bottom: 16px"
-    align="center"
-    :wrap="false"
-  >
+  <a-row id="globalHeader" align="center" :wrap="false">
     <a-col flex="auto">
       <a-menu
         mode="horizontal"
@@ -67,8 +62,13 @@ const doMenuClick = (key: string) => {
 </script>
 
 <style scoped>
+#globalHeader {
+  height: 50px;
+}
 .title {
-  font-size: large;
   color: #444;
+}
+:deep(.arco-menu-horizontal .arco-menu-inner) {
+  padding: 0px 20px;
 }
 </style>

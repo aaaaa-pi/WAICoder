@@ -27,7 +27,8 @@ import { computed } from "vue";
 import { IconUser } from "@arco-design/web-vue/es/icon";
 import { LoginUserVO, UserControllerService } from "../../generated";
 import AuthModal from "@/components/Modals/AuthModal.vue";
-import router from "@/router";
+import { useRouter } from "vue-router";
+const router = useRouter();
 
 const store = useStore();
 
@@ -59,8 +60,8 @@ function controlLogin() {
   margin: 15px;
 }
 .avatar-image {
-  width: 2.6666666667rem;
-  height: 2.6666666667rem;
+  width: 1.5rem;
+  height: 1.5rem;
   border-radius: 50%;
   object-fit: cover;
 }

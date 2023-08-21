@@ -1,4 +1,5 @@
 import { RouteRecordRaw } from "vue-router";
+import QuestionLayout from "@/layouts/QuestionLayout.vue";
 import ACCESS_ENUM from "@/access/accessEnum";
 
 export const routes: Array<RouteRecordRaw> = [
@@ -23,6 +24,7 @@ export const routes: Array<RouteRecordRaw> = [
     meta: {
       access: ACCESS_ENUM.USER,
       hideInMenu: true,
+      layout: QuestionLayout,
     },
   },
   {

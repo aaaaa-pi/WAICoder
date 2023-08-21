@@ -1,16 +1,17 @@
 <template>
-  <div id="code-editor" ref="codeEditorRef" style="min-height: 400px" />
+  <div id="code-editor" ref="codeEditorRef" />
 </template>
 
 <script setup lang="ts">
 import * as monaco from "monaco-editor";
-import { ref, onMounted, toRaw } from "vue";
+import { ref, onMounted, toRaw, watch } from "vue";
 
 /**
  * 定义组件属性类型
  */
 interface Props {
   value: string;
+  language?: string;
   handleChange: (v: string) => void;
 }
 /**
@@ -18,6 +19,7 @@ interface Props {
  */
 const props = withDefaults(defineProps<Props>(), {
   value: () => "",
+  language: () => "java",
   handleChange: (v: string) => {
     console.log(v);
   },
@@ -26,6 +28,16 @@ const props = withDefaults(defineProps<Props>(), {
 const codeEditorRef = ref();
 const codeEditor = ref();
 
+watch(
+  () => props.language,
+  () => {
+    monaco.editor.setModelLanguage(
+      toRaw(codeEditor.value).getModel(),
+      props.language
+    );
+  }
+);
+
 onMounted(() => {
   if (!codeEditorRef.value) {
     return;
@@ -33,7 +45,7 @@ onMounted(() => {
 
   codeEditor.value = monaco.editor.create(codeEditorRef.value, {
     value: props.value, //编辑器初始显示文字
-    language: "java", //语言支持自行查阅demo
+    language: props.language, //语言支持自行查阅demo
     automaticLayout: true, //自动布局
     colorDecorators: true, //颜色装饰器
     minimap: {
