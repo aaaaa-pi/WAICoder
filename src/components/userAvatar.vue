@@ -65,4 +65,10 @@ function controlLogin() {
   border-radius: 50%;
   object-fit: cover;
 }
+:deep(.arco-avatar) {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
 </style>

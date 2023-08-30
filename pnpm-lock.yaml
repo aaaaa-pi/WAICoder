@@ -94,9 +94,15 @@ devDependencies:
   prettier:
     specifier: ^2.4.1
     version: 2.8.8
+  tippy.js:
+    specifier: ^6.3.7
+    version: 6.3.7
   typescript:
     specifier: ~4.5.5
     version: 4.5.5
+  vue3-calendar-heatmap:
+    specifier: ^2.0.5
+    version: 2.0.5(tippy.js@6.3.7)(vue@3.3.4)
 
 packages:
 
@@ -1540,7 +1546,6 @@ packages:
 
   /@popperjs/core@2.11.8:
     resolution: {integrity: sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==}
-    dev: false
 
   /@sideway/address@4.1.4:
     resolution: {integrity: sha512-7vwq+rOHVWjyXxVlR76Agnvhy8I9rpzjosTESvmhNeXOXdZZB15Fl+TI9x1SiHZH5Jv2wTGduSxFDIaq0m3DUw==}
@@ -7595,7 +7600,6 @@ packages:
     resolution: {integrity: sha512-E1d3oP2emgJ9dRQZdf3Kkn0qJgI6ZLpyS5z6ZkY1DF3kaQaBsGZsndEpHwx+eC+tYM41HaSNvNtLx8tU57FzTQ==}
     dependencies:
       '@popperjs/core': 2.11.8
-    dev: false
 
   /to-fast-properties@2.0.0:
     resolution: {integrity: sha512-/OaKK0xYrs3DmxRYqL/yDc+FxFUVYhDlXMhRmv3z915w2HF1tnN1omB354j8VUGO/hbRzyD6Y3sA7v7GS/ceog==}
@@ -8009,6 +8013,17 @@ packages:
 
   /vue-template-es2015-compiler@1.9.1:
     resolution: {integrity: sha512-4gDntzrifFnCEvyoO8PqyJDmguXgVPxKiIxrBKjIowvL9l+N66196+72XVYR8BBf1Uv1Fgt3bGevJ+sEmxfZzw==}
+    dev: true
+
+  /vue3-calendar-heatmap@2.0.5(tippy.js@6.3.7)(vue@3.3.4):
+    resolution: {integrity: sha512-qvveNQlTS5Aw7AvRLs0zOyu3uP5iGJlXJAnkrkG2ElDdyQ8H1TJhQ8rL702CROjAg16ezIveUY10nCO7lqZ25w==}
+    engines: {node: '>=16'}
+    peerDependencies:
+      tippy.js: ^6.3.7
+      vue: ^3.2.29
+    dependencies:
+      tippy.js: 6.3.7
+      vue: 3.3.4
     dev: true
 
   /vue@3.3.4:

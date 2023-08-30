@@ -58,6 +58,14 @@ export const routes: Array<RouteRecordRaw> = [
     component: () => import("../views/AboutView.vue"),
   },
   {
+    path: "/profile/info",
+    name: "编辑资料",
+    component: () => import("../views/UserView.vue"),
+    meta: {
+      hideInMenu: true,
+    },
+  },
+  {
     path: "/noAuth",
     name: "无权限",
     component: () => import("../views/error/401.vue"),

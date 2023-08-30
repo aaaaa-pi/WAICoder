@@ -39,6 +39,8 @@
     "eslint-plugin-vue": "^8.0.3",
     "openapi-typescript-codegen": "^0.25.0",
     "prettier": "^2.4.1",
-    "typescript": "~4.5.5"
+    "tippy.js": "^6.3.7",
+    "typescript": "~4.5.5",
+    "vue3-calendar-heatmap": "^2.0.5"
   }
 }

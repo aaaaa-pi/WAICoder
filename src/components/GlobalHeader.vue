@@ -63,7 +63,7 @@ const doMenuClick = (key: string) => {
 
 <style scoped>
 #globalHeader {
-  height: 50px;
+  height: 60px;
 }
 .title {
   color: #444;

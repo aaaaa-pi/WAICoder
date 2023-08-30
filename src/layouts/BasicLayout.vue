@@ -28,12 +28,12 @@ import GlobalHeader from "../components/GlobalHeader.vue";
 
 #basicLayout .content {
   flex: 1;
-  /* background: bisque; */
+  background: #f7f8fa;
   padding: 20px;
   margin-bottom: 16px;
 }
 #basicLayout .footer {
-  background: #efefef;
+  /* background: #efefef; */
   padding: 16px;
   margin-top: auto;
   text-align: center;

@@ -93,7 +93,7 @@ import MdViewer from "@/components/MdViewer.vue";
 import { ref, onMounted, watchEffect } from "vue";
 const question = ref<QuestionVO>();
 const codeLanguages = ref(["java", "cpp", "go", "javascript", "typescript"]);
-const resizeBoxWidth = ref(0);
+const resizeBoxWidth = ref(600);
 const codeWidth = ref(0);
 watchEffect(() => {
   codeWidth.value = window.innerWidth - resizeBoxWidth.value - 60;

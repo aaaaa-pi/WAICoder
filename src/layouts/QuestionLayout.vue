@@ -20,9 +20,6 @@ import QuestionHeader from "@/components/QuestionHeader.vue";
   height: 100vh;
 }
 
-#questionLayout .header {
-}
-
 #questionLayout .content {
   flex: 1;
   /* background: rgb(240 240 240); */
