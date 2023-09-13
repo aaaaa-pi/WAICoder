@@ -32,14 +32,14 @@ export const routes: Array<RouteRecordRaw> = [
       layout: QuestionLayout,
     },
   },
-  {
-    path: "/add/question",
-    name: "创建题目",
-    component: () => import("../views/question/AddQuestionView.vue"),
-    meta: {
-      access: ACCESS_ENUM.ADMIN,
-    },
-  },
+  // {
+  //   path: "/add/question",
+  //   name: "创建题目",
+  //   component: () => import("../views/question/AddQuestionView.vue"),
+  //   meta: {
+  //     access: ACCESS_ENUM.ADMIN,
+  //   },
+  // },
   {
     path: "/update/question",
     name: "更新题目",
@@ -61,6 +61,10 @@ export const routes: Array<RouteRecordRaw> = [
     path: "/about",
     name: "个人中心",
     component: () => import("../views/AboutView.vue"),
+    meta: {
+      access: ACCESS_ENUM.USER,
+      hideInMenu: true,
+    },
   },
   {
     path: "/profile/info",

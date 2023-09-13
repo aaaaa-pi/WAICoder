@@ -14,7 +14,7 @@
     >
       <template #tags="{ record }">
         <a-space>
-          <a-tag v-for="(tag, index) of record.tags" :key="index" color="green">
+          <a-tag v-for="(tag, index) of record.tags" :key="index" bordered>
             {{ tag }}
           </a-tag>
         </a-space>

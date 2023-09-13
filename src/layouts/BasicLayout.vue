@@ -6,7 +6,7 @@
       </a-layout-header>
       <a-layout-content class="content"><router-view /></a-layout-content>
       <a-layout-footer class="footer">
-        <a href="#">online judge by API</a>
+        <p class="footer-info">© 2023 Eureka</p>
       </a-layout-footer>
     </a-layout>
   </div>
@@ -30,12 +30,22 @@ import GlobalHeader from "../components/GlobalHeader.vue";
   flex: 1;
   background: #f7f8fa;
   padding: 20px;
-  margin-bottom: 16px;
 }
 #basicLayout .footer {
   /* background: #efefef; */
-  padding: 16px;
+  padding: 6px;
   margin-top: auto;
   text-align: center;
+  border-top: 1px solid #eee;
+}
+
+#basicLayout .footer .footer-info {
+  /* © 2023 Eureka */
+  color: rgb(101, 117, 139);
+  font-family: 思源黑体;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 23px;
+  letter-spacing: 0px;
 }
 </style>
