@@ -5,17 +5,17 @@
 
 import type { UserVO } from './UserVO';
 
-export type PostVO = {
-    content?: string;
+export type TeamUserVO = {
     createTime?: string;
-    favourNum?: number;
-    hasFavour?: boolean;
-    hasThumb?: boolean;
+    createUser?: UserVO;
+    description?: string;
+    expireTime?: string;
+    hasJoin?: boolean;
+    hasJoinNum?: number;
     id?: number;
-    tagList?: Array<string>;
-    thumbNum?: number;
-    title?: string;
+    maxNum?: number;
+    name?: string;
+    status?: number;
     updateTime?: string;
-    user?: UserVO;
     userId?: number;
 };

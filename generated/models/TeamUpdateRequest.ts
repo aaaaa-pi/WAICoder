@@ -3,6 +3,11 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type DeleteRequest = {
+export type TeamUpdateRequest = {
+    description?: string;
+    expireTime?: string;
     id?: number;
+    name?: string;
+    password?: string;
+    status?: number;
 };

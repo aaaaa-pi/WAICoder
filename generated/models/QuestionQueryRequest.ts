@@ -4,6 +4,7 @@
 /* eslint-disable */
 
 export type QuestionQueryRequest = {
+    acceptedNum?: number;
     answer?: string;
     content?: string;
     current?: number;
@@ -11,6 +12,8 @@ export type QuestionQueryRequest = {
     pageSize?: number;
     sortField?: string;
     sortOrder?: string;
+    statue?: number;
+    submitNum?: number;
     tags?: Array<string>;
     title?: string;
     userId?: number;

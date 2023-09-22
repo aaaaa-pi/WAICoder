@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { BaseResponse_boolean_ } from '../models/BaseResponse_boolean_';
+import type { BaseResponse_List_UserVO_ } from '../models/BaseResponse_List_UserVO_';
 import type { BaseResponse_LoginUserVO_ } from '../models/BaseResponse_LoginUserVO_';
 import type { BaseResponse_long_ } from '../models/BaseResponse_long_';
 import type { BaseResponse_Page_User_ } from '../models/BaseResponse_Page_User_';
@@ -197,29 +198,6 @@ userLoginRequest: UserLoginRequest,
     }
 
     /**
-     * userLoginByWxOpen
-     * @param code code
-     * @returns BaseResponse_LoginUserVO_ OK
-     * @throws ApiError
-     */
-    public static userLoginByWxOpenUsingGet(
-code: string,
-): CancelablePromise<BaseResponse_LoginUserVO_> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/api/user/login/wx_open',
-            query: {
-                'code': code,
-            },
-            errors: {
-                401: `Unauthorized`,
-                403: `Forbidden`,
-                404: `Not Found`,
-            },
-        });
-    }
-
-    /**
      * userLogout
      * @returns BaseResponse_boolean_ OK
      * @returns any Created
@@ -229,6 +207,32 @@ code: string,
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/user/logout',
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
+     * recommendUsers
+     * @param pageNum pageNum
+     * @param pageSize pageSize
+     * @returns BaseResponse_Page_User_ OK
+     * @throws ApiError
+     */
+    public static recommendUsersUsingGet(
+pageNum?: number,
+pageSize?: number,
+): CancelablePromise<BaseResponse_Page_User_> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/user/recommend',
+            query: {
+                'pageNum': pageNum,
+                'pageSize': pageSize,
+            },
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
@@ -251,6 +255,29 @@ userRegisterRequest: UserRegisterRequest,
             method: 'POST',
             url: '/api/user/register',
             body: userRegisterRequest,
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
+     * searchUsersByTags
+     * @param tagNameList tagNameList
+     * @returns BaseResponse_List_UserVO_ OK
+     * @throws ApiError
+     */
+    public static searchUsersByTagsUsingGet(
+tagNameList?: Array<string>,
+): CancelablePromise<BaseResponse_List_UserVO_> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/user/search/tags',
+            query: {
+                'tagNameList': tagNameList,
+            },
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,

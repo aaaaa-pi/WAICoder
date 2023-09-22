@@ -1,5 +1,6 @@
 // Add a request interceptor
 import axios from "axios";
+import { OpenAPI } from "../../generated";
 
 axios.defaults.withCredentials = true;
 
@@ -27,3 +28,11 @@ axios.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+// 携带凭证
+OpenAPI.WITH_CREDENTIALS = true;
+const baseUrl =
+  process.env.NODE_ENV === "development" ? "http://localhost:8121" : "xxxxxx";
+
+OpenAPI.BASE = baseUrl;
+console.log("当前环境：", process.env.NODE_ENV, "请求地址", baseUrl);

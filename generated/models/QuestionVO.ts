@@ -13,6 +13,8 @@ export type QuestionVO = {
     favourNum?: number;
     id?: number;
     judgeConfig?: JudgeConfig;
+    passRate?: string;
+    statue?: number;
     submitNum?: number;
     tags?: Array<string>;
     thumbNum?: number;

@@ -5,9 +5,12 @@
 
 export type User = {
     createTime?: string;
+    email?: string;
     id?: number;
     isDelete?: number;
     mpOpenId?: string;
+    phone?: string;
+    tags?: string;
     unionId?: string;
     updateTime?: string;
     userAccount?: string;

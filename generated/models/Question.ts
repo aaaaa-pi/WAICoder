@@ -13,6 +13,7 @@ export type Question = {
     isDelete?: number;
     judgeCase?: string;
     judgeConfig?: string;
+    passRate?: string;
     submitNum?: number;
     tags?: string;
     thumbNum?: number;

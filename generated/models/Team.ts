@@ -3,13 +3,16 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type LoginUserVO = {
+export type Team = {
     createTime?: string;
+    description?: string;
+    expireTime?: string;
     id?: number;
-    tags?: string;
+    isDelete?: number;
+    maxNum?: number;
+    name?: string;
+    password?: string;
+    status?: number;
     updateTime?: string;
-    userAvatar?: string;
-    userName?: string;
-    userProfile?: string;
-    userRole?: string;
+    userId?: number;
 };
