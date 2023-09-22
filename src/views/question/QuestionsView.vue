@@ -3,22 +3,21 @@
     <a-card class="questionList">
       <a-form :model="searchParams" layout="inline" class="searchParams">
         <a-form-item
-          field="state"
+          field="statue"
           label="状态"
           style="width: 130px"
           class="flex-1"
         >
-          <a-dropdown-button>
-            全部
-            <template #icon>
-              <icon-down />
-            </template>
-            <template #content>
-              <a-doption>未开始</a-doption>
-              <a-doption>已解答</a-doption>
-              <a-doption>尝试过</a-doption>
-            </template>
-          </a-dropdown-button>
+          <a-select
+            v-model="searchParams.statue"
+            placeholder="全部"
+            :style="{ width: '160px' }"
+          >
+            <a-option :value="0">全部</a-option>
+            <a-option :value="1">未开始</a-option>
+            <a-option :value="3">已解答</a-option>
+            <a-option :value="2">尝试过</a-option>
+          </a-select>
         </a-form-item>
         <a-form-item
           field="extent"
@@ -26,23 +25,21 @@
           style="width: 130px"
           class="flex-1"
         >
-          <a-dropdown-button>
-            全部
-            <template #icon>
-              <icon-down />
-            </template>
-            <template #content>
-              <a-doption style="color: #00af9b">简单</a-doption>
-              <a-doption style="color: #ffb800">中等</a-doption>
-              <a-doption style="color: #ff2d55">困难</a-doption>
-            </template>
-          </a-dropdown-button>
+          <a-select
+            v-model="extent"
+            placeholder="全部"
+            :style="{ width: '160px' }"
+          >
+            <a-option style="color: #00af9b">简单</a-option>
+            <a-option style="color: #ffb800">中等</a-option>
+            <a-option style="color: #ff2d55">困难</a-option>
+          </a-select>
         </a-form-item>
         <a-form-item field="tags" class="flex-2" style="min-width: 200px">
           <template #label>
             <div><icon-tags style="margin-right: 5px" />标签</div>
           </template>
-          <a-input-tag v-model="searchParams.tags" placeholder="请输入标签" />
+          <a-input-tag v-model="tags" placeholder="请输入标签" />
         </a-form-item>
         <a-form-item field="title" class="flex-2" style="min-width: 200px">
           <a-input-search
@@ -51,7 +48,8 @@
             @search="doSubmit"
           />
         </a-form-item>
-        <div class="random">
+        <!-- 随机一题 -->
+        <!-- <div class="random">
           <svg
             width="24.000000"
             height="24.000000"
@@ -80,8 +78,7 @@
             />
           </svg>
           <div class="random-text">随机一题</div>
-        </div>
-        <!-- <a-button type="primary" @click="doSubmit">搜索</a-button> -->
+        </div> -->
       </a-form>
       <a-divider :size="divederSize" />
       <a-table
@@ -96,6 +93,11 @@
         }"
         @page-change="onPageChange"
       >
+        <template #extent="{ record }">
+          <a-tag v-if="record.extent === '简单'" color="#00af9b"> 简单 </a-tag>
+          <a-tag v-if="record.extent === '中等'" color="#ffb800"> 中等 </a-tag>
+          <a-tag v-if="record.extent === '困难'" color="#ff2d55"> 困难 </a-tag>
+        </template>
         <template #tags="{ record }">
           <a-space>
             <a-tag
@@ -109,20 +111,24 @@
           </a-space>
         </template>
         <template #acceptedRate="{ record }">
-          {{
-            `${
-              record.submitNum ? record.acceptedNum / record.submitNum : "0"
-            } %`
-          }}
+          {{ record.passRate }}
         </template>
-        <template #createTime="{ record }">
-          {{ moment(record.createTime).format("YYYY-MM-DD") }}
+        <template #statue="{ record }">
+          <icon-minus-circle
+            v-if="record.statue === 1"
+            :style="{ fontSize: '24px', color: '#ffb800' }"
+          />
+          <icon-close-circle
+            v-if="record.statue === 2"
+            :style="{ fontSize: '24px', color: '#ff2d55' }"
+          />
+          <icon-check-circle
+            v-if="record.statue === 3"
+            :style="{ fontSize: '24px', color: '#00af9b' }"
+          />
         </template>
         <template #optional="{ record }">
           <a-space>
-            <!-- <a-button type="primary" @click="toQuestionPage(record)">
-              做题
-            </a-button> -->
             <a-tooltip position="bottom" content="做题" mini>
               <icon-find-replace
                 class="operate"
@@ -133,7 +139,8 @@
         </template>
       </a-table>
     </a-card>
-    <a-card class="progress">当前进度 </a-card>
+    <!-- 进度表 -->
+    <!-- <a-card class="progress">当前进度</a-card> -->
   </div>
 </template>
 
@@ -146,16 +153,18 @@ import {
 } from "../../../generated";
 import { ref, onMounted, watch, watchEffect } from "vue";
 import { useRouter } from "vue-router";
-import moment from "moment";
 const tableRef = ref();
 const dataList = ref([]);
 const total = ref(0);
 const searchParams = ref<QuestionQueryRequest>({
   pageSize: 10,
   current: 1,
+  statue: 0,
+  tags: [],
 });
 const title = ref<string>();
-
+const extent = ref();
+const tags = ref([]);
 const divederSize = 0;
 
 const loadData = async () => {
@@ -163,6 +172,9 @@ const loadData = async () => {
     searchParams.value
   );
   if (res.code === 0) {
+    res.data.records.forEach((item: any) => {
+      item.extent = item.tags.shift();
+    });
     dataList.value = res.data.records;
     total.value = res.data.total;
   } else {
@@ -178,6 +190,9 @@ watchEffect(() => {
 watch(searchParams.value, () => {
   loadData();
 });
+watch([tags, extent], () => {
+  searchParams.value.tags = [...tags.value, extent.value];
+});
 /**
  * 页面加载时，请求数据
  */
@@ -186,13 +201,9 @@ onMounted(() => {
 });
 
 const columns = [
-  // {
-  //   title: "题号",
-  //   dataIndex: "id",
-  // },
   {
     title: "状态",
-    slotName: "state",
+    slotName: "statue",
   },
   {
     title: "题目",
@@ -204,12 +215,8 @@ const columns = [
   },
   {
     title: "通过率",
-    slotName: "acceptedRate",
+    dataIndex: "passRate",
   },
-  // {
-  //   title: "创建时间",
-  //   slotName: "createTime",
-  // },
   {
     title: "难度",
     slotName: "extent",
@@ -225,6 +232,17 @@ const onPageChange = (page: number) => {
     current: page,
   };
 };
+
+// const handleExtentSelect = () => {
+//   const first = searchParams.value.tags ? searchParams.value.tags[1] : [];
+//   if (first !== extent.value) {
+//     searchParams.value.tags?.shift();
+//     searchParams.value.tags?.unshift(extent.value);
+//   } else {
+//     searchParams.value.tags?.unshift(extent.value);
+//   }
+//   console.log(searchParams.value.tags);
+// };
 
 const router = useRouter();
 

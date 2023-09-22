@@ -9,7 +9,14 @@
         />
       </a-form-item>
       <a-form-item field="tags" label="标签">
-        <a-input-tag v-model="form.tags" placeholder="请选择标签" allow-clear />
+        <a-input-tag v-model="tags" placeholder="请选择标签" allow-clear />
+      </a-form-item>
+      <a-form-item field="extent" label="难度">
+        <a-select v-model="extent" :style="{ width: '160px' }">
+          <a-option>简单</a-option>
+          <a-option>中等</a-option>
+          <a-option>困难</a-option>
+        </a-select>
       </a-form-item>
       <a-form-item field="content" label="题目内容">
         <MdEditor :value="form.content" :handle-change="onContentChange" />
@@ -114,9 +121,11 @@ import { useRouter, useRoute } from "vue-router";
 const router = useRouter();
 const route = useRoute();
 const updatePage = route.path.includes("update");
+const extent = ref("简单");
+const tags = ref();
 let form = ref({
   title: "",
-  tags: [],
+  tags: [] as string[],
   answer: "",
   content: "",
   judgeConfig: {
@@ -143,7 +152,7 @@ const loadData = async () => {
   if (!id) {
     return;
   }
-  const res = await QuestionControllerService.getQuestionByIdUsingGet(
+  const res = await QuestionControllerService.getQuestionVoByIdUsingGet(
     id as any
   );
   if (res.code === 0) {
@@ -205,6 +214,10 @@ const onContentChange = (value: string) => {
 const onAnswerChange = (value: string) => {
   form.value.answer = value;
 };
+
+const handleTags = () => {
+  return [extent.value, ...tags.value].filter((v) => v);
+};
 /**
  * 判题用例
  */
@@ -230,6 +243,7 @@ const handleCancel = () => {
 };
 
 const doSubmit = async () => {
+  form.value.tags = handleTags();
   if (updatePage) {
     const res = await QuestionControllerService.updateQuestionUsingPost(
       form.value
@@ -249,6 +263,7 @@ const doSubmit = async () => {
       Message.error("创建失败" + res.message);
     }
   }
+  console.log(form.value);
   router.push({
     path: "/manage/question",
     replace: true,
