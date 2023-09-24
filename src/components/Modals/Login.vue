@@ -61,7 +61,7 @@ const handleSubmit = async () => {
       path: "/",
       replace: true,
     });
-    console.log(store.state.user.loginUser.userRole);
+    window.location.reload();
   } else {
     message.error("登录失败：" + res.message);
   }
