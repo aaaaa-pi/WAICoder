@@ -145,7 +145,7 @@
 </template>
 
 <script setup lang="ts">
-import { Message } from "@arco-design/web-vue";
+import { Message, TableSortable } from "@arco-design/web-vue";
 import {
   Question,
   QuestionControllerService,
@@ -153,6 +153,8 @@ import {
 } from "../../../generated";
 import { ref, onMounted, watch, watchEffect } from "vue";
 import { useRouter } from "vue-router";
+import { useStore } from "vuex";
+const store = useStore();
 const tableRef = ref();
 const dataList = ref([]);
 const total = ref(0);
@@ -168,6 +170,7 @@ const tags = ref([]);
 const divederSize = 0;
 
 const loadData = async () => {
+  store.commit("loading/showLoading", true);
   const res = await QuestionControllerService.listQuestionVoByPageUsingPost(
     searchParams.value
   );
@@ -180,6 +183,7 @@ const loadData = async () => {
   } else {
     Message.error("加载失败" + res.message);
   }
+  store.commit("loading/showLoading", false);
 };
 /**
  * 监听 searchParams 变量，改变时触发页面的重新加载
@@ -216,6 +220,9 @@ const columns = [
   {
     title: "通过率",
     dataIndex: "passRate",
+    sortable: {
+      sortDirections: ["ascend"],
+    } as TableSortable,
   },
   {
     title: "难度",

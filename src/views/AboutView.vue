@@ -51,7 +51,6 @@ const divederSize = 0;
 
 // 获取相关信息
 const loginUser = computed(() => store.state.user.loginUser);
-console.log(loginUser);
 
 const timeValue = [
   { date: "2020-08-02", count: 6 },

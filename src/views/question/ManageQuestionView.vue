@@ -38,6 +38,8 @@ import { Question, QuestionControllerService } from "../../../generated";
 import { ref, watchEffect, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import moment from "moment";
+import { useStore } from "vuex";
+const store = useStore();
 const tableRef = ref();
 const dataList = ref([]);
 const total = ref(0);
@@ -47,6 +49,8 @@ const searchParams = ref({
 });
 
 const loadData = async () => {
+  store.commit("loading/showLoading", true);
+
   const res = await QuestionControllerService.listQuestionVoByPageUsingPost(
     searchParams.value
   );
@@ -57,6 +61,8 @@ const loadData = async () => {
   } else {
     Message.error("加载失败" + res.message);
   }
+
+  store.commit("loading/showLoading", false);
 };
 /**
  * 监听 searchParams 变量，改变时触发页面的重新加载
