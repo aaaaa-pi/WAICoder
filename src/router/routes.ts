@@ -38,6 +38,7 @@ export const routes: Array<RouteRecordRaw> = [
     component: () => import("../views/question/AddQuestionView.vue"),
     meta: {
       access: ACCESS_ENUM.ADMIN,
+      hideInMenu: true,
     },
   },
   {

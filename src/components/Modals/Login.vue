@@ -25,7 +25,10 @@
       </a-form-item>
     </a-form>
     <div class="signup">
-      没有账户吗？<a href="#" @click="toggleSignUp" class="signupLine">注册</a>
+      没有账户吗？
+      <router-link to="#" @click="toggleSignUp" class="signupLine">
+        注册
+      </router-link>
     </div>
   </div>
 </template>

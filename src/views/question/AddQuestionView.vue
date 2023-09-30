@@ -1,114 +1,131 @@
 <template>
   <div id="AddQuestionView">
-    <a-form :model="form">
-      <a-form-item field="title" label="标题">
-        <a-input
-          v-model="form.title"
-          placeholder="请输入标题"
-          class="titleInput"
-        />
-      </a-form-item>
-      <a-form-item field="tags" label="标签">
-        <a-input-tag v-model="tags" placeholder="请选择标签" allow-clear />
-      </a-form-item>
-      <a-form-item field="extent" label="难度">
-        <a-select v-model="extent" :style="{ width: '160px' }">
-          <a-option>简单</a-option>
-          <a-option>中等</a-option>
-          <a-option>困难</a-option>
-        </a-select>
-      </a-form-item>
-      <a-form-item field="content" label="题目内容">
-        <MdEditor :value="form.content" :handle-change="onContentChange" />
-      </a-form-item>
-      <a-form-item field="answer" label="答案">
-        <MdEditor :value="form.answer" :handle-change="onAnswerChange" />
-      </a-form-item>
-      <a-form-item label="判题配置" :content-flex="false" :merge-props="false">
-        <a-space direction="vertical" style="min-width: 480px">
-          <a-form-item field="judgeConfig.timeLimit" label="时间限制">
-            <a-input-number
-              v-model="form.judgeConfig.timeLimit"
-              placeholder="请输入时间限制"
-              :min="minVal"
-              size="large"
-            />
-            ms
-          </a-form-item>
-          <a-form-item field="judgeConfig.memoryLimit" label="内存限制">
-            <a-input-number
-              v-model="form.judgeConfig.memoryLimit"
-              placeholder="请输入内存限制"
-              :min="minVal"
-              size="large"
-            />
-            KB
-          </a-form-item>
-          <a-form-item field="judgeConfig.stackLimit" label="堆栈限制">
-            <a-input-number
-              v-model="form.judgeConfig.stackLimit"
-              placeholder="请输入堆栈限制"
-              :min="minVal"
-              size="large"
-            />
-            KB
-          </a-form-item>
-        </a-space>
-      </a-form-item>
-      <a-form-item
-        label="测试用例配置"
-        :content-flex="false"
-        :merge-props="false"
-      >
-        <a-list>
-          <a-list-item
-            v-for="(judgeCaseItem, index) of form.judgeCase"
-            :key="index"
-          >
-            <a-list-item-meta :title="`用例-${index}`"> </a-list-item-meta>
-            <template #actions>
-              <icon-edit @click="openModel(index)" />
-              <icon-delete @click="handleDelete(index)" />
-            </template>
-            <a-modal v-model:visible="visible" @cancel="handleCancel">
-              <a-space direction="vertical" style="min-width: 350px">
-                <a-form-item label="输入案例">
-                  <a-input
-                    v-model="inputCase"
-                    placeholder="请输入测试的输入用例"
-                    size="large"
-                  />
-                </a-form-item>
-                <a-form-item label="输出案例">
-                  <a-input
-                    v-model="outputCase"
-                    placeholder="请输入测试的输出用例"
-                    size="large"
-                  />
-                </a-form-item>
-              </a-space>
-            </a-modal>
-          </a-list-item>
+    <a-drawer
+      :visible="drawerVisible"
+      @cancel="CloseDrawer"
+      :width="880"
+      :footer="false"
+    >
+      <template #title>
+        <div>{{ updatePage ? "更新题目" : "创建题目" }}</div>
+      </template>
+      <a-form :model="form">
+        <a-form-item field="title" label="标题">
+          <a-input
+            v-model="form.title"
+            placeholder="请输入标题"
+            class="titleInput"
+          />
+        </a-form-item>
+        <a-form-item field="tags" label="标签">
+          <a-input-tag v-model="tags" placeholder="请选择标签" allow-clear />
+        </a-form-item>
+        <a-form-item field="extent" label="难度">
+          <a-select v-model="extent" :style="{ width: '160px' }">
+            <a-option>简单</a-option>
+            <a-option>中等</a-option>
+            <a-option>困难</a-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item field="content" label="题目内容">
+          <MdEditor :value="form.content" :handle-change="onContentChange" />
+        </a-form-item>
+        <a-form-item field="answer" label="答案">
+          <MdEditor :value="form.answer" :handle-change="onAnswerChange" />
+        </a-form-item>
+        <a-form-item
+          label="判题配置"
+          :content-flex="false"
+          :merge-props="false"
+        >
+          <a-space direction="vertical" style="min-width: 480px">
+            <a-form-item field="judgeConfig.timeLimit" label="时间限制">
+              <a-input-number
+                v-model="form.judgeConfig.timeLimit"
+                placeholder="请输入时间限制"
+                :min="minVal"
+                size="large"
+              />
+              ms
+            </a-form-item>
+            <a-form-item field="judgeConfig.memoryLimit" label="内存限制">
+              <a-input-number
+                v-model="form.judgeConfig.memoryLimit"
+                placeholder="请输入内存限制"
+                :min="minVal"
+                size="large"
+              />
+              KB
+            </a-form-item>
+            <a-form-item field="judgeConfig.stackLimit" label="堆栈限制">
+              <a-input-number
+                v-model="form.judgeConfig.stackLimit"
+                placeholder="请输入堆栈限制"
+                :min="minVal"
+                size="large"
+              />
+              KB
+            </a-form-item>
+          </a-space>
+        </a-form-item>
+        <a-form-item
+          label="测试用例配置"
+          :content-flex="false"
+          :merge-props="false"
+        >
+          <a-list>
+            <a-list-item
+              v-for="(judgeCaseItem, index) of form.judgeCase"
+              :key="index"
+            >
+              <a-list-item-meta :title="`用例-${index}`"> </a-list-item-meta>
+              <template #actions>
+                <icon-edit @click="openModel(index)" />
+                <icon-delete @click="handleDelete(index)" />
+              </template>
+              <a-modal v-model:visible="visible" @cancel="handleCancel">
+                <a-space direction="vertical" style="min-width: 350px">
+                  <a-form-item label="输入案例">
+                    <a-input
+                      v-model="value.newInput"
+                      placeholder="请输入测试的输入用例"
+                      size="large"
+                    />
+                  </a-form-item>
+                  <a-form-item label="输出案例">
+                    <a-input
+                      v-model="value.newOutput"
+                      placeholder="请输入测试的输出用例"
+                      size="large"
+                    />
+                  </a-form-item>
+                </a-space>
+                <div class="button-box">
+                  <a-button type="primary" @click="onConfirm">确认</a-button>
+                </div>
+              </a-modal>
+            </a-list-item>
+            <a-button
+              @click="handleAdd"
+              type="outline"
+              status="success"
+              class="addTest"
+              >新增测试用例
+            </a-button>
+          </a-list>
+        </a-form-item>
+        <div style="margin-top: 16px" />
+        <a-form-item>
           <a-button
-            @click="handleAdd"
-            type="outline"
-            status="success"
-            class="addTest"
-            >新增测试用例
+            type="primary"
+            style="min-width: 200px"
+            @click="doSubmit"
+            class="submit"
+            >提交
           </a-button>
-        </a-list>
-      </a-form-item>
-      <div style="margin-top: 16px" />
-      <a-form-item>
-        <a-button
-          type="primary"
-          style="min-width: 200px"
-          @click="doSubmit"
-          class="submit"
-          >提交
-        </a-button>
-      </a-form-item>
-    </a-form>
+        </a-form-item>
+      </a-form>
+    </a-drawer>
   </div>
 </template>
 
@@ -118,6 +135,9 @@ import { Message } from "@arco-design/web-vue";
 import { QuestionControllerService } from "../../../generated";
 import { ref, computed, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
+import { reactive } from "vue";
+import { useStore } from "vuex";
+const store = useStore();
 const router = useRouter();
 const route = useRoute();
 const updatePage = route.path.includes("update");
@@ -140,10 +160,20 @@ let form = ref({
     },
   ],
 });
+const value = reactive({
+  oldInput: "",
+  newInput: "",
+  oldOutput: "",
+  newOutput: "",
+});
+
 const visible = ref(false);
+// const drawerVisible = ref(false);
 const minVal = 0;
 const currentIndex = ref();
 
+// 获取创建题目抽屉显示状态
+const drawerVisible = computed(() => store.state.questionDrawer.drawerVisible);
 /**
  * 根据题目 id 获取老的数据
  */
@@ -157,6 +187,7 @@ const loadData = async () => {
   );
   if (res.code === 0) {
     form.value = res.data as any;
+    console.log(form.value);
     // json 转 js 对象
     if (!form.value.judgeCase) {
       form.value.judgeCase = [
@@ -175,12 +206,13 @@ const loadData = async () => {
         timeLimit: 1000,
       };
     } else {
-      form.value.judgeConfig = JSON.parse(form.value.judgeConfig as any);
+      // console.log(typeof form.value.judgeConfig.memoryLimit);
     }
     if (!form.value.tags) {
       form.value.tags = [];
     } else {
-      form.value.tags = JSON.parse(form.value.tags as any);
+      extent.value = form.value.tags.shift() as any;
+      tags.value = form.value.tags;
     }
   } else {
     Message.error("加载失败" + res.message);
@@ -218,6 +250,15 @@ const onAnswerChange = (value: string) => {
 const handleTags = () => {
   return [extent.value, ...tags.value].filter((v) => v);
 };
+
+const CloseDrawer = () => {
+  // drawerVisible.value = false;
+  store.commit("questionDrawer/showDrawerVisible", false);
+  router.push({
+    path: "/manage/question",
+    replace: true,
+  });
+};
 /**
  * 判题用例
  */
@@ -230,15 +271,30 @@ const handleAdd = () => {
 const handleDelete = (index: number) => {
   form.value.judgeCase.splice(index, 1);
 };
+const resetValue = () => {
+  value.newInput = value.oldInput;
+  value.newOutput = value.oldOutput;
+};
 /**
  * 测试用例弹框
  */
 const openModel = (index: number) => {
   visible.value = true;
   currentIndex.value = index;
-  console.log(form.value.judgeCase);
+  value.oldInput = inputCase.value;
+  value.oldOutput = outputCase.value;
+  // 重置新值
+  resetValue();
 };
 const handleCancel = () => {
+  resetValue();
+  inputCase.value = value.oldInput;
+  outputCase.value = value.oldInput;
+  visible.value = false;
+};
+const onConfirm = () => {
+  inputCase.value = value.newInput;
+  outputCase.value = value.newOutput;
   visible.value = false;
 };
 
@@ -263,7 +319,7 @@ const doSubmit = async () => {
       Message.error("创建失败" + res.message);
     }
   }
-  console.log(form.value);
+  store.commit("questionDrawer/showDrawerVisible", false);
   router.push({
     path: "/manage/question",
     replace: true,
@@ -298,5 +354,10 @@ const doSubmit = async () => {
       > .arco-list-item
   ) {
   padding: 5px 15px;
+}
+
+.button-box {
+  display: flex;
+  justify-content: end;
 }
 </style>

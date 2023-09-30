@@ -54,7 +54,10 @@
       </a-form-item>
     </a-form>
     <div class="login">
-      已有账号,<a href="#" @click="toggleLogin" class="loginLine">登录</a>
+      已有账号,
+      <router-link to="#" @click="toggleLogin" class="loginLine">
+        登录
+      </router-link>
     </div>
   </div>
 </template>

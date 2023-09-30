@@ -1,39 +1,57 @@
 <template>
   <div id="manageQuestionView">
-    <a-table
-      :ref="tableRef"
-      :columns="columns"
-      :data="dataList"
-      :pagination="{
-        showTotal: true,
-        pageSize: searchParams.pageSize,
-        current: searchParams.current,
-        total,
-      }"
-      @page-change="onPageChange"
-    >
-      <template #tags="{ record }">
-        <a-space>
-          <a-tag v-for="(tag, index) of record.tags" :key="index" bordered>
-            {{ tag }}
-          </a-tag>
-        </a-space>
-      </template>
-      <template #createTime="{ record }">
-        {{ moment(record.createTime).format("YYYY-MM-DD") }}
-      </template>
-      <template #optional="{ record }">
-        <a-space>
-          <a-button type="primary" @click="doUpdate(record)"> 修改</a-button>
-          <a-button status="danger" @click="doDelete(record)">删除</a-button>
-        </a-space>
-      </template>
-    </a-table>
+    <a-card class="manageQuestionList">
+      <div class="header">
+        <h2>题库列表</h2>
+        <a-button class="addQuestion" type="primary" @click="addQuestion"
+          >创建题目</a-button
+        >
+      </div>
+      <a-table
+        :ref="tableRef"
+        :columns="columns"
+        :data="dataList"
+        :pagination="{
+          showTotal: true,
+          pageSize: searchParams.pageSize,
+          current: searchParams.current,
+          total,
+        }"
+        @page-change="onPageChange"
+      >
+        <template #tags="{ record }">
+          <a-space>
+            <a-tag v-for="(tag, index) of record.tags" :key="index" bordered>
+              {{ tag }}
+            </a-tag>
+          </a-space>
+        </template>
+        <template #createTime="{ record }">
+          {{ moment(record.createTime).format("YYYY-MM-DD") }}
+        </template>
+        <template #optional="{ record }">
+          <a-space>
+            <!-- <a-button type="primary" "> 修改</a-button>
+            <a-button status="danger" >删除</a-button> -->
+            <icon-edit
+              :style="{ fontSize: '18px', color: '#0A65CC' }"
+              @click="doUpdate(record)"
+            />
+            <icon-delete
+              :style="{ fontSize: '18px', color: 'red' }"
+              @click="doDelete(record)"
+            />
+          </a-space>
+        </template>
+      </a-table>
+    </a-card>
+    <AddQuestionView />
   </div>
 </template>
 
 <script setup lang="ts">
 import { Message } from "@arco-design/web-vue";
+import AddQuestionView from "./AddQuestionView.vue";
 import { Question, QuestionControllerService } from "../../../generated";
 import { ref, watchEffect, onMounted } from "vue";
 import { useRouter } from "vue-router";
@@ -91,12 +109,8 @@ const columns = [
     slotName: "tags",
   },
   {
-    title: "提交数",
-    dataIndex: "submitNum",
-  },
-  {
-    title: "通过数",
-    dataIndex: "acceptedNum",
+    title: "通过率",
+    dataIndex: "passRate",
   },
   {
     title: "判题配置",
@@ -105,24 +119,16 @@ const columns = [
       {
         title: "时间限制",
         dataIndex: "judgeConfig.timeLimit",
-        width: 100,
       },
       {
         title: "内存限制",
         dataIndex: "judgeConfig.memoryLimit",
-        width: 100,
       },
       {
         title: "堆栈限制",
         dataIndex: "judgeConfig.stackLimit",
-        width: 100,
       },
     ],
-    width: 300,
-  },
-  {
-    title: "创建用户",
-    dataIndex: "userVO.userName",
   },
   {
     title: "创建时间",
@@ -134,6 +140,13 @@ const columns = [
   },
 ];
 
+const addQuestion = () => {
+  store.commit("questionDrawer/showDrawerVisible", true);
+  router.push({
+    path: "/add/question",
+    replace: true,
+  });
+};
 const onPageChange = (page: number) => {
   searchParams.value = {
     ...searchParams.value,
@@ -162,7 +175,29 @@ const doUpdate = (question: Question) => {
       id: question.id,
     },
   });
+  store.commit("questionDrawer/showDrawerVisible", true);
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+#manageQuestionView {
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+}
+.manageQuestionList {
+  flex: 1;
+  margin-right: 8px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 6px;
+}
+.addQuestion {
+  display: flex;
+  align-self: center;
+}
+</style>

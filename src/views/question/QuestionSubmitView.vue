@@ -21,12 +21,11 @@
         >
           <a-input v-model="searchParams.userId" placeholder="请输入提交者ID" />
         </a-form-item>
-        <a-form-item field="language" style="min-width: 240px">
+        <a-form-item field="language" style="width: 180px" class="flex-2">
           <a-select
             v-model="searchParams.language"
             :style="{ width: '320px' }"
             placeholder="选择编程语言"
-            class="flex-2"
           >
             <a-option v-for="language in codeLanguages" :key="language">
               {{ language }}
