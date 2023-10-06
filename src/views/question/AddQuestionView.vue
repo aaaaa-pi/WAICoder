@@ -7,7 +7,7 @@
       :footer="false"
     >
       <template #title>
-        <div>{{ updatePage ? "更新题目" : "创建题目" }}</div>
+        <div>{{ id ? "更新题目" : "创建题目" }}</div>
       </template>
       <a-form :model="form">
         <a-form-item field="title" label="标题">
@@ -133,33 +133,30 @@
 import MdEditor from "@/components/MdEditor.vue";
 import { Message } from "@arco-design/web-vue";
 import { QuestionControllerService } from "../../../generated";
-import { ref, computed, onMounted } from "vue";
-import { useRouter, useRoute } from "vue-router";
-import { reactive } from "vue";
+import { ref, computed, onMounted, reactive, watch, toRef } from "vue";
 import { useStore } from "vuex";
+/**
+ *  定义组件属性类型
+ */
+interface Props {
+  questionId: string;
+}
+/**
+ * 给组件指定初始值
+ */
+const props = withDefaults(defineProps<Props>(), {
+  questionId: () => "",
+});
+const id = ref();
+watch(toRef(props, "questionId"), (newId) => {
+  id.value = newId;
+  loadData();
+  console.log(id.value);
+});
 const store = useStore();
-const router = useRouter();
-const route = useRoute();
-const updatePage = route.path.includes("update");
 const extent = ref("简单");
 const tags = ref();
-let form = ref({
-  title: "",
-  tags: [] as string[],
-  answer: "",
-  content: "",
-  judgeConfig: {
-    memoryLimit: 1000,
-    stackLimit: 1000,
-    timeLimit: 1000,
-  },
-  judgeCase: [
-    {
-      input: "",
-      output: "",
-    },
-  ],
-});
+let form = ref();
 const value = reactive({
   oldInput: "",
   newInput: "",
@@ -178,16 +175,15 @@ const drawerVisible = computed(() => store.state.questionDrawer.drawerVisible);
  * 根据题目 id 获取老的数据
  */
 const loadData = async () => {
-  const id = route.query.id;
-  if (!id) {
+  reset();
+  if (!id.value) {
     return;
   }
   const res = await QuestionControllerService.getQuestionVoByIdUsingGet(
-    id as any
+    id.value as any
   );
   if (res.code === 0) {
     form.value = res.data as any;
-    console.log(form.value);
     // json 转 js 对象
     if (!form.value.judgeCase) {
       form.value.judgeCase = [
@@ -206,7 +202,10 @@ const loadData = async () => {
         timeLimit: 1000,
       };
     } else {
-      // console.log(typeof form.value.judgeConfig.memoryLimit);
+      const judgeConfig = form.value.judgeConfig;
+      judgeConfig.memoryLimit = Number(judgeConfig.memoryLimit);
+      judgeConfig.stackLimit = Number(judgeConfig.stackLimit);
+      judgeConfig.timeLimit = Number(judgeConfig.timeLimit);
     }
     if (!form.value.tags) {
       form.value.tags = [];
@@ -217,6 +216,27 @@ const loadData = async () => {
   } else {
     Message.error("加载失败" + res.message);
   }
+};
+
+const reset = () => {
+  form.value = {
+    title: "",
+    tags: [] as string[],
+    answer: "",
+    content: "",
+    judgeConfig: {
+      memoryLimit: 1000,
+      stackLimit: 1000,
+      timeLimit: 1000,
+    },
+    judgeCase: [
+      {
+        input: "",
+        output: "",
+      },
+    ],
+  };
+  tags.value = [];
 };
 
 onMounted(() => {
@@ -252,12 +272,7 @@ const handleTags = () => {
 };
 
 const CloseDrawer = () => {
-  // drawerVisible.value = false;
   store.commit("questionDrawer/showDrawerVisible", false);
-  router.push({
-    path: "/manage/question",
-    replace: true,
-  });
 };
 /**
  * 判题用例
@@ -300,7 +315,7 @@ const onConfirm = () => {
 
 const doSubmit = async () => {
   form.value.tags = handleTags();
-  if (updatePage) {
+  if (id.value) {
     const res = await QuestionControllerService.updateQuestionUsingPost(
       form.value
     );
@@ -320,10 +335,7 @@ const doSubmit = async () => {
     }
   }
   store.commit("questionDrawer/showDrawerVisible", false);
-  router.push({
-    path: "/manage/question",
-    replace: true,
-  });
+  window.location.reload();
 };
 </script>
 

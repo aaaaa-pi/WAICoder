@@ -32,17 +32,17 @@ export const routes: Array<RouteRecordRaw> = [
       layout: QuestionLayout,
     },
   },
+  // {
+  //   path: "/manage/question/add",
+  //   name: "创建题目",
+  //   component: () => import("../views/question/AddQuestionView.vue"),
+  //   meta: {
+  //     access: ACCESS_ENUM.ADMIN,
+  //     hideInMenu: true,
+  //   },
+  // },
   {
-    path: "/add/question",
-    name: "创建题目",
-    component: () => import("../views/question/AddQuestionView.vue"),
-    meta: {
-      access: ACCESS_ENUM.ADMIN,
-      hideInMenu: true,
-    },
-  },
-  {
-    path: "/update/question",
+    path: "/manage/question/update",
     name: "更新题目",
     component: () => import("../views/question/AddQuestionView.vue"),
     meta: {

@@ -45,7 +45,7 @@
         </template>
       </a-table>
     </a-card>
-    <AddQuestionView />
+    <AddQuestionView :question-id="questionId" />
   </div>
 </template>
 
@@ -54,13 +54,13 @@ import { Message } from "@arco-design/web-vue";
 import AddQuestionView from "./AddQuestionView.vue";
 import { Question, QuestionControllerService } from "../../../generated";
 import { ref, watchEffect, onMounted } from "vue";
-import { useRouter } from "vue-router";
 import moment from "moment";
 import { useStore } from "vuex";
 const store = useStore();
 const tableRef = ref();
 const dataList = ref([]);
 const total = ref(0);
+const questionId = ref();
 const searchParams = ref({
   pageSize: 10,
   current: 1,
@@ -142,10 +142,7 @@ const columns = [
 
 const addQuestion = () => {
   store.commit("questionDrawer/showDrawerVisible", true);
-  router.push({
-    path: "/add/question",
-    replace: true,
-  });
+  questionId.value = "";
 };
 const onPageChange = (page: number) => {
   searchParams.value = {
@@ -166,15 +163,8 @@ const doDelete = async (question: Question) => {
   }
 };
 
-const router = useRouter();
-
 const doUpdate = (question: Question) => {
-  router.push({
-    path: "/update/question",
-    query: {
-      id: question.id,
-    },
-  });
+  questionId.value = question.id;
   store.commit("questionDrawer/showDrawerVisible", true);
 };
 </script>
