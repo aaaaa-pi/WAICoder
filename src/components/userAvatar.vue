@@ -14,8 +14,12 @@
         </a-avatar>
       </template>
       <template #content>
-        <a-doption @click="handleAbout">个人中心</a-doption>
-        <a-doption @click="logout">退出登录</a-doption>
+        <a-doption @click="handleAbout">
+          <icon-home :style="{ marginRight: '6px' }" />个人中心
+        </a-doption>
+        <a-doption @click="logout">
+          <icon-export :style="{ marginRight: '6px' }" />退出登录
+        </a-doption>
       </template>
     </a-dropdown>
   </div>

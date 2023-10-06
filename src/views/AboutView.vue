@@ -3,7 +3,7 @@
     <a-card hoverable :style="{ width: '70vw' }" class="aboutCard">
       <div class="content center">
         <div class="avatar">
-          <a-avatar>
+          <a-avatar :style="{ backgroundColor: '#0A65CC' }">
             <template v-if="loginUser.userAvatar">
               <img
                 class="avatar-image"
@@ -17,10 +17,18 @@
           </a-avatar>
         </div>
         <div class="userInfo">
-          <span>
+          <p style="text-align: center">
             <icon-user :style="{ fontSize: '15px' }" stroke-linecap="round" />
             {{ loginUser.userName ? loginUser.userName : "null" }}
-          </span>
+          </p>
+          <p style="text-align: center">
+            <icon-idcard :style="{ fontSize: '15px' }" stroke-linecap="round" />
+            {{
+              loginUser.userProfile
+                ? loginUser.userProfile
+                : "http://www.baidu.com"
+            }}
+          </p>
         </div>
         <a-button
           @click="handleEditor"
