@@ -3,7 +3,11 @@
     <a-card class="manageQuestionList">
       <div class="header">
         <h2>题库列表</h2>
-        <a-button class="addQuestion" type="primary" @click="addQuestion"
+        <a-button
+          class="addQuestion"
+          type="primary"
+          @click="addQuestion"
+          :style="{ background: '#065ACC' }"
           >创建题目</a-button
         >
       </div>
@@ -18,6 +22,8 @@
           total,
         }"
         @page-change="onPageChange"
+        :bordered="{ wrapper: true, cell: true }"
+        stripe
       >
         <template #tags="{ record }">
           <a-space>

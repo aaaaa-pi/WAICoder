@@ -2,9 +2,9 @@
   <a-row id="quesrionHeader" align="center" :wrap="false">
     <a-col :span="4">
       <div class="title-bar" @click="doTitleClick">
-        <p class="title" style="cursor: pointer">Online Judge</p>
-      </div></a-col
-    >
+        <img src="@/assets/OJlogo.png" alt="#" class="title" />
+      </div>
+    </a-col>
     <a-col :span="8" :offset="6">
       <div class="start">
         <a-space size="medium">
@@ -175,8 +175,9 @@ onUnmounted(() => {
   border-bottom: 1px solid #cdcdcd;
 }
 .title {
-  font-size: 10px;
-  color: #444;
+  padding-top: 8px;
+  cursor: pointer;
+  width: 180px;
 }
 :deep(.arco-menu-horizontal .arco-menu-inner) {
   padding: 0px 25px;

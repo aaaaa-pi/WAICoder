@@ -6,17 +6,16 @@
         :selected-keys="selectedKeys"
         @menu-item-click="doMenuClick"
       >
-        <a-menu-item
-          key="0"
-          :style="{ padding: 0, marginRight: '38px' }"
-          disabled
-        >
+        <a-menu-item key="0" disabled>
           <div class="title-bar">
-            <p class="title">Online Judge</p>
+            <!-- <p class="title">Online Judge</p> -->
+            <img src="@/assets/OJlogo.png" alt="#" class="title" />
           </div>
         </a-menu-item>
         <a-menu-item v-for="item in visibleRoutes" :key="item.path">
-          {{ item.name }}
+          <!-- <icon :name="item.meta?.icon" /> -->
+          <component :is="item.meta?.icon"> </component>
+          <span>{{ item.name }}</span>
         </a-menu-item>
       </a-menu>
     </a-col>
@@ -27,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { routes } from "../router/routes";
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
@@ -63,13 +62,15 @@ const doMenuClick = (key: string) => {
 
 <style scoped>
 #globalHeader {
-  height: 60px;
+  height: 70px;
   border-bottom: 1px solid #eee;
 }
 .title {
-  color: #444;
+  padding-top: 15px;
+  width: 180px;
 }
 :deep(.arco-menu-horizontal .arco-menu-inner) {
+  height: 70px;
   padding: 0px 20px;
 }
 </style>

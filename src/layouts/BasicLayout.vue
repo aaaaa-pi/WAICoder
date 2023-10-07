@@ -4,7 +4,11 @@
       <a-layout-header class="header">
         <GlobalHeader />
       </a-layout-header>
-      <a-layout-content class="content"><router-view /></a-layout-content>
+      <a-layout-content class="content">
+        <div class="contentMask">
+          <router-view />
+        </div>
+      </a-layout-content>
       <a-layout-footer class="footer">
         <p class="footer-info">© 2023 Eureka</p>
       </a-layout-footer>
@@ -28,11 +32,15 @@ import GlobalHeader from "../components/GlobalHeader.vue";
 
 #basicLayout .content {
   flex: 1;
-  background: #f7f8fa;
+  background-image: url("@/assets/common-background.png");
+}
+#basicLayout .content .contentMask {
+  height: 100%;
   padding: 20px;
+  background-color: rgba(217, 217, 217, 0.4);
 }
 #basicLayout .footer {
-  /* background: #efefef; */
+  background: #fff;
   padding: 6px;
   margin-top: auto;
   text-align: center;
@@ -47,5 +55,14 @@ import GlobalHeader from "../components/GlobalHeader.vue";
   font-weight: 400;
   line-height: 23px;
   letter-spacing: 0px;
+}
+
+:deep(.arco-table-th) {
+  background-color: #0a65cc;
+  color: #fff;
+}
+:deep(.arco-table-container) {
+  border-bottom: 4px solid #0a65cc;
+  padding-bottom: 10px;
 }
 </style>

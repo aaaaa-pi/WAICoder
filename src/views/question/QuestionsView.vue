@@ -92,6 +92,8 @@
           total,
         }"
         @page-change="onPageChange"
+        bordered
+        stripe
       >
         <template #extent="{ record }">
           <a-tag v-if="record.extent === '简单'" color="#00af9b"> 简单 </a-tag>
@@ -133,6 +135,7 @@
               <icon-find-replace
                 class="operate"
                 @click="toQuestionPage(record)"
+                :style="{ fontSize: '18px' }"
               />
             </a-tooltip>
           </a-space>

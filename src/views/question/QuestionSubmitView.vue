@@ -32,11 +32,19 @@
             </a-option>
           </a-select>
         </a-form-item>
-        <a-button type="primary" @click="doSubmit" shape="round">
+        <a-button
+          type="outline"
+          @click="doSubmit"
+          :style="{ color: '#065ACC', borderColor: '#065ACC' }"
+        >
           <icon-search style="margin-right: 2px" />搜索
         </a-button>
         <a-form-item>
-          <a-button type="primary" @click="refresh" shape="round">
+          <a-button
+            type="outline"
+            @click="refresh"
+            :style="{ color: '#27ae60', borderColor: '#27ae60' }"
+          >
             <icon-refresh style="margin-right: 2px" />刷新
           </a-button>
         </a-form-item>
@@ -53,18 +61,32 @@
           total,
         }"
         @page-change="onPageChange"
+        :bordered="{ wrapper: true, cell: true }"
+        stripe
       >
         <template #result="{ record }">
-          <a-tag v-if="record.judgeInfo.result === '成功'" color="#00af9b">
+          <a-tag
+            v-if="record.judgeInfo.result === '成功'"
+            color="green"
+            bordered
+          >
             {{ record.judgeInfo.result }}
           </a-tag>
-          <a-tag v-if="record.judgeInfo.result === '等待中'" color="#ffb800">
+          <a-tag
+            v-if="record.judgeInfo.result === '等待中'"
+            color="gray"
+            bordered
+          >
             {{ record.judgeInfo.result }}
           </a-tag>
-          <a-tag v-if="record.judgeInfo.result === '编译错误'" color="#0A65CC">
+          <a-tag
+            v-if="record.judgeInfo.result === '编译错误'"
+            color="blue"
+            bordered
+          >
             {{ record.judgeInfo.result }}
           </a-tag>
-          <a-tag v-else color="#ff2d55">
+          <a-tag v-else color="red">
             {{ record.judgeInfo.result }}
           </a-tag>
         </template>

@@ -1,5 +1,6 @@
 import { RouteRecordRaw } from "vue-router";
 import QuestionLayout from "@/layouts/QuestionLayout.vue";
+import { IconList, IconBookmark, IconBook } from "@arco-design/web-vue/es/icon";
 import ACCESS_ENUM from "@/access/accessEnum";
 
 export const routes: Array<RouteRecordRaw> = [
@@ -15,11 +16,17 @@ export const routes: Array<RouteRecordRaw> = [
     path: "/questions",
     name: "浏览题目",
     component: () => import("../views/question/QuestionsView.vue"),
+    meta: {
+      icon: IconList,
+    },
   },
   {
     path: "/question_submit",
     name: "题目提交",
     component: () => import("../views/question/QuestionSubmitView.vue"),
+    meta: {
+      icon: IconBookmark,
+    },
   },
   {
     path: "/view/question/:id",
@@ -32,30 +39,13 @@ export const routes: Array<RouteRecordRaw> = [
       layout: QuestionLayout,
     },
   },
-  // {
-  //   path: "/manage/question/add",
-  //   name: "创建题目",
-  //   component: () => import("../views/question/AddQuestionView.vue"),
-  //   meta: {
-  //     access: ACCESS_ENUM.ADMIN,
-  //     hideInMenu: true,
-  //   },
-  // },
-  {
-    path: "/manage/question/update",
-    name: "更新题目",
-    component: () => import("../views/question/AddQuestionView.vue"),
-    meta: {
-      access: ACCESS_ENUM.ADMIN,
-      hideInMenu: true,
-    },
-  },
   {
     path: "/manage/question",
     name: "管理题目",
     component: () => import("../views/question/ManageQuestionView.vue"),
     meta: {
       access: ACCESS_ENUM.ADMIN,
+      icon: IconBook,
     },
   },
   {
