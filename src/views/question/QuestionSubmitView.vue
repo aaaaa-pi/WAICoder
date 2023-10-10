@@ -51,7 +51,6 @@
       </a-form>
       <a-divider :size="divederSize" />
       <a-table
-        :ref="tableRef"
         :columns="columns"
         :data="dataList"
         :pagination="{
@@ -86,7 +85,7 @@
           >
             {{ record.judgeInfo.result }}
           </a-tag>
-          <a-tag v-else color="red">
+          <a-tag v-else color="red" bordered>
             {{ record.judgeInfo.result }}
           </a-tag>
         </template>
@@ -117,7 +116,6 @@ import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 const store = useStore();
 const router = useRouter();
-const tableRef = ref();
 const dataList = ref([]);
 const total = ref(0);
 const divederSize = 0;
