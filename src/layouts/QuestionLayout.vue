@@ -27,4 +27,13 @@ import QuestionHeader from "@/components/QuestionHeader.vue";
   margin-bottom: 16px;
   height: calc(100vh - 50px);
 }
+
+:deep(.arco-table-th) {
+  background-color: #0a65cc;
+  color: #fff;
+}
+:deep(.arco-table-container) {
+  border-bottom: 4px solid #0a65cc;
+  padding-bottom: 10px;
+}
 </style>

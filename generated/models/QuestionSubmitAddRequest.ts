@@ -5,6 +5,8 @@
 
 export type QuestionSubmitAddRequest = {
     code?: string;
+    inputList?: Array<string>;
     language?: string;
+    model?: number;
     questionId?: number;
 };

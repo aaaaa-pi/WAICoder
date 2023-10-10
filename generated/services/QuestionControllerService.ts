@@ -182,6 +182,29 @@ questionId?: number,
     }
 
     /**
+     * randomQuestionVO
+     * @param questionId questionId
+     * @returns BaseResponse_QuestionVO_ OK
+     * @throws ApiError
+     */
+    public static randomQuestionVoUsingGet(
+questionId?: number,
+): CancelablePromise<BaseResponse_QuestionVO_> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/question/get/vo/random',
+            query: {
+                'questionId': questionId,
+            },
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
      * listQuestionByPage
      * @param questionQueryRequest questionQueryRequest
      * @returns BaseResponse_Page_Question_ OK

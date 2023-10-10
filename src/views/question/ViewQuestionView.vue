@@ -7,7 +7,11 @@
     >
       <div id="description">
         <a-spin dot :loading="isload" style="width: 100%">
-          <a-tabs default-active-key="question" size="mini">
+          <a-tabs
+            v-model:activeKey="activeKey"
+            default-active-key="question"
+            size="mini"
+          >
             <a-tab-pane key="question" title="题目">
               <a-scrollbar style="height: calc(100vh - 120px); overflow: auto">
                 <a-card v-if="question" :title="question.title">
@@ -41,6 +45,60 @@
             </a-tab-pane>
             <a-tab-pane key="comment" title="评论" disabled>评论区</a-tab-pane>
             <a-tab-pane key="answer" title="题解">暂时无法查看答案</a-tab-pane>
+            <a-tab-pane key="submit" title="提交记录">
+              <a-card>
+                <a-table
+                  :columns="columns"
+                  :data="submitDataList"
+                  :pagination="{
+                    showTotal: true,
+                    pageSize: searchParams.pageSize,
+                    current: searchParams.current,
+                    total,
+                  }"
+                  @page-change="onPageChange"
+                  :bordered="{ wrapper: true, cell: true }"
+                  stripe
+                >
+                  <template #result="{ record }">
+                    <a-tag
+                      v-if="record.judgeInfo.result === '成功'"
+                      color="green"
+                      bordered
+                    >
+                      {{ record.judgeInfo.result }}
+                    </a-tag>
+                    <a-tag
+                      v-if="record.judgeInfo.result === '等待中'"
+                      color="gray"
+                      bordered
+                    >
+                      {{ record.judgeInfo.result }}
+                    </a-tag>
+                    <a-tag
+                      v-if="record.judgeInfo.result === '编译错误'"
+                      color="blue"
+                      bordered
+                    >
+                      {{ record.judgeInfo.result }}
+                    </a-tag>
+                    <a-tag v-else color="red" bordered>
+                      {{ record.judgeInfo.result }}
+                    </a-tag>
+                  </template>
+                  <template #time="{ record }">
+                    {{ record.judgeInfo.time ? record.judgeInfo.time : 0 }} ms
+                  </template>
+                  <template #memory="{ record }">
+                    {{ record.judgeInfo.memory ? record.judgeInfo.memory : 0 }}
+                    KB
+                  </template>
+                  <template #createTime="{ record }">
+                    {{ moment(record.createTime).format("YYYY-MM-DD") }}
+                  </template>
+                </a-table>
+              </a-card>
+            </a-tab-pane>
           </a-tabs>
         </a-spin>
       </div>
@@ -124,14 +182,17 @@
 <script setup lang="ts">
 import { Message } from "@arco-design/web-vue";
 import { useRoute } from "vue-router";
+import { useStore } from "vuex";
 import {
   QuestionControllerService,
   QuestionVO,
   QuestionSubmitAddRequest,
+  QuestionSubmitQueryRequest,
+  LoginUserVO,
 } from "../../../generated";
 import CodeEditor from "@/components/CodeEditor.vue";
 import MdViewer from "@/components/MdViewer.vue";
-import { ref, onMounted, watchEffect, watch } from "vue";
+import { ref, onMounted, watchEffect, watch, computed } from "vue";
 const question = ref<QuestionVO>();
 const codeLanguages = ref(["java", "cpp", "go", "javascript", "typescript"]);
 const resizeBoxWidth = ref(600);
@@ -140,17 +201,64 @@ const route = useRoute();
 const isload = ref(false);
 const isShow = ref(false);
 const waitting = ref(false);
+const submitDataList = ref([]);
+const activeKey = ref("question");
+const total = ref(0);
+import moment from "moment";
+const store = useStore();
+
+// 获取相关信息
+const loginUser = computed<LoginUserVO>(() => store.state.user.loginUser);
 const resultData = ref({
   result: "",
   message: "",
   time: 0,
   memory: 0,
 });
+const searchParams = ref<QuestionSubmitQueryRequest>({
+  status: undefined,
+  userId: undefined,
+  questionId: undefined,
+  language: undefined,
+  pageSize: 10,
+  current: 1,
+});
+const columns = [
+  {
+    title: "状态",
+    slotName: "result",
+  },
+  {
+    title: "语言",
+    dataIndex: "language",
+  },
+  {
+    title: "执行时间",
+    slotName: "time",
+  },
+  {
+    title: "消耗内存",
+    slotName: "memory",
+  },
+  {
+    title: "时间",
+    slotName: "createTime",
+  },
+];
+const onPageChange = (page: number) => {
+  searchParams.value = {
+    ...searchParams.value,
+    current: page,
+  };
+};
 watchEffect(() => {
   codeWidth.value = window.innerWidth - resizeBoxWidth.value - 60;
 });
 watch(route, () => {
   id.value = route.params.id as string;
+  loadData();
+});
+watch(activeKey, () => {
   loadData();
 });
 window.addEventListener("resize", () => {
@@ -175,7 +283,10 @@ const changeShow = () => {
   isShow.value = !isShow.value;
 };
 
-const loadData = async () => {
+const loadQuestionData = async () => {
+  if (activeKey.value !== "question") {
+    return;
+  }
   isload.value = true;
   const res = await QuestionControllerService.getQuestionVoByIdUsingGet(
     id.value as any
@@ -186,6 +297,35 @@ const loadData = async () => {
     Message.error("加载失败" + res.message);
   }
   isload.value = false;
+};
+
+const loadSubmitData = async () => {
+  console.log(loginUser.value.id);
+  if (activeKey.value !== "submit") {
+    return;
+  }
+  isload.value = true;
+  const res = await QuestionControllerService.listQuestionSubmitByPageUsingPost(
+    {
+      ...searchParams.value,
+      questionId: id.value,
+      userId: loginUser.value.id,
+      sortField: "createTime",
+      sortOrder: "descend",
+    }
+  );
+  if (res.code === 0) {
+    submitDataList.value = res.data.records;
+    total.value = res.data.total;
+  } else {
+    Message.error("加载题目提交列表失败" + res.message);
+  }
+  isload.value = false;
+};
+
+const loadData = () => {
+  loadQuestionData();
+  loadSubmitData();
 };
 
 const form = ref<QuestionSubmitAddRequest>({
@@ -222,7 +362,8 @@ const doSubmit = async () => {
  * 页面加载时，请求数据
  */
 onMounted(() => {
-  loadData();
+  loadQuestionData();
+  loadSubmitData();
 });
 </script>
 

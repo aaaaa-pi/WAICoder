@@ -79,4 +79,3 @@ export { PostThumbControllerService } from './services/PostThumbControllerServic
 export { QuestionControllerService } from './services/QuestionControllerService';
 export { TeamControllerService } from './services/TeamControllerService';
 export { UserControllerService } from './services/UserControllerService';
-export { WxMpControllerService } from './services/WxMpControllerService';
