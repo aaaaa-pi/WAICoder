@@ -15,6 +15,12 @@
             <a-tab-pane key="question" title="题目">
               <a-scrollbar style="height: calc(100vh - 120px); overflow: auto">
                 <a-card v-if="question" :title="question.title">
+                  <a-space wrap>
+                    <span class="descTangName">标签：</span>
+                    <a-tag v-for="(tag, index) of question.tags" :key="index"
+                      >{{ tag }}
+                    </a-tag>
+                  </a-space>
                   <div class="submitRecord">
                     <a-descriptions
                       :style="{ marginBottom: '10px', paddingLeft: '6px' }"
@@ -34,12 +40,6 @@
                       </a-descriptions-item>
                     </a-descriptions>
                   </div>
-                  <a-space wrap>
-                    <span class="descTangName">标签：</span>
-                    <a-tag v-for="(tag, index) of question.tags" :key="index"
-                      >{{ tag }}
-                    </a-tag>
-                  </a-space>
                   <MdViewer :value="question.content || ''" />
                   <a-descriptions
                     style="margin-top: 20px"
@@ -73,6 +73,7 @@
                   <a-table
                     :columns="columns"
                     :data="submitDataList"
+                    @row-click="recordDetail"
                     :pagination="{
                       showTotal: true,
                       pageSize: searchParams.pageSize,
@@ -338,6 +339,10 @@ const colseTips = () => {
   isTipsShow.value = false;
 };
 
+const recordDetail = (rowData: any) => {
+  console.log(rowData);
+};
+
 const loadQuestionData = async () => {
   if (activeKey.value !== "question") {
     return;
@@ -491,6 +496,10 @@ onMounted(() => {
 }
 :deep(.arco-radio-label) {
   margin-right: 8px;
+}
+
+.submitRecord {
+  margin-top: 10px;
 }
 
 .descTangName {
