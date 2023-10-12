@@ -15,31 +15,53 @@
             <a-tab-pane key="question" title="题目">
               <a-scrollbar style="height: calc(100vh - 120px); overflow: auto">
                 <a-card v-if="question" :title="question.title">
+                  <div class="submitRecord">
+                    <a-descriptions
+                      :style="{ marginBottom: '10px', paddingLeft: '6px' }"
+                      size="mini"
+                      :column="{ xs: 1, md: 2, lg: 3 }"
+                    >
+                      <a-descriptions-item label="通过次数:">
+                        <span class="recordTxt">
+                          {{ question.acceptedNum }}
+                        </span>
+                      </a-descriptions-item>
+                      <a-descriptions-item label="提交次数:">
+                        <span class="recordTxt">{{ question.submitNum }}</span>
+                      </a-descriptions-item>
+                      <a-descriptions-item label="通过率:">
+                        <span class="recordTxt">{{ question.passRate }}</span>
+                      </a-descriptions-item>
+                    </a-descriptions>
+                  </div>
+                  <a-space wrap>
+                    <span class="descTangName">标签：</span>
+                    <a-tag v-for="(tag, index) of question.tags" :key="index"
+                      >{{ tag }}
+                    </a-tag>
+                  </a-space>
+                  <MdViewer :value="question.content || ''" />
                   <a-descriptions
-                    title="判题条件"
+                    style="margin-top: 20px"
+                    size="small"
                     :column="{ xs: 1, md: 2, lg: 3 }"
                   >
                     <a-descriptions-item label="时间限制">
-                      {{ question.judgeConfig?.timeLimit ?? 0 }}
+                      <a-tag>
+                        {{ question.judgeConfig?.timeLimit ?? 0 }}ms
+                      </a-tag>
                     </a-descriptions-item>
                     <a-descriptions-item label="内存限制">
-                      {{ question.judgeConfig?.memoryLimit ?? 0 }}
+                      <a-tag>
+                        {{ question.judgeConfig?.memoryLimit ?? 0 }}KB
+                      </a-tag>
                     </a-descriptions-item>
                     <a-descriptions-item label="堆栈限制">
-                      {{ question.judgeConfig?.stackLimit ?? 0 }}
+                      <a-tag>
+                        {{ question.judgeConfig?.stackLimit ?? 0 }}KB
+                      </a-tag>
                     </a-descriptions-item>
                   </a-descriptions>
-                  <MdViewer :value="question.content || ''" />
-                  <template #extra>
-                    <a-space wrap>
-                      <a-tag
-                        v-for="(tag, index) of question.tags"
-                        :key="index"
-                        color="green"
-                        >{{ tag }}
-                      </a-tag>
-                    </a-space>
-                  </template>
                 </a-card>
               </a-scrollbar>
             </a-tab-pane>
@@ -469,6 +491,16 @@ onMounted(() => {
 }
 :deep(.arco-radio-label) {
   margin-right: 8px;
+}
+
+.descTangName {
+  font-weight: 600;
+  color: #005bb7;
+  padding-left: 6px;
+}
+
+.recordTxt {
+  font-weight: 600;
 }
 
 .runInfo {
