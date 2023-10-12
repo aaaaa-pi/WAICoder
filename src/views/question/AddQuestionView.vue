@@ -151,7 +151,6 @@ const id = ref();
 watch(toRef(props, "questionId"), (newId) => {
   id.value = newId;
   loadData();
-  console.log(id.value);
 });
 const store = useStore();
 const extent = ref("简单");

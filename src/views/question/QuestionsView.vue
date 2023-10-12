@@ -156,7 +156,7 @@ import {
   QuestionControllerService,
   QuestionQueryRequest,
 } from "../../../generated";
-import { ref, onMounted, watch, watchEffect } from "vue";
+import { ref, onMounted, watch, watchEffect, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 const store = useStore();
@@ -174,6 +174,13 @@ const extent = ref();
 const tags = ref([]);
 const divederSize = 0;
 const isLoading = ref(false);
+
+const pageSize = computed(() => searchParams.value.pageSize);
+const current = computed(() => searchParams.value.current);
+
+watch([pageSize, current], () => {
+  loadData();
+});
 
 const loadData = async () => {
   store.commit("loading/showLoading", true);

@@ -72,14 +72,14 @@
             {{ record.judgeInfo.result }}
           </a-tag>
           <a-tag
-            v-if="record.judgeInfo.result === '等待中'"
+            v-else-if="record.judgeInfo.result === '等待中'"
             color="gray"
             bordered
           >
             {{ record.judgeInfo.result }}
           </a-tag>
           <a-tag
-            v-if="record.judgeInfo.result === '编译错误'"
+            v-else-if="record.judgeInfo.result === '编译错误'"
             color="blue"
             bordered
           >
@@ -109,7 +109,7 @@ import {
   QuestionSubmitQueryRequest,
   QuestionControllerService,
 } from "../../../generated";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import moment from "moment";
 import { Message } from "@arco-design/web-vue";
 import { useRouter } from "vue-router";
@@ -129,6 +129,13 @@ const searchParams = ref<QuestionSubmitQueryRequest>({
   current: 1,
 });
 
+const pageSize = computed(() => searchParams.value.pageSize);
+const current = computed(() => searchParams.value.current);
+
+watch([pageSize, current], () => {
+  loadData();
+});
+
 const loadData = async () => {
   store.commit("loading/showLoading", true);
   const res = await QuestionControllerService.listQuestionSubmitByPageUsingPost(
@@ -146,13 +153,6 @@ const loadData = async () => {
   }
   store.commit("loading/showLoading", false);
 };
-
-/**
- * 监听 searchParams 变量，改变时触发页面的重新加载
- */
-// watchEffect(() => {
-//   loadData();
-// });
 
 /**
  * 页面加载时，请求数据
