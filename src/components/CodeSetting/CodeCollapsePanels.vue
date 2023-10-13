@@ -35,9 +35,9 @@
                   <p class="info" v-else>N/A</p>
                 </span>
                 <span class="info">
-                  执行用时：
+                  消耗内存：
                   <p class="info" v-if="resultData.time">
-                    {{ resultData.time }}ms
+                    {{ resultData.memory }}KB
                   </p>
                   <p class="info" v-else>N/A</p>
                 </span>
