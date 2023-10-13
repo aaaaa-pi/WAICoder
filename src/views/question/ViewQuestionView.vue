@@ -133,78 +133,89 @@
         </a-spin>
       </div>
     </a-resize-box>
-    <div id="code" :style="{ width: codeWidth + 'px' }">
-      <a-form :model="form" layout="inline" size="mini" class="selectForm">
-        <a-form-item field="language" label="编程语言" style="min-width: 240px">
-          <a-select
-            v-model="form.language"
-            :style="{ width: '320px' }"
-            placeholder="选择编程语言"
+    <div id="rightPart" :style="{ width: codeWidth + 'px' }">
+      <div class="code" v-if="!isRecordShow">
+        <a-form :model="form" layout="inline" size="mini" class="selectForm">
+          <a-form-item
+            field="language"
+            label="编程语言"
+            style="min-width: 240px"
           >
-            <a-option v-for="language in codeLanguages" :key="language">
-              {{ language }}
-            </a-option>
-          </a-select>
-        </a-form-item>
-        <a-form-item>
-          <a-popover position="left">
-            <a-button type="text">
-              <span class="tips-dots"></span>
-              <span style="color: #999">{{ codeModeTitle }}</span>
-            </a-button>
-            <template #content>
-              <div class="tipsTitle">
-                {{ codeModeTitle }}
-                <span>
-                  <icon-check-circle-fill
-                    :style="{
-                      fontSize: '12px',
-                      color: '#065ACC',
-                    }"
-                  />
-                </span>
-              </div>
-              <div class="tipsDesc">
-                请通过代码实现题目，过程中的输入输出处理方式请参考
-                <a-link style="font-size: 12px" @click="openTips">
-                  题目输入输出描述
-                </a-link>
-              </div>
-            </template>
-          </a-popover>
-          <div class="setting">
-            <a-dropdown>
-              <icon-settings
-                :style="{
-                  fontSize: '16px',
-                  color: '#000',
-                }"
-              />
+            <a-select
+              v-model="form.language"
+              :style="{ width: '160px' }"
+              placeholder="选择编程语言"
+            >
+              <a-option v-for="language in codeLanguages" :key="language">
+                {{ language }}
+              </a-option>
+            </a-select>
+          </a-form-item>
+          <a-form-item>
+            <a-popover position="left">
+              <a-button type="text">
+                <span class="tips-dots"></span>
+                <span style="color: #999">{{ codeModeTitle }}</span>
+              </a-button>
               <template #content>
-                <a-radio-group
-                  v-model="codeMode"
-                  direction="vertical"
-                  size="mini"
-                >
-                  <a-radio value="1" :default-checked="true">ACM模式</a-radio>
-                  <a-radio value="2">核心代码模式</a-radio>
-                </a-radio-group>
+                <div class="tipsTitle">
+                  {{ codeModeTitle }}
+                  <span>
+                    <icon-check-circle-fill
+                      :style="{
+                        fontSize: '12px',
+                        color: '#065ACC',
+                      }"
+                    />
+                  </span>
+                </div>
+                <div class="tipsDesc">
+                  请通过代码实现题目，过程中的输入输出处理方式请参考
+                  <a-link style="font-size: 12px" @click="openTips">
+                    题目输入输出描述
+                  </a-link>
+                </div>
               </template>
-            </a-dropdown>
-          </div>
-        </a-form-item>
-      </a-form>
-      <CodeEditor
-        :value="form.code"
-        :language="form.language"
-        :handle-change="onCodeChange"
-        id="codeEditor"
-      />
-      <CodeCollapsePanels
-        :result-data="resultData"
-        :do-submit="doSubmit"
-        :waitting="waitting"
-        :do-run="doRun"
+            </a-popover>
+            <div class="setting">
+              <a-dropdown>
+                <icon-settings
+                  :style="{
+                    fontSize: '16px',
+                    color: '#000',
+                  }"
+                />
+                <template #content>
+                  <a-radio-group
+                    v-model="codeMode"
+                    direction="vertical"
+                    size="mini"
+                  >
+                    <a-radio value="1" :default-checked="true">ACM模式</a-radio>
+                    <a-radio value="2">核心代码模式</a-radio>
+                  </a-radio-group>
+                </template>
+              </a-dropdown>
+            </div>
+          </a-form-item>
+        </a-form>
+        <CodeEditor
+          :value="form.code"
+          :language="form.language"
+          :handle-change="onCodeChange"
+          id="codeEditor"
+        />
+        <CodeCollapsePanels
+          :result-data="resultData"
+          :do-submit="doSubmit"
+          :waitting="waitting"
+          :do-run="doRun"
+        />
+      </div>
+      <RecordDetail
+        :record-content="recordData"
+        :close-record="closeRecord"
+        v-if="isRecordShow"
       />
     </div>
     <CodeTips :visible="isTipsShow" :colse-tips="colseTips" />
@@ -221,10 +232,12 @@ import {
   QuestionSubmitAddRequest,
   QuestionSubmitQueryRequest,
   LoginUserVO,
+  QuestionSubmitVO,
 } from "../../../generated";
 import CodeEditor from "@/components/CodeEditor.vue";
 import CodeTips from "@/components/CodeSetting/CodeTips.vue";
 import CodeCollapsePanels from "@/components/CodeSetting/CodeCollapsePanels.vue";
+import RecordDetail from "@/components/CodeSetting/RecordDetail.vue";
 import MdViewer from "@/components/MdViewer.vue";
 import { ref, onMounted, watchEffect, watch, computed } from "vue";
 const question = ref<QuestionVO>();
@@ -243,6 +256,10 @@ const store = useStore();
 const isTipsShow = ref(false);
 const codeMode = ref("1");
 const runInputList = ref<string[]>([]);
+const isRecordShow = ref(false);
+const recordData = ref<QuestionSubmitVO>({
+  code: "",
+});
 
 interface RunContent {
   input: string;
@@ -340,7 +357,12 @@ const colseTips = () => {
 };
 
 const recordDetail = (rowData: any) => {
-  console.log(rowData);
+  recordData.value = rowData;
+  isRecordShow.value = true;
+};
+
+const closeRecord = () => {
+  isRecordShow.value = false;
 };
 
 const loadQuestionData = async () => {
@@ -470,9 +492,7 @@ onMounted(() => {
 #description {
   margin-right: 10px;
 }
-#code {
-  display: flex;
-  flex-direction: column;
+#rightPart {
   height: calc(100vh - 70px);
   min-width: 335px;
   padding: 0 10px;
@@ -481,6 +501,11 @@ onMounted(() => {
 #codeEditor {
   flex: 1 1 0%;
   overflow: hidden;
+}
+.code {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 .arco-collapse-item-header {
   padding-top: 4px;

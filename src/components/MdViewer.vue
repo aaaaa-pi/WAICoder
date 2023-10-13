@@ -4,10 +4,12 @@
 
 <script setup lang="ts">
 import gfm from "@bytemd/plugin-gfm";
-// import highlight from "@bytemd/plugin-highlight";
+import highlight from "@bytemd/plugin-highlight";
 import { Viewer } from "@bytemd/vue-next";
 import zhHans from "../config/zh_Hans.json";
 import "juejin-markdown-themes/dist/cyanosis.css";
+import "highlight.js/styles/docco.css";
+
 /**
  * 定义组件属性类型
  */
@@ -16,7 +18,7 @@ interface Props {
 }
 const plugins = [
   gfm(),
-  // highlight(),
+  highlight(),
   // Add more plugins here
 ];
 /**
