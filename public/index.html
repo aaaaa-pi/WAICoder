@@ -6,6 +6,18 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title>WAICoder</title>
+    <style>
+      /*去除ie edge的密码框默认的快速清除钮（X图标）以及密码文字显示钮*/
+      input[type="password"]::-ms-reveal{
+        display: none;
+      }
+      input[type="password"]::-ms-clear{
+        display: none;
+      }
+      input[type="password"]::-o-clear{
+        display: none;
+      }
+    </style>
   </head>
   <body>
     <noscript>
