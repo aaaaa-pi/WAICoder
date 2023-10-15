@@ -1,13 +1,18 @@
 <template>
   <div id="CollapsePanels">
-    <a-card>
-      <div class="container" v-show="isShow">
+    <a-card class="controlCard">
+      <div
+        class="container"
+        v-show="isShow"
+        :style="{ height: containerHeight + 'px' }"
+      >
         <a-tabs size="mini" v-model:activeKey="runContent.activeKey">
           <a-tab-pane key="1" title="自测运行">
             <a-textarea
               v-model="runContent.input"
               class="testText"
               placeholder="请输入示例"
+              :style="{ height: textAreaHeight + 'px' }"
             />
           </a-tab-pane>
           <a-tab-pane key="2" title="执行结果">
@@ -61,11 +66,12 @@
         </a-tabs>
       </div>
       <div class="title">
-        <a-button @click="changeShow" type="text" size="mini">
+        <a-button @click="toggleShow" type="text" size="mini">
           控制台
           <span class="btn-icon">
-            <icon-down v-if="isShow" />
-            <icon-up v-else />
+            <icon-up
+              :class="{ arrowTransform: isShow, arrowTransformReturn: !isShow }"
+            />
           </span>
         </a-button>
         <div>
@@ -85,7 +91,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, watch, toRefs } from "vue";
 
 interface ResultData {
   result: string;
@@ -104,6 +110,8 @@ interface RunContent {
 interface Props {
   waitting: boolean;
   resultData: ResultData;
+  resizeBoxHeight: number;
+  maxResizeBoxHeight: number;
   doSubmit: () => void;
   doRun: (runContent: RunContent) => void;
 }
@@ -120,20 +128,70 @@ const runContent = ref<RunContent>({
   runMode: 2,
   activeKey: "1",
 });
-
+const titleHeight = 55;
+const containerHeight = ref(75);
+const textAreaHeight = ref(39);
+const tabsHeight = 36;
+const showBoxMinHeight = 75;
 const isShow = ref(false);
-const changeShow = () => {
+const resultData = computed(() => props.resultData);
+const { resizeBoxHeight, maxResizeBoxHeight } = toRefs(props);
+
+watch([resizeBoxHeight, maxResizeBoxHeight], () => {
+  if (
+    resizeBoxHeight.value > 144 &&
+    resizeBoxHeight.value < maxResizeBoxHeight.value
+  ) {
+    containerHeight.value = resizeBoxHeight.value - 70;
+  } else if (resizeBoxHeight.value < 144) {
+    containerHeight.value = showBoxMinHeight;
+  }
+  textAreaHeight.value = containerHeight.value - tabsHeight;
+});
+
+// 计算属性获取 isShow
+const isShowComputed = computed(() => {
+  if (resizeBoxHeight.value <= titleHeight) {
+    return false;
+  } else {
+    return true;
+  }
+});
+
+const toggleShow = () => {
   isShow.value = !isShow.value;
 };
-const resultData = computed(() => props.resultData);
+
+watch(
+  () => isShowComputed.value,
+  () => {
+    isShow.value = isShowComputed.value;
+  }
+);
+
+// 使用defineExpose暴露isShow
+defineExpose({
+  isShow,
+});
 </script>
 
 <style scoped>
 :deep(.arco-tabs-content) {
   padding-top: 0;
 }
+.arrowTransform {
+  transition: 0.2s;
+  transform-origin: center;
+  transform: rotateZ(180deg);
+}
+.arrowTransformReturn {
+  transition: 0.2s;
+  transform-origin: center;
+  transform: rotateZ(0deg);
+}
 .title {
   padding: 8px;
+  display: block;
   display: flex;
   justify-content: space-between;
   align-items: center;

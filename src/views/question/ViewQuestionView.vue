@@ -205,12 +205,21 @@
           :handle-change="onCodeChange"
           id="codeEditor"
         />
-        <CodeCollapsePanels
-          :result-data="resultData"
-          :do-submit="doSubmit"
-          :waitting="waitting"
-          :do-run="doRun"
-        />
+        <a-resize-box
+          :directions="['top']"
+          :style="{ minHeight: minHeight + 'px', maxHeight: maxHeight + 'px' }"
+          v-model:height="resizeBoxheight"
+        >
+          <CodeCollapsePanels
+            :result-data="resultData"
+            :do-submit="doSubmit"
+            :waitting="waitting"
+            :do-run="doRun"
+            :resize-box-height="resizeBoxheight"
+            :max-resize-box-height="maxHeight"
+            ref="controlRef"
+          />
+        </a-resize-box>
       </div>
       <RecordDetail
         :record-content="recordData"
@@ -241,12 +250,12 @@ import RecordDetail from "@/components/CodeSetting/RecordDetail.vue";
 import MdViewer from "@/components/MdViewer.vue";
 import { ref, onMounted, watchEffect, watch, computed } from "vue";
 const question = ref<QuestionVO>();
-const codeLanguages = ref(["java", "cpp", "go", "javascript", "typescript"]);
+const codeLanguages = ref(["java"]);
 const resizeBoxWidth = ref(600);
+const resizeBoxheight = ref(55);
 const codeWidth = ref(0);
 const route = useRoute();
 const isload = ref(false);
-const isShow = ref(false);
 const waitting = ref(false);
 const submitDataList = ref([]);
 const activeKey = ref("question");
@@ -260,6 +269,9 @@ const isRecordShow = ref(false);
 const recordData = ref<QuestionSubmitVO>({
   code: "",
 });
+const controlRef = ref<{ isShow: boolean }>();
+const minHeight = ref(55);
+const maxHeight = ref(800);
 
 interface RunContent {
   input: string;
@@ -313,6 +325,7 @@ const onPageChange = (page: number) => {
 };
 watchEffect(() => {
   codeWidth.value = window.innerWidth - resizeBoxWidth.value - 60;
+  maxHeight.value = window.innerHeight - 180;
 });
 watch(route, () => {
   id.value = route.params.id as string;
@@ -321,6 +334,18 @@ watch(route, () => {
 watch(activeKey, () => {
   loadData();
 });
+watch(
+  () => controlRef.value?.isShow,
+  () => {
+    if (controlRef.value?.isShow) {
+      minHeight.value = 144;
+      resizeBoxheight.value = 144;
+    } else {
+      minHeight.value = 55;
+      resizeBoxheight.value = 55;
+    }
+  }
+);
 
 const current = computed(() => searchParams.value.current);
 watch(current, () => {
@@ -329,6 +354,7 @@ watch(current, () => {
 window.addEventListener("resize", () => {
   // 窗口大小改变时,手动触发更新
   codeWidth.value = window.innerWidth - resizeBoxWidth.value - 60;
+  maxHeight.value = window.innerHeight - 180;
 });
 interface Props {
   id: string;
@@ -382,7 +408,6 @@ const loadQuestionData = async () => {
 };
 
 const loadSubmitData = async () => {
-  console.log(loginUser.value.id);
   if (activeKey.value !== "submit") {
     return;
   }
@@ -422,7 +447,6 @@ const doSubmit = async () => {
   if (!question.value?.id) {
     return;
   }
-  isShow.value = true;
   waitting.value = true;
   const res = await QuestionControllerService.doQuestionSubmitUsingPost({
     ...form.value,
@@ -451,7 +475,6 @@ const doRun = async (runContent: RunContent) => {
     return;
   }
   runContent.activeKey = "2";
-  isShow.value = true;
   waitting.value = true;
   const res = await QuestionControllerService.doQuestionSubmitUsingPost({
     ...form.value,
