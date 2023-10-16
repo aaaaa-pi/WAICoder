@@ -153,7 +153,7 @@
 <script setup lang="ts">
 import MdEditor from "@/components/MdEditor.vue";
 import CodeEditor from "@/components/CodeEditor.vue";
-import { defaultTemplateCode, defaultMergeCode } from "@/config/default";
+import { defaultTemplateCode, defaultMergeCode } from "@/config/codeDefault";
 import { Message } from "@arco-design/web-vue";
 import { QuestionControllerService } from "../../../generated";
 import { ref, computed, onMounted, reactive, watch, toRef } from "vue";
