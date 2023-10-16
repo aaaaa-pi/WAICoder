@@ -16,52 +16,56 @@
             />
           </a-tab-pane>
           <a-tab-pane key="2" title="执行结果">
-            <a-spin
-              :loading="waitting"
-              style="width: 100%"
-              tip="运行中，请稍后..."
+            <a-scrollbar
+              :style="{ height: containerHeight + 'px', overflow: 'auto' }"
             >
-              <div v-if="resultData && resultData.result">
-                <p
-                  v-if="resultData.result === '成功'"
-                  :style="{ color: 'green' }"
-                  class="result"
-                >
-                  {{ resultData.result }}
-                </p>
-                <p v-else :style="{ color: 'red' }" class="result">
-                  {{ resultData.result }}
-                </p>
-                <span class="info">
-                  执行用时：
-                  <p class="info" v-if="resultData.time">
-                    {{ resultData.time }}ms
+              <a-spin
+                :loading="waitting"
+                style="width: 100%"
+                tip="运行中，请稍后..."
+              >
+                <div v-if="resultData && resultData.result">
+                  <p
+                    v-if="resultData.result === '成功'"
+                    :style="{ color: 'green' }"
+                    class="result"
+                  >
+                    {{ resultData.result }}
                   </p>
-                  <p class="info" v-else>N/A</p>
-                </span>
-                <span class="info">
-                  消耗内存：
-                  <p class="info" v-if="resultData.time">
-                    {{ resultData.memory }}KB
+                  <p v-else :style="{ color: 'red' }" class="result">
+                    {{ resultData.result }}
                   </p>
-                  <p class="info" v-else>N/A</p>
-                </span>
-                <div class="message">
-                  <p class="label">message</p>
-                  <div class="messageBox">{{ resultData.message }}</div>
+                  <span class="info">
+                    执行用时：
+                    <p class="info" v-if="resultData.time">
+                      {{ resultData.time }}ms
+                    </p>
+                    <p class="info" v-else>N/A</p>
+                  </span>
+                  <span class="info">
+                    消耗内存：
+                    <p class="info" v-if="resultData.time">
+                      {{ resultData.memory }}KB
+                    </p>
+                    <p class="info" v-else>N/A</p>
+                  </span>
+                  <div class="message">
+                    <p class="label">message</p>
+                    <div class="messageBox">{{ resultData.message }}</div>
+                  </div>
                 </div>
-              </div>
-              <div v-else style="padding-top: 12px">
-                <p
-                  :style="{
-                    textAlign: 'center',
-                    color: '#3c3c4399',
-                  }"
-                >
-                  提交之后，这里将会显示运行结果,请先执行代码
-                </p>
-              </div>
-            </a-spin>
+                <div v-else style="padding-top: 12px">
+                  <p
+                    :style="{
+                      textAlign: 'center',
+                      color: '#3c3c4399',
+                    }"
+                  >
+                    提交之后，这里将会显示运行结果,请先执行代码
+                  </p>
+                </div>
+              </a-spin>
+            </a-scrollbar>
           </a-tab-pane>
         </a-tabs>
       </div>
@@ -204,6 +208,7 @@ defineExpose({
   bottom: 50px;
   padding: 0 12px 16px 12px;
   border-bottom: 1px solid #efefef;
+  overflow: hidden;
 }
 
 .testText {
