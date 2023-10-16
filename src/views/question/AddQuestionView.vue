@@ -33,6 +33,26 @@
         <a-form-item field="answer" label="答案">
           <MdEditor :value="form.answer" :handle-change="onAnswerChange" />
         </a-form-item>
+        <a-divider orientation="center">
+          <span class="dividerText">核心代码模式配置区域</span>
+        </a-divider>
+        <a-form-item field="templateCode" label="核心代码模板">
+          <CodeEditor
+            :value="templateForm.code"
+            :language="templateForm.language"
+            :handle-change="onTemplateFormChange"
+            id="codeEditor"
+          />
+        </a-form-item>
+        <a-form-item field="mergeCode" label="合并代码">
+          <CodeEditor
+            :value="mergeCodeForm.code"
+            :language="mergeCodeForm.language"
+            :handle-change="onMergeCodeFormChange"
+            id="codeEditor"
+          />
+        </a-form-item>
+        <a-divider />
         <a-form-item
           label="判题配置"
           :content-flex="false"
@@ -69,7 +89,8 @@
           </a-space>
         </a-form-item>
         <a-form-item
-          label="测试用例配置"
+          label="判题用例配置"
+          tooltip="判题用例的前两条将会作为 测试用例 展示"
           :content-flex="false"
           :merge-props="false"
         >
@@ -131,6 +152,8 @@
 
 <script setup lang="ts">
 import MdEditor from "@/components/MdEditor.vue";
+import CodeEditor from "@/components/CodeEditor.vue";
+import { defaultTemplateCode, defaultMergeCode } from "@/config/default";
 import { Message } from "@arco-design/web-vue";
 import { QuestionControllerService } from "../../../generated";
 import { ref, computed, onMounted, reactive, watch, toRef } from "vue";
@@ -156,6 +179,14 @@ const store = useStore();
 const extent = ref("简单");
 const tags = ref();
 let form = ref();
+const templateForm = ref({
+  language: "java",
+  code: defaultTemplateCode,
+});
+const mergeCodeForm = ref({
+  language: "java",
+  code: defaultMergeCode,
+});
 const value = reactive({
   oldInput: "",
   newInput: "",
@@ -266,6 +297,13 @@ const onAnswerChange = (value: string) => {
   form.value.answer = value;
 };
 
+const onTemplateFormChange = (v: string) => {
+  templateForm.value.code = v;
+};
+const onMergeCodeFormChange = (v: string) => {
+  mergeCodeForm.value.code = v;
+};
+
 const handleTags = () => {
   return [extent.value, ...tags.value].filter((v) => v);
 };
@@ -290,7 +328,7 @@ const resetValue = () => {
   value.newOutput = value.oldOutput;
 };
 /**
- * 测试用例弹框
+ * 判题用例弹框
  */
 const openModel = (index: number) => {
   visible.value = true;
@@ -315,18 +353,22 @@ const onConfirm = () => {
 const doSubmit = async () => {
   form.value.tags = handleTags();
   if (id.value) {
-    const res = await QuestionControllerService.updateQuestionUsingPost(
-      form.value
-    );
+    const res = await QuestionControllerService.updateQuestionUsingPost({
+      ...form.value,
+      templateCode: templateForm.value.code,
+      mergeCode: mergeCodeForm.value.code,
+    });
     if (res.code === 0) {
       Message.success("更新成功");
     } else {
       Message.error("更新失败" + res.message);
     }
   } else {
-    const res = await QuestionControllerService.addQuestionUsingPost(
-      form.value
-    );
+    const res = await QuestionControllerService.addQuestionUsingPost({
+      ...form.value,
+      templateCode: templateForm.value.code,
+      mergeCode: mergeCodeForm.value.code,
+    });
     if (res.code === 0) {
       Message.success("创建成功");
     } else {
@@ -342,6 +384,12 @@ const doSubmit = async () => {
 #AddQuestionView {
   max-width: 880px;
   margin: auto;
+}
+#codeEditor {
+  /* flex: 1 1 0%;
+  overflow: hidden; */
+  height: 200px;
+  width: 100%;
 }
 .titleInput {
   width: 100%;
@@ -370,5 +418,9 @@ const doSubmit = async () => {
 .button-box {
   display: flex;
   justify-content: end;
+}
+.dividerText {
+  font-size: 10px;
+  color: gray;
 }
 </style>
