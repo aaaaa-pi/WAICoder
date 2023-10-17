@@ -15,6 +15,7 @@ export type QuestionQueryRequest = {
     statue?: number;
     submitNum?: number;
     tags?: Array<string>;
+    templateCode?: string;
     title?: string;
     userId?: number;
 };

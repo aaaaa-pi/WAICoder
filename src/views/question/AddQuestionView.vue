@@ -38,16 +38,18 @@
         </a-divider>
         <a-form-item field="templateCode" label="核心代码模板">
           <CodeEditor
-            :value="templateForm.code"
-            :language="templateForm.language"
+            :value="form.templateCode"
+            :code-default="templateForm.code"
+            :language="codeLanguage"
             :handle-change="onTemplateFormChange"
             id="codeEditor"
           />
         </a-form-item>
         <a-form-item field="mergeCode" label="合并代码">
           <CodeEditor
-            :value="mergeCodeForm.code"
-            :language="mergeCodeForm.language"
+            :value="form.mergeCode"
+            :code-default="mergeCodeForm.code"
+            :language="codeLanguage"
             :handle-change="onMergeCodeFormChange"
             id="codeEditor"
           />
@@ -178,13 +180,13 @@ watch(toRef(props, "questionId"), (newId) => {
 const store = useStore();
 const extent = ref("简单");
 const tags = ref();
-let form = ref();
+const form = ref();
+
+const codeLanguage = "java";
 const templateForm = ref({
-  language: "java",
   code: defaultTemplateCode,
 });
 const mergeCodeForm = ref({
-  language: "java",
   code: defaultMergeCode,
 });
 const value = reactive({
@@ -209,11 +211,12 @@ const loadData = async () => {
   if (!id.value) {
     return;
   }
-  const res = await QuestionControllerService.getQuestionVoByIdUsingGet(
+  const res = await QuestionControllerService.getQuestionByIdUsingGet(
     id.value as any
   );
   if (res.code === 0) {
     form.value = res.data as any;
+
     // json 转 js 对象
     if (!form.value.judgeCase) {
       form.value.judgeCase = [
@@ -232,16 +235,20 @@ const loadData = async () => {
         timeLimit: 1000,
       };
     } else {
-      const judgeConfig = form.value.judgeConfig;
-      judgeConfig.memoryLimit = Number(judgeConfig.memoryLimit);
-      judgeConfig.stackLimit = Number(judgeConfig.stackLimit);
-      judgeConfig.timeLimit = Number(judgeConfig.timeLimit);
+      form.value.judgeConfig = JSON.parse(form.value.judgeConfig as any);
     }
     if (!form.value.tags) {
       form.value.tags = [];
     } else {
+      form.value.tags = JSON.parse(form.value.tags as any);
       extent.value = form.value.tags.shift() as any;
       tags.value = form.value.tags;
+    }
+    if (form.value.templateCode) {
+      templateForm.value.code = form.value.templateCode;
+    }
+    if (form.value.mergeCode) {
+      mergeCodeForm.value.code = form.value.mergeCode;
     }
   } else {
     Message.error("加载失败" + res.message);
@@ -265,6 +272,8 @@ const reset = () => {
         output: "",
       },
     ],
+    templateCode: defaultTemplateCode,
+    mergeCode: defaultMergeCode,
   };
   tags.value = [];
 };
@@ -298,10 +307,10 @@ const onAnswerChange = (value: string) => {
 };
 
 const onTemplateFormChange = (v: string) => {
-  templateForm.value.code = v;
+  form.value.templateCode = v;
 };
 const onMergeCodeFormChange = (v: string) => {
-  mergeCodeForm.value.code = v;
+  form.value.mergeCode = v;
 };
 
 const handleTags = () => {
@@ -353,22 +362,18 @@ const onConfirm = () => {
 const doSubmit = async () => {
   form.value.tags = handleTags();
   if (id.value) {
-    const res = await QuestionControllerService.updateQuestionUsingPost({
-      ...form.value,
-      templateCode: templateForm.value.code,
-      mergeCode: mergeCodeForm.value.code,
-    });
+    const res = await QuestionControllerService.updateQuestionUsingPost(
+      form.value
+    );
     if (res.code === 0) {
       Message.success("更新成功");
     } else {
       Message.error("更新失败" + res.message);
     }
   } else {
-    const res = await QuestionControllerService.addQuestionUsingPost({
-      ...form.value,
-      templateCode: templateForm.value.code,
-      mergeCode: mergeCodeForm.value.code,
-    });
+    const res = await QuestionControllerService.addQuestionUsingPost(
+      form.value
+    );
     if (res.code === 0) {
       Message.success("创建成功");
     } else {

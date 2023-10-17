@@ -12,6 +12,8 @@ export type QuestionUpdateRequest = {
     id?: number;
     judgeCase?: Array<JudgeCase>;
     judgeConfig?: JudgeConfig;
+    mergeCode?: string;
     tags?: Array<string>;
+    templateCode?: string;
     title?: string;
 };

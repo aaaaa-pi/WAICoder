@@ -12,6 +12,7 @@ import { ref, onMounted, toRaw, watch } from "vue";
 interface Props {
   value: string;
   language?: string;
+  codeDefault: string;
   handleChange: (v: string) => void;
 }
 /**
@@ -19,6 +20,7 @@ interface Props {
  */
 const props = withDefaults(defineProps<Props>(), {
   value: () => "",
+  codeDefault: () => "",
   language: () => "java",
   handleChange: (v: string) => {
     console.log(v);
@@ -35,6 +37,13 @@ watch(
       toRaw(codeEditor.value).getModel(),
       props.language
     );
+  }
+);
+
+watch(
+  () => props.codeDefault,
+  () => {
+    toRaw(codeEditor.value).setValue(props.codeDefault);
   }
 );
 

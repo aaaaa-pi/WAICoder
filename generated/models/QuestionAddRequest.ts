@@ -11,6 +11,8 @@ export type QuestionAddRequest = {
     content?: string;
     judgeCase?: Array<JudgeCase>;
     judgeConfig?: JudgeConfig;
+    mergeCode?: string;
     tags?: Array<string>;
+    templateCode?: string;
     title?: string;
 };
