@@ -11,7 +11,7 @@
             <a-textarea
               v-model="runContent.input"
               class="testText"
-              placeholder="请输入示例"
+              placeholder="请输入示例或自行输入测试用例"
               :style="{ height: textAreaHeight + 'px' }"
             />
           </a-tab-pane>

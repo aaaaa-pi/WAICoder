@@ -42,11 +42,11 @@
                     class="suc center"
                     v-if="props.recordContent.judgeInfo?.result === '成功'"
                   >
-                    <icon-check-circle :style="{ fontSize: '20px' }" />
+                    <icon-check-circle :style="{ fontSize: '24px' }" />
                     <span class="recordInfoText"> 成功 </span>
                   </div>
                   <div class="err center" v-else>
-                    <icon-close-circle :style="{ fontSize: '20px' }" />
+                    <icon-close-circle :style="{ fontSize: '24px' }" />
                     <span class="recordInfoText">
                       {{ props.recordContent.judgeInfo?.result }}
                     </span>
@@ -70,6 +70,7 @@
             </div>
           </div>
           <div class="code">
+            <p class="label">输入代码</p>
             <MdViewer :value="codeContent" />
           </div>
         </a-scrollbar>
@@ -175,18 +176,19 @@ p {
 }
 .recordInfoText {
   margin-left: 6px;
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 600;
 }
 
 .label {
-  margin: 4px 0 8px 4px;
+  margin: 16px 0 0 4px;
   font-size: 12px;
   color: #3c3c4399;
 }
 .messageBox {
   background: #000a200d;
   padding: 12px;
+  margin-top: 10px;
 }
 .message {
   margin: 20px 0;

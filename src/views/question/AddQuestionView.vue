@@ -425,7 +425,7 @@ const doSubmit = async () => {
   justify-content: end;
 }
 .dividerText {
-  font-size: 10px;
+  font-size: 12px;
   color: gray;
 }
 </style>

@@ -192,7 +192,7 @@
                     size="mini"
                   >
                     <a-radio value="1" :default-checked="true">ACM模式</a-radio>
-                    <a-radio value="2">核心代码模式</a-radio>
+                    <a-radio value="3">核心代码模式</a-radio>
                   </a-radio-group>
                 </template>
               </a-dropdown>
@@ -203,6 +203,7 @@
           :value="form.code"
           :language="form.language"
           :handle-change="onCodeChange"
+          :code-default="codeDefault"
           id="codeEditor"
         />
         <a-resize-box
@@ -272,6 +273,7 @@ const recordData = ref<QuestionSubmitVO>({
 const controlRef = ref<{ isShow: boolean }>();
 const minHeight = ref(55);
 const maxHeight = ref(800);
+const codeDefault = ref<string>("");
 
 interface RunContent {
   input: string;
@@ -323,6 +325,13 @@ const onPageChange = (page: number) => {
     current: page,
   };
 };
+const setCodeDefault = () => {
+  if (codeMode.value === "3") {
+    codeDefault.value = question.value?.templateCode as string;
+  } else {
+    codeDefault.value = "";
+  }
+};
 watchEffect(() => {
   codeWidth.value = window.innerWidth - resizeBoxWidth.value - 60;
   maxHeight.value = window.innerHeight - 180;
@@ -334,6 +343,10 @@ watch(route, () => {
 watch(activeKey, () => {
   loadData();
 });
+watch(
+  () => codeMode.value,
+  () => setCodeDefault()
+);
 watch(
   () => controlRef.value?.isShow,
   () => {
@@ -401,6 +414,7 @@ const loadQuestionData = async () => {
   );
   if (res.code === 0) {
     question.value = res.data;
+    setCodeDefault();
   } else {
     Message.error("加载失败" + res.message);
   }
@@ -447,6 +461,7 @@ const doSubmit = async () => {
   if (!question.value?.id) {
     return;
   }
+  controlRef.value!.isShow = true;
   waitting.value = true;
   const res = await QuestionControllerService.doQuestionSubmitUsingPost({
     ...form.value,
@@ -459,8 +474,6 @@ const doSubmit = async () => {
   } else {
     Message.error("提交失败" + res.message);
     resultData.value = res.data;
-    // resultData.value.result = "提交失败";
-    // resultData.value.message = res.message;
   }
   waitting.value = false;
 };
@@ -469,17 +482,28 @@ const doSubmit = async () => {
  * 运行代码
  */
 const doRun = async (runContent: RunContent) => {
+  let runMode = 0;
   const result = computed(() => runContent.input.replace(/\n/g, ","));
   runInputList.value = result.value.split(",");
   if (!question.value?.id) {
     return;
   }
+  if (!result.value) {
+    Message.warning("请输入测试用例");
+    return;
+  }
+  controlRef.value!.isShow = true;
   runContent.activeKey = "2";
   waitting.value = true;
+  if (codeMode.value === "1") {
+    runMode = runContent.runMode;
+  } else {
+    runMode = 4;
+  }
   const res = await QuestionControllerService.doQuestionSubmitUsingPost({
     ...form.value,
     questionId: question.value.id,
-    model: runContent.runMode,
+    model: runMode,
     inputList: runInputList.value,
   });
   if (res.code === 0) {
@@ -487,8 +511,6 @@ const doRun = async (runContent: RunContent) => {
   } else {
     Message.error("运行失败: " + res.message);
     resultData.value = res.data;
-    // resultData.value.result = "提交失败";
-    // resultData.value.message = res.message;
   }
   waitting.value = false;
 };
@@ -583,7 +605,7 @@ onMounted(() => {
 .tipsTitle {
   align-items: center;
   color: #222;
-  font-size: 8px;
+  font-size: 12px;
   line-height: 8px;
   font-weight: 400;
 }
