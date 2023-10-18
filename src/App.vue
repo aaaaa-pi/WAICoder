@@ -1,20 +1,19 @@
 <template>
   <div id="app">
     <a-spin :loading="loading" tip="加载中，请稍后...">
-      <component :is="layout"> </component>
+      <component :is="layout" />
     </a-spin>
   </div>
 </template>
 
 <script setup lang="ts">
-import BasicLayout from "./layouts/BasicLayout.vue";
 import { onMounted, computed } from "vue";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 const store = useStore();
 const route = useRoute();
 
-const layout = computed(() => route.meta.layout || BasicLayout);
+const layout = computed(() => route.meta.layout);
 
 // 获取loading
 const loading = computed(() => store.state.loading.loading);

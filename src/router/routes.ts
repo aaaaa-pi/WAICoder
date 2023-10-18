@@ -1,5 +1,6 @@
 import { RouteRecordRaw } from "vue-router";
 import QuestionLayout from "@/layouts/QuestionLayout.vue";
+import BasicLayout from "@/layouts/BasicLayout.vue";
 import { IconList, IconBookmark, IconBook } from "@arco-design/web-vue/es/icon";
 import ACCESS_ENUM from "@/access/accessEnum";
 
@@ -10,6 +11,7 @@ export const routes: Array<RouteRecordRaw> = [
     component: () => import("../views/question/QuestionsView.vue"),
     meta: {
       hideInMenu: true,
+      layout: BasicLayout,
     },
   },
   {
@@ -18,6 +20,7 @@ export const routes: Array<RouteRecordRaw> = [
     component: () => import("../views/question/QuestionsView.vue"),
     meta: {
       icon: IconList,
+      layout: BasicLayout,
     },
   },
   {
@@ -26,6 +29,7 @@ export const routes: Array<RouteRecordRaw> = [
     component: () => import("../views/question/QuestionSubmitView.vue"),
     meta: {
       icon: IconBookmark,
+      layout: BasicLayout,
     },
   },
   {
@@ -46,6 +50,7 @@ export const routes: Array<RouteRecordRaw> = [
     meta: {
       access: ACCESS_ENUM.ADMIN,
       icon: IconBook,
+      layout: BasicLayout,
     },
   },
   {
@@ -55,6 +60,7 @@ export const routes: Array<RouteRecordRaw> = [
     meta: {
       access: ACCESS_ENUM.USER,
       hideInMenu: true,
+      layout: BasicLayout,
     },
   },
   {
@@ -63,6 +69,7 @@ export const routes: Array<RouteRecordRaw> = [
     component: () => import("../views/UserView.vue"),
     meta: {
       hideInMenu: true,
+      layout: BasicLayout,
     },
   },
   {
