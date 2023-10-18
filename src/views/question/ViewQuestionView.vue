@@ -5,7 +5,7 @@
       style="min-width: 335px; width: 50vw"
       v-model:width="resizeBoxWidth"
     >
-      <div id="description">
+      <div id="leftPart">
         <a-spin dot :loading="isload" style="width: 100%">
           <a-tabs
             v-model:activeKey="activeKey"
@@ -66,7 +66,9 @@
               </a-scrollbar>
             </a-tab-pane>
             <a-tab-pane key="comment" title="评论" disabled>评论区</a-tab-pane>
-            <a-tab-pane key="answer" title="题解">暂时无法查看答案</a-tab-pane>
+            <a-tab-pane key="answer" title="题解">
+              <ProblemSolve />
+            </a-tab-pane>
             <a-tab-pane key="submit" title="提交记录">
               <a-scrollbar style="height: calc(100vh - 120px); overflow: auto">
                 <a-card>
@@ -245,9 +247,10 @@ import {
   QuestionSubmitVO,
 } from "../../../generated";
 import CodeEditor from "@/components/CodeEditor.vue";
-import CodeTips from "@/components/CodeSetting/CodeTips.vue";
-import CodeCollapsePanels from "@/components/CodeSetting/CodeCollapsePanels.vue";
-import RecordDetail from "@/components/CodeSetting/RecordDetail.vue";
+import CodeTips from "@/components/ViewQuestion/CodeTips.vue";
+import CodeCollapsePanels from "@/components/ViewQuestion/CodeCollapsePanels.vue";
+import RecordDetail from "@/components/ViewQuestion/RecordDetail.vue";
+import ProblemSolve from "@/components/ViewQuestion/ProblemSolve.vue";
 import MdViewer from "@/components/MdViewer.vue";
 import { ref, onMounted, watchEffect, watch, computed } from "vue";
 const question = ref<QuestionVO>();
@@ -333,7 +336,7 @@ const setCodeDefault = () => {
   }
 };
 watchEffect(() => {
-  codeWidth.value = window.innerWidth - resizeBoxWidth.value - 60;
+  codeWidth.value = window.innerWidth - resizeBoxWidth.value - 70;
   maxHeight.value = window.innerHeight - 180;
 });
 watch(route, () => {
@@ -535,6 +538,9 @@ onMounted(() => {
 }
 
 #description {
+  margin-right: 10px;
+}
+#leftPart {
   margin-right: 10px;
 }
 #rightPart {
