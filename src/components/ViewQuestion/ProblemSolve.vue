@@ -4,13 +4,20 @@
       <icon-close class="closeIcon" />
     </div>
     <div class="main">
-      <a-scrollbar style="height: calc(100vh - 120px); overflow: auto">
-      </a-scrollbar>
+      <div class="title"></div>
+      <MdViewer :value="answer || ''" />
     </div>
   </a-card>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import MdViewer from "@/components/MdViewer.vue";
+interface Props {
+  answer: string;
+}
+
+const props = withDefaults(defineProps<Props>(), {});
+</script>
 
 <style scoped>
 :deep(.arco-card-body) {

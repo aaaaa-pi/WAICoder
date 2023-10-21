@@ -29,4 +29,8 @@ onMounted(() => {
   doInit();
 });
 </script>
-<style></style>
+<style>
+#app {
+  /* background-color: #000; */
+}
+</style>

@@ -61,7 +61,7 @@ onMounted(() => {
       enabled: true,
     },
     readOnly: false,
-    theme: "vs-dark", //官方自带三种主题vs, hc-black, or vs-dark
+    theme: "vs", //官方自带三种主题vs, hc-black, or vs-dark
   });
 
   // 编辑 监听内容变化

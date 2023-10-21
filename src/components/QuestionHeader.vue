@@ -213,6 +213,7 @@ onUnmounted(() => {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  padding-right: 20px;
 }
 
 .startTimer {

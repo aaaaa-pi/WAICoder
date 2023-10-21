@@ -7,131 +7,135 @@
     >
       <div id="leftPart">
         <a-spin dot :loading="isload" style="width: 100%">
-          <a-tabs
-            v-model:activeKey="activeKey"
-            default-active-key="question"
-            size="mini"
-          >
-            <a-tab-pane key="question" title="题目">
-              <a-scrollbar style="height: calc(100vh - 120px); overflow: auto">
-                <a-card v-if="question" :title="question.title">
-                  <a-space wrap>
-                    <span class="descTangName">标签：</span>
-                    <a-tag v-for="(tag, index) of question.tags" :key="index"
-                      >{{ tag }}
-                    </a-tag>
-                  </a-space>
-                  <div class="submitRecord">
+          <a-card>
+            <a-scrollbar style="height: calc(100vh - 100px); overflow: auto">
+              <a-tabs
+                v-model:activeKey="activeKey"
+                default-active-key="question"
+                size="mini"
+              >
+                <a-tab-pane key="question" title="题目">
+                  <a-card v-if="question" :title="question.title">
+                    <a-space wrap>
+                      <span class="descTangName">标签：</span>
+                      <a-tag v-for="(tag, index) of question.tags" :key="index"
+                        >{{ tag }}
+                      </a-tag>
+                    </a-space>
+                    <div class="submitRecord">
+                      <a-descriptions
+                        :style="{ marginBottom: '10px', paddingLeft: '6px' }"
+                        size="mini"
+                        :column="{ xs: 1, md: 2, lg: 3 }"
+                      >
+                        <a-descriptions-item label="通过次数:">
+                          <span class="recordTxt">
+                            {{ question.acceptedNum }}
+                          </span>
+                        </a-descriptions-item>
+                        <a-descriptions-item label="提交次数:">
+                          <span class="recordTxt">{{
+                            question.submitNum
+                          }}</span>
+                        </a-descriptions-item>
+                        <a-descriptions-item label="通过率:">
+                          <span class="recordTxt">{{ question.passRate }}</span>
+                        </a-descriptions-item>
+                      </a-descriptions>
+                    </div>
+                    <MdViewer :value="question.content || ''" />
                     <a-descriptions
-                      :style="{ marginBottom: '10px', paddingLeft: '6px' }"
-                      size="mini"
+                      style="margin-top: 20px"
+                      size="small"
                       :column="{ xs: 1, md: 2, lg: 3 }"
                     >
-                      <a-descriptions-item label="通过次数:">
-                        <span class="recordTxt">
-                          {{ question.acceptedNum }}
-                        </span>
+                      <a-descriptions-item label="时间限制">
+                        <a-tag>
+                          {{ question.judgeConfig?.timeLimit ?? 0 }}ms
+                        </a-tag>
                       </a-descriptions-item>
-                      <a-descriptions-item label="提交次数:">
-                        <span class="recordTxt">{{ question.submitNum }}</span>
+                      <a-descriptions-item label="内存限制">
+                        <a-tag>
+                          {{ question.judgeConfig?.memoryLimit ?? 0 }}KB
+                        </a-tag>
                       </a-descriptions-item>
-                      <a-descriptions-item label="通过率:">
-                        <span class="recordTxt">{{ question.passRate }}</span>
+                      <a-descriptions-item label="堆栈限制">
+                        <a-tag>
+                          {{ question.judgeConfig?.stackLimit ?? 0 }}KB
+                        </a-tag>
                       </a-descriptions-item>
                     </a-descriptions>
-                  </div>
-                  <MdViewer :value="question.content || ''" />
-                  <a-descriptions
-                    style="margin-top: 20px"
-                    size="small"
-                    :column="{ xs: 1, md: 2, lg: 3 }"
-                  >
-                    <a-descriptions-item label="时间限制">
-                      <a-tag>
-                        {{ question.judgeConfig?.timeLimit ?? 0 }}ms
-                      </a-tag>
-                    </a-descriptions-item>
-                    <a-descriptions-item label="内存限制">
-                      <a-tag>
-                        {{ question.judgeConfig?.memoryLimit ?? 0 }}KB
-                      </a-tag>
-                    </a-descriptions-item>
-                    <a-descriptions-item label="堆栈限制">
-                      <a-tag>
-                        {{ question.judgeConfig?.stackLimit ?? 0 }}KB
-                      </a-tag>
-                    </a-descriptions-item>
-                  </a-descriptions>
-                </a-card>
-              </a-scrollbar>
-            </a-tab-pane>
-            <a-tab-pane key="comment" title="评论" disabled>评论区</a-tab-pane>
-            <a-tab-pane key="answer" title="题解">
-              <ProblemSolve />
-            </a-tab-pane>
-            <a-tab-pane key="submit" title="提交记录">
-              <a-scrollbar style="height: calc(100vh - 120px); overflow: auto">
-                <a-card>
-                  <a-table
-                    :columns="columns"
-                    :data="submitDataList"
-                    @row-click="recordDetail"
-                    :pagination="{
-                      showTotal: true,
-                      pageSize: searchParams.pageSize,
-                      current: searchParams.current,
-                      total,
-                    }"
-                    @page-change="onPageChange"
-                    :bordered="{ wrapper: true, cell: true }"
-                    stripe
-                  >
-                    <template #result="{ record }">
-                      <a-tag
-                        v-if="record.judgeInfo.result === '成功'"
-                        color="green"
-                        bordered
-                      >
-                        {{ record.judgeInfo.result }}
-                      </a-tag>
-                      <a-tag
-                        v-else-if="record.judgeInfo.result === '等待中'"
-                        color="gray"
-                        bordered
-                      >
-                        {{ record.judgeInfo.result }}
-                      </a-tag>
-                      <a-tag
-                        v-else-if="record.judgeInfo.result === '编译错误'"
-                        color="blue"
-                        bordered
-                      >
-                        {{ record.judgeInfo.result }}
-                      </a-tag>
-                      <a-tag v-else color="red" bordered>
-                        {{ record.judgeInfo.result }}
-                      </a-tag>
-                    </template>
-                    <template #time="{ record }">
-                      <p class="runInfo" v-if="record.judgeInfo.time">
-                        {{ record.judgeInfo.time }}ms
-                      </p>
-                      <p class="runInfo" v-else>N/A</p>
-                    </template>
-                    <template #memory="{ record }">
-                      <p class="runInfo" v-if="record.judgeInfo.memory">
-                        {{ record.judgeInfo.memory }}KB
-                      </p>
-                      <p class="runInfo" v-else>N/A</p>
-                    </template>
-                    <template #createTime="{ record }">
-                      {{ moment(record.createTime).format("YYYY-MM-DD") }}
-                    </template>
-                  </a-table>
-                </a-card>
-              </a-scrollbar>
-            </a-tab-pane>
-          </a-tabs>
+                  </a-card>
+                </a-tab-pane>
+                <a-tab-pane key="comment" title="评论" disabled
+                  >评论区</a-tab-pane
+                >
+                <a-tab-pane key="answer" title="题解">
+                  <!-- <ProblemSolve /> -->
+                </a-tab-pane>
+                <a-tab-pane key="submit" title="提交记录">
+                  <a-card>
+                    <a-table
+                      :columns="columns"
+                      :data="submitDataList"
+                      @row-click="recordDetail"
+                      :pagination="{
+                        showTotal: true,
+                        pageSize: searchParams.pageSize,
+                        current: searchParams.current,
+                        total,
+                      }"
+                      @page-change="onPageChange"
+                      :bordered="{ wrapper: true, cell: true }"
+                      stripe
+                    >
+                      <template #result="{ record }">
+                        <a-tag
+                          v-if="record.judgeInfo.result === '成功'"
+                          color="green"
+                          bordered
+                        >
+                          {{ record.judgeInfo.result }}
+                        </a-tag>
+                        <a-tag
+                          v-else-if="record.judgeInfo.result === '等待中'"
+                          color="gray"
+                          bordered
+                        >
+                          {{ record.judgeInfo.result }}
+                        </a-tag>
+                        <a-tag
+                          v-else-if="record.judgeInfo.result === '编译错误'"
+                          color="blue"
+                          bordered
+                        >
+                          {{ record.judgeInfo.result }}
+                        </a-tag>
+                        <a-tag v-else color="red" bordered>
+                          {{ record.judgeInfo.result }}
+                        </a-tag>
+                      </template>
+                      <template #time="{ record }">
+                        <p class="runInfo" v-if="record.judgeInfo.time">
+                          {{ record.judgeInfo.time }}ms
+                        </p>
+                        <p class="runInfo" v-else>N/A</p>
+                      </template>
+                      <template #memory="{ record }">
+                        <p class="runInfo" v-if="record.judgeInfo.memory">
+                          {{ record.judgeInfo.memory }}KB
+                        </p>
+                        <p class="runInfo" v-else>N/A</p>
+                      </template>
+                      <template #createTime="{ record }">
+                        {{ moment(record.createTime).format("YYYY-MM-DD") }}
+                      </template>
+                    </a-table>
+                  </a-card>
+                </a-tab-pane>
+              </a-tabs>
+            </a-scrollbar>
+          </a-card>
         </a-spin>
       </div>
     </a-resize-box>
@@ -141,7 +145,7 @@
           <a-form-item
             field="language"
             label="编程语言"
-            style="min-width: 240px"
+            style="min-width: 240px; padding-left: 16px"
           >
             <a-select
               v-model="form.language"
@@ -153,7 +157,7 @@
               </a-option>
             </a-select>
           </a-form-item>
-          <a-form-item>
+          <a-form-item style="padding-right: 16px">
             <a-popover position="left">
               <a-button type="text">
                 <span class="tips-dots"></span>
@@ -542,12 +546,14 @@ onMounted(() => {
 }
 #leftPart {
   margin-right: 10px;
+  flex: 1;
 }
 #rightPart {
   height: calc(100vh - 70px);
   min-width: 335px;
-  padding: 0 10px;
-  width: 50vw;
+  padding-left: 10px;
+  flex: 1;
+  /* width: 50vw; */
 }
 #codeEditor {
   flex: 1 1 0%;
@@ -557,6 +563,8 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   height: 100%;
+  background: #fff;
+  border-radius: 2px;
 }
 .arco-collapse-item-header {
   padding-top: 4px;
@@ -564,7 +572,6 @@ onMounted(() => {
 }
 
 #CollapsePanels {
-  margin-top: 10px;
   width: 100%;
 }
 :deep(#CollapsePanels .arco-card-size-medium .arco-card-body) {
@@ -596,6 +603,7 @@ onMounted(() => {
 .selectForm {
   display: flex;
   justify-content: space-between;
+  padding-top: 16px;
 }
 
 .tips-dots {

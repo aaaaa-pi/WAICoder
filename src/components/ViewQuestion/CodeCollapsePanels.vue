@@ -194,7 +194,7 @@ defineExpose({
   transform: rotateZ(0deg);
 }
 .title {
-  padding: 8px;
+  padding: 14px;
   display: block;
   display: flex;
   justify-content: space-between;

@@ -22,9 +22,8 @@ import QuestionHeader from "@/components/QuestionHeader.vue";
 
 #questionLayout .content {
   flex: 1;
-  /* background: rgb(240 240 240); */
-  padding: 10px 20px;
-  margin-bottom: 16px;
+  background: rgb(240 240 240);
+  padding: 10px 10px 0 10px;
   height: calc(100vh - 50px);
 }
 
