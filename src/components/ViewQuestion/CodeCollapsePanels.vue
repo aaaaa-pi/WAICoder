@@ -55,12 +55,7 @@
                   </div>
                 </div>
                 <div v-else style="padding-top: 12px">
-                  <p
-                    :style="{
-                      textAlign: 'center',
-                      color: '#3c3c4399',
-                    }"
-                  >
+                  <p class="runText">
                     提交之后，这里将会显示运行结果,请先执行代码
                   </p>
                 </div>
@@ -183,6 +178,9 @@ defineExpose({
 :deep(.arco-tabs-content) {
   padding-top: 0;
 }
+.controlCard {
+  border-bottom: 0;
+}
 .arrowTransform {
   transition: 0.2s;
   transform-origin: center;
@@ -234,5 +232,10 @@ defineExpose({
 .messageBox {
   background: #000a200d;
   padding: 12px;
+}
+
+.runText {
+  text-align: center;
+  color: var(--color-text-1);
 }
 </style>

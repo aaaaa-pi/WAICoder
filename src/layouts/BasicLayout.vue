@@ -964,8 +964,8 @@ import GlobalHeader from "../components/GlobalHeader.vue";
   bottom: 0px;
   right: 0px;
   top: 0px;
-  opacity: 0.6;
   overflow: hidden;
+  background-color: var(--color-bg-1);
 }
 .bg-left {
   position: fixed;
@@ -980,7 +980,7 @@ import GlobalHeader from "../components/GlobalHeader.vue";
 }
 
 #basicLayout .header {
-  background-color: #fff;
+  background-color: var(--color-menu-light-bg);
   position: relative;
 }
 
@@ -997,11 +997,12 @@ import GlobalHeader from "../components/GlobalHeader.vue";
   padding: 6px;
   margin-top: auto;
   text-align: center;
+  position: relative;
 }
 
 #basicLayout .footer .footer-info {
   /* © 2023 Eureka */
-  color: rgb(101, 117, 139);
+  color: var(--color-text-1);
   font-family: 思源黑体;
   font-size: 10px;
   font-weight: 400;

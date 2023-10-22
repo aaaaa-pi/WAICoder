@@ -13,7 +13,8 @@ import gfm from "@bytemd/plugin-gfm";
 import highlight from "@bytemd/plugin-highlight";
 import { Editor } from "@bytemd/vue-next";
 import zhHans from "../config/zh_Hans.json";
-import "highlight.js/styles/tomorrow-night-blue.css";
+// import "highlight.js/styles/tomorrow-night-blue.css";
+import "highlight.js/styles/docco.css";
 /**
  * 定义组件属性类型
  */

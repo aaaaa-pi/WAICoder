@@ -40,6 +40,7 @@
         </a-menu-item>
       </a-menu>
     </a-col>
+    <a-col flex="50px"> <LightSetting /> </a-col>
     <a-col flex="100px">
       <userAvatar />
     </a-col>
@@ -47,12 +48,13 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter, useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 import { routes } from "../router/routes";
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import userAvatar from "@/components/userAvatar.vue";
 import checkAccess from "@/access/checkAccess";
+import LightSetting from "./LightSetting.vue";
 
 const store = useStore();
 const router = useRouter();

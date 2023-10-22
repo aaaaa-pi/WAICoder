@@ -185,12 +185,7 @@
             </a-popover>
             <div class="setting">
               <a-dropdown>
-                <icon-settings
-                  :style="{
-                    fontSize: '16px',
-                    color: '#000',
-                  }"
-                />
+                <icon-settings class="settingIcon" />
                 <template #content>
                   <a-radio-group
                     v-model="codeMode"
@@ -528,6 +523,11 @@ const doRun = async (runContent: RunContent) => {
 onMounted(() => {
   loadQuestionData();
   loadSubmitData();
+  if (localStorage.getItem("theme") === "light") {
+    document.body.removeAttribute("arco-theme");
+  } else {
+    document.body.setAttribute("arco-theme", "dark");
+  }
 });
 </script>
 
@@ -563,7 +563,7 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: #fff;
+  background: var(--color-bg-3);
   border-radius: 2px;
 }
 .arco-collapse-item-header {
@@ -603,7 +603,7 @@ onMounted(() => {
 .selectForm {
   display: flex;
   justify-content: space-between;
-  padding-top: 16px;
+  padding-top: 10px;
 }
 
 .tips-dots {
@@ -618,14 +618,14 @@ onMounted(() => {
 }
 .tipsTitle {
   align-items: center;
-  color: #222;
+  color: var(--color-text-1);
   font-size: 12px;
   line-height: 8px;
   font-weight: 400;
 }
 
 .tipsDesc {
-  color: #999;
+  color: var(--color-text-3);
   font-size: 12px;
   line-height: 21px;
   margin-top: 4px;
@@ -637,5 +637,9 @@ onMounted(() => {
 }
 .setting:hover {
   background-color: #000a200d;
+}
+.settingIcon {
+  font-size: 16px;
+  color: var(--color-text-1);
 }
 </style>

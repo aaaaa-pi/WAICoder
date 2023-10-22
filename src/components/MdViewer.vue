@@ -3,11 +3,11 @@
 </template>
 
 <script setup lang="ts">
+import { Viewer } from "@bytemd/vue-next";
 import "juejin-markdown-themes/dist/cyanosis.css";
-import "highlight.js/styles/docco.css";
 import gfm from "@bytemd/plugin-gfm";
 import highlight from "@bytemd/plugin-highlight";
-import { Viewer } from "@bytemd/vue-next";
+import "highlight.js/styles/docco.css";
 import zhHans from "../config/zh_Hans.json";
 
 /**

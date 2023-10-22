@@ -89,7 +89,7 @@
             </a-tooltip>
           </div>
           <div class="stopTimer" v-if="showTimer" @click="stopTimer">
-            <div>{{ formatTime(time) }}</div>
+            <div class="timerText">{{ formatTime(time) }}</div>
             <IconLoop class="stopTimerIcon" :style="{ color: '#0A65CC' }" />
           </div>
           <userAvatar />
@@ -222,7 +222,7 @@ onUnmounted(() => {
   cursor: pointer;
 }
 .startTimer:hover {
-  background-color: #000a200d;
+  background-color: var(--color-neutral-3);
 }
 .stopTimer {
   display: flex;
@@ -236,5 +236,8 @@ onUnmounted(() => {
   font-size: 20px;
   cursor: pointer;
   margin-top: "2px";
+}
+.timerText {
+  color: var(--color-text-1);
 }
 </style>

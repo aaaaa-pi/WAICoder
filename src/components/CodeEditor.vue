@@ -4,7 +4,10 @@
 
 <script setup lang="ts">
 import * as monaco from "monaco-editor";
-import { ref, onMounted, toRaw, watch } from "vue";
+import { ref, onMounted, toRaw, watch, computed } from "vue";
+import { useStore } from "vuex";
+const store = useStore();
+const theme = computed(() => store.state.theme.theme);
 
 /**
  * 定义组件属性类型
@@ -29,6 +32,9 @@ const props = withDefaults(defineProps<Props>(), {
 
 const codeEditorRef = ref();
 const codeEditor = ref();
+const themeChange = (val: string) => {
+  monaco.editor.setTheme(val);
+};
 
 watch(
   () => props.language,
@@ -42,11 +48,21 @@ watch(
 
 watch(
   () => props.codeDefault,
-  () => {
-    toRaw(codeEditor.value).setValue(props.codeDefault);
+  (newVal) => {
+    toRaw(codeEditor.value).setValue(newVal);
   }
 );
 
+watch(
+  () => theme.value,
+  () => {
+    if (theme.value === "light") {
+      themeChange("vs");
+    } else {
+      themeChange("vs-dark");
+    }
+  }
+);
 onMounted(() => {
   if (!codeEditorRef.value) {
     return;
@@ -68,6 +84,11 @@ onMounted(() => {
   codeEditor.value.onDidChangeModelContent(() => {
     props.handleChange(toRaw(codeEditor.value).getValue()); //getValue()则是用于获取编辑器实例的内容
   });
+  if (theme.value === "light") {
+    themeChange("vs");
+  } else {
+    themeChange("vs-dark");
+  }
 });
 </script>
 

@@ -7,11 +7,12 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, computed } from "vue";
+import { onMounted, computed, ref } from "vue";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 const store = useStore();
 const route = useRoute();
+const theme = ref();
 
 const layout = computed(() => route.meta.layout);
 
@@ -27,10 +28,16 @@ const doInit = () => {
 
 onMounted(() => {
   doInit();
+  theme.value = localStorage.getItem("theme");
+  if (theme.value === "light") {
+    store.commit("theme/toggleTheme", "light");
+  } else {
+    store.commit("theme/toggleTheme", "dark");
+  }
 });
 </script>
 <style>
 #app {
-  /* background-color: #000; */
+  background-color: var(--color-bg-1);
 }
 </style>
