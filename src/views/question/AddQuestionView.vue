@@ -275,6 +275,8 @@ const reset = () => {
     templateCode: defaultTemplateCode,
     mergeCode: defaultMergeCode,
   };
+  templateForm.value.code = form.value.templateCode;
+  mergeCodeForm.value.code = form.value.mergeCode;
   tags.value = [];
 };
 
