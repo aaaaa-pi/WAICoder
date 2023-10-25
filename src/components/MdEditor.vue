@@ -1,5 +1,6 @@
 <template>
   <Editor
+    id="d-Editor"
     :value="value"
     :mode="mode"
     :locale="zhHans"
@@ -11,10 +12,15 @@
 <script setup lang="ts">
 import gfm from "@bytemd/plugin-gfm";
 import highlight from "@bytemd/plugin-highlight";
+import "@/constant/MarkDownThemes/cyanosis.css";
 import { Editor } from "@bytemd/vue-next";
 import zhHans from "../config/zh_Hans.json";
-// import "highlight.js/styles/tomorrow-night-blue.css";
+import "@/constant/codemirrorTheme/main.css";
 import "highlight.js/styles/docco.css";
+import { computed, onMounted, watch } from "vue";
+import { useStore } from "vuex";
+const store = useStore();
+const theme = computed(() => store.state.theme.theme);
 /**
  * 定义组件属性类型
  */
@@ -38,6 +44,83 @@ const props = withDefaults(defineProps<Props>(), {
     console.log(v);
   },
 });
+
+// 改变markdownTheme的主题
+const changeTheme = async (theme: string) => {
+  const markdownBody = document.querySelector(".markdown-body");
+  if (theme === "dark") {
+    markdownBody?.classList.add("__dark");
+  } else {
+    markdownBody?.classList.remove("__dark");
+  }
+};
+const editorTheme = async () => {
+  if (theme.value === "dark") {
+    document.querySelector("html")!.style.backgroundColor = "#0e0e0e";
+    await changeTheme("dark");
+    // toolbar 部分
+    document
+      .querySelectorAll(
+        "#d-Editor > div > div.bytemd-toolbar > div.bytemd-toolbar-left > div.bytemd-toolbar-icon > svg"
+      )
+      .forEach((item: Element) => {
+        (item as HTMLElement).style.color = "#FFF";
+      });
+    document
+      .querySelectorAll(
+        "#d-Editor > div > div.bytemd-toolbar > div.bytemd-toolbar-right > div.bytemd-toolbar-icon > svg"
+      )
+      .forEach((item: Element) => {
+        (item as HTMLElement).style.color = "#FFF";
+      });
+    let css = await import("@/constant/codemirrorTheme/monokai");
+    let markdownThemeStyleElement = document.querySelector("#codemirrorTheme");
+    if (markdownThemeStyleElement) {
+      markdownThemeStyleElement.innerHTML = css.default;
+    } else {
+      markdownThemeStyleElement = document.createElement("style");
+      markdownThemeStyleElement.id = "codemirrorTheme";
+      markdownThemeStyleElement.innerHTML = css.default;
+      document.head.appendChild(markdownThemeStyleElement);
+    }
+  } else {
+    document.querySelector("html")!.style.backgroundColor = "#FFF";
+    await changeTheme("light");
+    document
+      .querySelectorAll(
+        "#d-Editor > div > div.bytemd-toolbar > div.bytemd-toolbar-left > div.bytemd-toolbar-icon > svg"
+      )
+      .forEach((item: Element) => {
+        (item as HTMLElement).style.color = "#000";
+      });
+    document
+      .querySelectorAll(
+        "#d-Editor > div > div.bytemd-toolbar > div.bytemd-toolbar-right > div.bytemd-toolbar-icon > svg"
+      )
+      .forEach((item: Element) => {
+        (item as HTMLElement).style.color = "#000";
+      });
+    let css = await import("@/constant/codemirrorTheme/default");
+    let markdownThemeStyleElement = document.querySelector("#codemirrorTheme");
+    if (markdownThemeStyleElement) {
+      markdownThemeStyleElement.innerHTML = css.default;
+    } else {
+      markdownThemeStyleElement = document.createElement("style");
+      markdownThemeStyleElement.id = "codemirrorTheme";
+      markdownThemeStyleElement.innerHTML = css.default;
+      document.head.appendChild(markdownThemeStyleElement);
+    }
+  }
+};
+onMounted(async () => {
+  await editorTheme();
+});
+watch(
+  () => theme.value,
+  async () => {
+    await editorTheme();
+  }
+);
 </script>
 
 <style scoped>
@@ -46,5 +129,9 @@ const props = withDefaults(defineProps<Props>(), {
 }
 :deep(.bytemd-fullscreen.bytemd) {
   z-index: 100;
+}
+:deep(.bytemd-status) {
+  display: flex;
+  justify-content: space-between;
 }
 </style>

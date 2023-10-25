@@ -157,8 +157,8 @@ p {
   white-space: nowrap;
 }
 .recordTime {
-  color: #3c3c4399;
-  font-size: 8px;
+  color: rgb(var(--gray-10));
+  font-size: 10px;
 }
 .recordInfo {
   margin-top: 8px;
@@ -183,7 +183,7 @@ p {
 .label {
   margin: 16px 0 0 4px;
   font-size: 12px;
-  color: #3c3c4399;
+  color: rgb(var(--gray-10));
 }
 .messageBox {
   background: #000a200d;
