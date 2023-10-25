@@ -113,6 +113,19 @@ const editorTheme = async () => {
   }
 };
 onMounted(async () => {
+  const bytemdElement = document.getElementsByClassName("bytemd")[0];
+  let observer = new MutationObserver((e) => {
+    if (theme.value === "dark") {
+      let toolbarRightSvgEl = document.querySelectorAll(
+        "#d-Editor > div > div.bytemd-toolbar > div.bytemd-toolbar-right > div > svg"
+      );
+      let fullscreenSvgEl = toolbarRightSvgEl[4] as HTMLElement;
+      fullscreenSvgEl.style.color = "#fff";
+    }
+  });
+  observer.observe(bytemdElement, {
+    attributes: true,
+  });
   await editorTheme();
 });
 watch(
