@@ -33,17 +33,24 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 // 改变markdownTheme的主题
-const changeTheme = async (theme: string) => {
-  const markdownBody = document.querySelector(".markdown-body");
+const changeTheme = (theme: string) => {
+  const markdownBody = document.querySelectorAll(".markdown-body");
+  console.log(markdownBody);
+
   if (theme === "dark") {
-    markdownBody?.classList.add("__dark");
+    markdownBody.forEach((item: Element) => {
+      item.classList.add("__dark");
+    });
   } else {
-    markdownBody?.classList.remove("__dark");
+    markdownBody.forEach((item: Element) => {
+      item.classList.remove("__dark");
+    });
   }
 };
-onMounted(async () => {
-  await changeTheme(theme.value);
+onMounted(() => {
+  changeTheme(theme.value);
 });
+
 watch(
   () => theme.value,
   async () => {

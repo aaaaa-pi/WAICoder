@@ -46,18 +46,22 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 // 改变markdownTheme的主题
-const changeTheme = async (theme: string) => {
-  const markdownBody = document.querySelector(".markdown-body");
+const changeTheme = (theme: string) => {
+  const markdownBody = document.querySelectorAll(".markdown-body");
   if (theme === "dark") {
-    markdownBody?.classList.add("__dark");
+    markdownBody.forEach((item: Element) => {
+      item.classList.add("__dark");
+    });
   } else {
-    markdownBody?.classList.remove("__dark");
+    markdownBody.forEach((item: Element) => {
+      item.classList.remove("__dark");
+    });
   }
 };
 const editorTheme = async () => {
   if (theme.value === "dark") {
     document.querySelector("html")!.style.backgroundColor = "#0e0e0e";
-    await changeTheme("dark");
+    changeTheme("dark");
     // toolbar 部分
     document
       .querySelectorAll(
@@ -85,7 +89,7 @@ const editorTheme = async () => {
     }
   } else {
     document.querySelector("html")!.style.backgroundColor = "#FFF";
-    await changeTheme("light");
+    changeTheme("light");
     document
       .querySelectorAll(
         "#d-Editor > div > div.bytemd-toolbar > div.bytemd-toolbar-left > div.bytemd-toolbar-icon > svg"
