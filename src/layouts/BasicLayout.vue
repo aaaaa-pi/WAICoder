@@ -987,6 +987,7 @@ import GlobalHeader from "../components/GlobalHeader.vue";
 #basicLayout .content {
   flex: 1;
   padding-top: 20px;
+  margin: auto;
 }
 #basicLayout .content .contentMask {
   height: 100%;
