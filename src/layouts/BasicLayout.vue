@@ -989,11 +989,6 @@ import GlobalHeader from "../components/GlobalHeader.vue";
   padding-top: 20px;
   margin: auto;
 }
-#basicLayout .content .contentMask {
-  height: 100%;
-  padding: 20px;
-  background-color: rgba(217, 217, 217, 0.4);
-}
 #basicLayout .footer {
   padding: 6px;
   margin-top: auto;

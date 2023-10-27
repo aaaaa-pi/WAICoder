@@ -6,7 +6,7 @@
         :selected-keys="selectedKeys"
         @menu-item-click="doMenuClick"
       >
-        <a-menu-item key="0" disabled>
+        <a-menu-item key="0">
           <div class="title-bar">
             <img src="@/assets/logo_light.svg" v-if="theme === 'light'" />
             <img src="../assets/logo_dark.svg" v-else />
@@ -57,9 +57,15 @@ router.afterEach((to, from, failure) => {
   selectedKeys.value = [to.path];
 });
 const doMenuClick = (key: string) => {
-  router.push({
-    path: key,
-  });
+  if (key === "0") {
+    router.push({
+      path: "/",
+    });
+  } else {
+    router.push({
+      path: key,
+    });
+  }
 };
 </script>
 

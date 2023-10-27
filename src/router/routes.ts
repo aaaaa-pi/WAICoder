@@ -8,7 +8,7 @@ export const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: "主页",
-    component: () => import("../views/question/QuestionsView.vue"),
+    component: () => import("../views/HomeView.vue"),
     meta: {
       hideInMenu: true,
       layout: BasicLayout,
