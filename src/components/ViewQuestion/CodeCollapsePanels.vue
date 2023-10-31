@@ -227,7 +227,7 @@ defineExpose({
 .label {
   margin: 4px 0 8px 4px;
   font-size: 12px;
-  color: #3c3c4399;
+  color: var(--color-text-1);
 }
 .messageBox {
   background: #000a200d;
