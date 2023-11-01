@@ -30,6 +30,7 @@
             placeholder="全部"
             :style="{ width: '160px' }"
           >
+            <a-option style="color: var(--color-text-2)">全部</a-option>
             <a-option style="color: #00af9b">简单</a-option>
             <a-option style="color: #ffb800">中等</a-option>
             <a-option style="color: #ff2d55">困难</a-option>
@@ -39,7 +40,12 @@
           <template #label>
             <div><icon-tags style="margin-right: 5px" />标签</div>
           </template>
-          <a-input-tag v-model="tags" placeholder="请输入标签" />
+          <a-input
+            @keyup.enter="handleAdd"
+            @blur="handleAdd"
+            v-model.trim="inputVal"
+            placeholder="请输入标签"
+          />
         </a-form-item>
         <a-form-item field="title" class="flex-2" style="min-width: 200px">
           <a-input-search
@@ -80,7 +86,17 @@
           </div>
         </a-spin>
       </a-form>
-      <a-divider :size="divederSize" />
+      <a-space wrap>
+        <a-tag
+          v-for="tag of tags"
+          :key="tag"
+          closable
+          @close="handleRemove(tag)"
+        >
+          {{ tag }}
+        </a-tag>
+      </a-space>
+      <a-divider class="divider" :size="divederSize" />
       <a-table
         :ref="tableRef"
         :columns="columns"
@@ -161,6 +177,7 @@ const store = useStore();
 const tableRef = ref();
 const dataList = ref([]);
 const total = ref(0);
+const inputVal = ref("");
 const searchParams = ref<QuestionQueryRequest>({
   pageSize: 10,
   current: 1,
@@ -168,8 +185,8 @@ const searchParams = ref<QuestionQueryRequest>({
   tags: [],
 });
 const title = ref<string>();
-const extent = ref();
-const tags = ref([]);
+const extent = ref("全部");
+const tags = ref<string[]>([]);
 const divederSize = 0;
 const isLoading = ref(false);
 
@@ -206,7 +223,11 @@ watch(searchParams.value, () => {
   loadData();
 });
 watch([tags, extent], () => {
-  searchParams.value.tags = [...tags.value, extent.value];
+  if (extent.value === "全部") {
+    searchParams.value.tags = tags.value;
+  } else {
+    searchParams.value.tags = [...tags.value, extent.value];
+  }
 });
 /**
  * 页面加载时，请求数据
@@ -263,6 +284,16 @@ const handleRandom = async () => {
   isLoading.value = false;
 };
 
+const handleAdd = () => {
+  if (inputVal.value) {
+    tags.value.push(inputVal.value);
+    inputVal.value = "";
+  }
+};
+const handleRemove = (key: string) => {
+  tags.value = tags.value.filter((tag) => tag !== key);
+};
+
 const router = useRouter();
 
 /**
@@ -294,6 +325,9 @@ const doSubmit = () => {
   margin: 0 auto;
   display: flex;
   flex-direction: row;
+}
+.divider {
+  margin: 10px 0 20px 0;
 }
 .questionList {
   flex: 1;
