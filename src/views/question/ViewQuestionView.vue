@@ -473,6 +473,11 @@ const doSubmit = async () => {
   if (res.code === 0) {
     Message.success("提交成功");
     resultData.value = res.data;
+    if (activeKey.value === "submit") {
+      await loadSubmitData();
+    } else {
+      return;
+    }
   } else {
     Message.error("提交失败" + res.message);
     resultData.value = res.data;
