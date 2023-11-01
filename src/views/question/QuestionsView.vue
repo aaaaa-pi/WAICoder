@@ -51,6 +51,8 @@
           <a-input-search
             v-model="title"
             placeholder="请输入搜索关键词"
+            @keyup.enter="doSubmit"
+            @blur="doSubmit"
             @search="doSubmit"
           />
         </a-form-item>
@@ -216,13 +218,14 @@ const loadData = async () => {
 /**
  * 监听 searchParams 变量，改变时触发页面的重新加载
  */
+watch(
+  () => searchParams.value,
+  () => {
+    loadData();
+  },
+  { deep: true }
+);
 watchEffect(() => {
-  loadData();
-});
-watch(searchParams.value, () => {
-  loadData();
-});
-watch([tags, extent], () => {
   if (extent.value === "全部") {
     searchParams.value.tags = tags.value;
   } else {
