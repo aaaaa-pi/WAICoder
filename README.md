@@ -7,7 +7,7 @@
     <a href="#">调试</a> •
     <a href="#">构建</a>
   </p>
-  <p>
+  <p align="center">
     <img alt="GitHub Contributors" src="https://img.shields.io/github/contributors/aaaaa-pi/WAICoder" />
     <img alt="GitHub Last Commit" src="https://img.shields.io/github/last-commit/aaaaa-pi/WAICoder" />
     <img alt="" src="https://img.shields.io/github/repo-size/aaaaa-pi/WAICoder" />
