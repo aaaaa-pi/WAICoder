@@ -32,7 +32,9 @@ axios.interceptors.response.use(
 // 携带凭证
 OpenAPI.WITH_CREDENTIALS = true;
 const baseUrl =
-  process.env.NODE_ENV === "development" ? "http://localhost:8121" : "xxxxxx";
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:8121"
+    : "http://8.130.113.31:8121";
 
 OpenAPI.BASE = baseUrl;
-console.log("当前环境：", process.env.NODE_ENV, "请求地址", baseUrl);
+// console.log("当前环境：", process.env.NODE_ENV, "请求地址", baseUrl);
