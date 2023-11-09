@@ -59,7 +59,7 @@
 import { Message } from "@arco-design/web-vue";
 import AddQuestionView from "./AddQuestionView.vue";
 import { Question, QuestionControllerService } from "../../../generated";
-import { ref, watchEffect, onMounted } from "vue";
+import { ref, watchEffect, onMounted, computed } from "vue";
 import moment from "moment";
 import { useStore } from "vuex";
 const store = useStore();
@@ -81,13 +81,21 @@ const loadData = async () => {
   if (res.code === 0) {
     dataList.value = res.data.records;
     total.value = res.data.total;
-    console.log(res.data.records);
   } else {
     Message.error("加载失败" + res.message);
   }
 
   store.commit("loading/showLoading", false);
 };
+// 监听修改操作，关闭弹窗重新获取数据
+const showDrawerVisible = computed(
+  () => store.state.questionDrawer.drawerVisible
+);
+watchEffect(() => {
+  if (!showDrawerVisible.value) {
+    loadData();
+  }
+});
 /**
  * 监听 searchParams 变量，改变时触发页面的重新加载
  */

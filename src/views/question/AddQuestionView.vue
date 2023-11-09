@@ -96,46 +96,14 @@
           :content-flex="false"
           :merge-props="false"
         >
-          <a-list>
-            <a-list-item
-              v-for="(judgeCaseItem, index) of form.judgeCase"
-              :key="index"
-            >
-              <a-list-item-meta :title="`用例-${index}`"> </a-list-item-meta>
-              <template #actions>
-                <icon-edit @click="openModel(index)" />
-                <icon-delete @click="handleDelete(index)" />
-              </template>
-              <a-modal v-model:visible="visible" @cancel="handleCancel">
-                <a-space direction="vertical" style="min-width: 350px">
-                  <a-form-item label="输入案例">
-                    <a-input
-                      v-model="value.newInput"
-                      placeholder="请输入测试的输入用例"
-                      size="large"
-                    />
-                  </a-form-item>
-                  <a-form-item label="输出案例">
-                    <a-input
-                      v-model="value.newOutput"
-                      placeholder="请输入测试的输出用例"
-                      size="large"
-                    />
-                  </a-form-item>
-                </a-space>
-                <div class="button-box">
-                  <a-button type="primary" @click="onConfirm">确认</a-button>
-                </div>
-              </a-modal>
-            </a-list-item>
-            <a-button
-              @click="handleAdd"
-              type="outline"
-              status="success"
-              class="addTest"
-              >新增测试用例
-            </a-button>
-          </a-list>
+          <judgmentConfig
+            :judgeCase="form.judgeCase"
+            :handle-delete="handleDelete"
+          />
+          <a-button @click="handleAdd" class="addTest">
+            <icon-plus :style="{ fontSize: '16px', marginRight: '4px' }" />
+            新增测试用例
+          </a-button>
         </a-form-item>
         <div style="margin-top: 16px" />
         <a-form-item>
@@ -155,10 +123,11 @@
 <script setup lang="ts">
 import MdEditor from "@/components/MdEditor.vue";
 import CodeEditor from "@/components/CodeEditor.vue";
+import judgmentConfig from "@/components/addQuestion/JudgmentConfig.vue";
 import { defaultTemplateCode, defaultMergeCode } from "@/config/codeDefault";
-import { Message } from "@arco-design/web-vue";
+import { Message, Notification } from "@arco-design/web-vue";
 import { QuestionControllerService } from "../../../generated";
-import { ref, computed, onMounted, reactive, watch, toRef } from "vue";
+import { ref, computed, onMounted, watch, toRef } from "vue";
 import { useStore } from "vuex";
 /**
  *  定义组件属性类型
@@ -172,6 +141,10 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   questionId: () => "",
 });
+interface judgeCase {
+  input: string;
+  output: string;
+}
 const id = ref();
 watch(toRef(props, "questionId"), (newId) => {
   id.value = newId;
@@ -189,17 +162,7 @@ const templateForm = ref({
 const mergeCodeForm = ref({
   code: defaultMergeCode,
 });
-const value = reactive({
-  oldInput: "",
-  newInput: "",
-  oldOutput: "",
-  newOutput: "",
-});
-
-const visible = ref(false);
-// const drawerVisible = ref(false);
 const minVal = 0;
-const currentIndex = ref();
 
 // 获取创建题目抽屉显示状态
 const drawerVisible = computed(() => store.state.questionDrawer.drawerVisible);
@@ -284,23 +247,6 @@ onMounted(() => {
   loadData();
 });
 
-const inputCase = computed({
-  get() {
-    return form.value.judgeCase[currentIndex.value]?.input;
-  },
-  set(value) {
-    form.value.judgeCase[currentIndex.value].input = value;
-  },
-});
-const outputCase = computed({
-  get() {
-    return form.value.judgeCase[currentIndex.value]?.output;
-  },
-  set(value) {
-    form.value.judgeCase[currentIndex.value].output = value;
-  },
-});
-
 const onContentChange = (value: string) => {
   form.value.content = value;
 };
@@ -331,38 +277,28 @@ const handleAdd = () => {
     output: "",
   });
 };
-const handleDelete = (index: number) => {
-  form.value.judgeCase.splice(index, 1);
+const handleDelete = (record: judgeCase) => {
+  console.log(record);
+  form.value.judgeCase.splice(record, 1);
 };
-const resetValue = () => {
-  value.newInput = value.oldInput;
-  value.newOutput = value.oldOutput;
-};
-/**
- * 判题用例弹框
- */
-const openModel = (index: number) => {
-  visible.value = true;
-  currentIndex.value = index;
-  value.oldInput = inputCase.value;
-  value.oldOutput = outputCase.value;
-  // 重置新值
-  resetValue();
-};
-const handleCancel = () => {
-  resetValue();
-  inputCase.value = value.oldInput;
-  outputCase.value = value.oldInput;
-  visible.value = false;
-};
-const onConfirm = () => {
-  inputCase.value = value.newInput;
-  outputCase.value = value.newOutput;
-  visible.value = false;
+const verifyJudgeCase = () => {
+  return (
+    form.value.judgeCase.some(
+      (item: judgeCase) => !item.input || !item.output
+    ) === false
+  );
 };
 
 const doSubmit = async () => {
   form.value.tags = handleTags();
+  if (!verifyJudgeCase()) {
+    Notification.error({
+      title: "提交失败",
+      content: "输入用例或输出用例不能为空",
+      closable: true,
+    });
+    return;
+  }
   if (id.value) {
     const res = await QuestionControllerService.updateQuestionUsingPost(
       form.value
@@ -383,7 +319,6 @@ const doSubmit = async () => {
     }
   }
   store.commit("questionDrawer/showDrawerVisible", false);
-  window.location.reload();
 };
 </script>
 
@@ -393,8 +328,6 @@ const doSubmit = async () => {
   margin: auto;
 }
 #codeEditor {
-  /* flex: 1 1 0%;
-  overflow: hidden; */
   height: 200px;
   width: 100%;
 }
@@ -409,6 +342,9 @@ const doSubmit = async () => {
 }
 .addTest {
   width: 100%;
+  color: var(--color-text-2);
+  background-color: var(--color-fill-2);
+  border: 2px dashed var(--color-neutral-3);
 }
 .submit {
   margin-left: auto;
