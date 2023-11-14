@@ -4,6 +4,7 @@ import auth from "./auth";
 import loading from "./loading";
 import questionDrawer from "./addQuestion";
 import theme from "./theme";
+import code from "./code";
 
 export default createStore({
   mutations: {},
@@ -14,5 +15,6 @@ export default createStore({
     loading,
     questionDrawer,
     theme,
+    code,
   },
 });

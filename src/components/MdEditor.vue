@@ -40,9 +40,6 @@ const plugins = [
 const props = withDefaults(defineProps<Props>(), {
   value: () => "",
   mode: () => "split",
-  handleChange: (v: string) => {
-    console.log(v);
-  },
 });
 
 // 改变markdownTheme的主题

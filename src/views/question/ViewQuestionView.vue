@@ -191,6 +191,7 @@
                     v-model="codeMode"
                     direction="vertical"
                     size="mini"
+                    @change="changePatterns"
                   >
                     <a-radio value="1" :default-checked="true">ACM模式</a-radio>
                     <a-radio value="3">核心代码模式</a-radio>
@@ -389,6 +390,12 @@ const codeModeTitle = computed(() =>
   codeMode.value === "1" ? "ACM模式" : "核心代码模式"
 );
 
+const changePatterns = () => {
+  store.commit("code/changePatterns", {
+    codePatterns: codeMode.value,
+  });
+};
+
 const openTips = () => {
   isTipsShow.value = true;
 };
@@ -532,6 +539,9 @@ onMounted(() => {
     document.body.removeAttribute("arco-theme");
   } else {
     document.body.setAttribute("arco-theme", "dark");
+  }
+  if (localStorage.getItem("codePatterns")) {
+    codeMode.value = localStorage.getItem("codePatterns")!;
   }
 });
 </script>
