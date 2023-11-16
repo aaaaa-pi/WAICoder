@@ -6,8 +6,10 @@
     <a-row>
       <a-col :span="12">
         <h1 class="text-jumbo text-ginormous">401错误!</h1>
-        <h2>您没有访问权限！</h2>
-        <h6>对不起，您没有访问权限，请不要进行非法操作！您可以返回主页面</h6>
+        <h2 class="text-info">您没有访问权限！</h2>
+        <h6 class="text-info">
+          对不起，您没有访问权限，请不要进行非法操作！您可以返回主页面
+        </h6>
         <ul class="list-unstyled">
           <li class="link-type">
             <router-link to="/"> 回首页 </router-link>
@@ -44,9 +46,13 @@ const back = () => {
 
 <style scoped>
 .errPage-container {
+  position: absolute;
   width: 800px;
   max-width: 100%;
   margin: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 .pan-back-btn {
   background: #3491fa;
@@ -65,7 +71,13 @@ const back = () => {
 .text-jumbo {
   font-size: 60px;
   font-weight: 700;
-  color: #484848;
+  color: var(--color-text-1);
+}
+.link-type {
+  list-style: none;
+}
+.text-info {
+  color: var(--color-text-1);
 }
 .list-unstyled {
   font-size: 14px;

@@ -47,9 +47,13 @@ const message = ref("页面不存在");
 
 <style scoped>
 .wscn-http404-container {
+  position: absolute;
   width: 800px;
   max-width: 100%;
   margin: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 .wscn-http404 {
   /* width: 1200px; */
@@ -186,7 +190,7 @@ const message = ref("页面不存在");
 .bullshit__headline {
   font-size: 20px;
   line-height: 24px;
-  color: #222;
+  color: var(--color-text-1);
   font-weight: bold;
   opacity: 0;
   margin-bottom: 10px;

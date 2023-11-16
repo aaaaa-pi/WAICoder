@@ -78,6 +78,7 @@ export const routes: Array<RouteRecordRaw> = [
     component: () => import("../views/error/401.vue"),
     meta: {
       hideInMenu: true,
+      layout: BasicLayout,
     },
   },
   {
@@ -86,6 +87,7 @@ export const routes: Array<RouteRecordRaw> = [
     component: () => import("../views/error/404.vue"),
     meta: {
       hideInMenu: true,
+      layout: BasicLayout,
     },
   },
   {
