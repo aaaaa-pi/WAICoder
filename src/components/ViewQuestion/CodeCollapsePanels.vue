@@ -80,7 +80,7 @@
             />
             自测运行
           </a-button>
-          <a-button type="primary" size="mini" @click="doSubmit">
+          <a-button type="primary" size="mini" @click="handleSumbit">
             提交
           </a-button>
         </div>
@@ -159,6 +159,11 @@ const isShowComputed = computed(() => {
 
 const toggleShow = () => {
   isShow.value = !isShow.value;
+};
+
+const handleSumbit = () => {
+  runContent.value.activeKey = "2";
+  props.doSubmit();
 };
 
 watch(

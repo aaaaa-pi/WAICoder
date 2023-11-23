@@ -148,15 +148,13 @@
           />
         </template>
         <template #optional="{ record }">
-          <a-space>
-            <a-tooltip position="bottom" content="做题" mini>
-              <icon-find-replace
-                class="operate"
-                @click="toQuestionPage(record)"
-                :style="{ fontSize: '18px' }"
-              />
-            </a-tooltip>
-          </a-space>
+          <a-tooltip position="bottom" content="做题" mini>
+            <icon-find-replace
+              class="operate"
+              @click="toQuestionPage(record)"
+              :style="{ fontSize: '18px' }"
+            />
+          </a-tooltip>
         </template>
       </a-table>
     </a-card>
