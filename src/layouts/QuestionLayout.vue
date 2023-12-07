@@ -9,7 +9,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import QuestionHeader from "@/components/QuestionHeader.vue";
+import QuestionHeader from "@/components/header/QuestionHeader.vue";
 </script>
 
 <style scoped>

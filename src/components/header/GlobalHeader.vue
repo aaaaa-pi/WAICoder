@@ -9,7 +9,7 @@
         <a-menu-item key="0">
           <div class="title-bar">
             <img src="@/assets/logo_light.svg" v-if="theme === 'light'" />
-            <img src="../assets/logo_dark.svg" v-else />
+            <img src="@/assets/logo_dark.svg" v-else />
           </div>
         </a-menu-item>
         <a-menu-item v-for="item in visibleRoutes" :key="item.path">
@@ -28,12 +28,12 @@
 
 <script setup lang="ts">
 import { useRouter } from "vue-router";
-import { routes } from "../router/routes";
+import { routes } from "@/router/routes";
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
-import userAvatar from "@/components/userAvatar.vue";
+import userAvatar from "@/components/setting/userAvatar.vue";
 import checkAccess from "@/access/checkAccess";
-import LightSetting from "./LightSetting.vue";
+import LightSetting from "@/components/setting/LightSetting.vue";
 
 const store = useStore();
 const router = useRouter();

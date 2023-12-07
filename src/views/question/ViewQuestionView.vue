@@ -246,12 +246,12 @@ import {
   LoginUserVO,
   QuestionSubmitVO,
 } from "../../../generated";
-import CodeEditor from "@/components/CodeEditor.vue";
+import CodeEditor from "@/components/codeEditor/CodeEditor.vue";
 import CodeTips from "@/components/ViewQuestion/CodeTips.vue";
 import CodeCollapsePanels from "@/components/ViewQuestion/CodeCollapsePanels.vue";
 import RecordDetail from "@/components/ViewQuestion/RecordDetail.vue";
-import ProblemSolve from "@/components/ViewQuestion/ProblemSolve.vue";
-import MdViewer from "@/components/MdViewer.vue";
+// import ProblemSolve from "@/components/ViewQuestion/ProblemSolve.vue";
+import MdViewer from "@/components/markdown/MdViewer.vue";
 import { ref, onMounted, watchEffect, watch, computed } from "vue";
 const question = ref<QuestionVO>();
 const codeLanguages = ref(["java"]);

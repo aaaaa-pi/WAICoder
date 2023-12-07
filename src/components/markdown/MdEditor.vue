@@ -14,7 +14,7 @@ import gfm from "@bytemd/plugin-gfm";
 import highlight from "@bytemd/plugin-highlight";
 import "@/constant/MarkDownThemes/cyanosis.css";
 import { Editor } from "@bytemd/vue-next";
-import zhHans from "../config/zh_Hans.json";
+import zhHans from "@/config/zh_Hans.json";
 import "@/constant/codemirrorTheme/main.css";
 import "highlight.js/styles/docco.css";
 import { computed, onMounted, watch } from "vue";

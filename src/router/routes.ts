@@ -8,7 +8,7 @@ export const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: "主页",
-    component: () => import("../views/HomeView.vue"),
+    component: () => import("../views/home/HomeView.vue"),
     meta: {
       hideInMenu: true,
       layout: BasicLayout,
@@ -56,7 +56,7 @@ export const routes: Array<RouteRecordRaw> = [
   {
     path: "/about",
     name: "个人中心",
-    component: () => import("../views/AboutView.vue"),
+    component: () => import("../views/user/AboutView.vue"),
     meta: {
       access: ACCESS_ENUM.USER,
       hideInMenu: true,
@@ -66,7 +66,7 @@ export const routes: Array<RouteRecordRaw> = [
   {
     path: "/profile/info",
     name: "编辑资料",
-    component: () => import("../views/UserView.vue"),
+    component: () => import("../views/user/UserView.vue"),
     meta: {
       hideInMenu: true,
       layout: BasicLayout,

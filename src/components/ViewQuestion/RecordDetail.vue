@@ -81,7 +81,7 @@
 
 <script setup lang="ts">
 import { LoginUserVO, QuestionSubmitVO } from "../../../generated";
-import MdViewer from "@/components/MdViewer.vue";
+import MdViewer from "@/components/markdown/MdViewer.vue";
 import { computed, ref, watchEffect } from "vue";
 import { useStore } from "vuex";
 import moment from "moment";

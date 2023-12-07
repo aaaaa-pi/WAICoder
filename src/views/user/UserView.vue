@@ -109,7 +109,7 @@ import { IconUser, IconEdit } from "@arco-design/web-vue/es/icon";
 import { useStore } from "vuex";
 import { computed, ref } from "vue";
 import { Message } from "@arco-design/web-vue";
-import { UserControllerService } from "../../generated";
+import { UserControllerService } from "../../../generated";
 import { useRouter } from "vue-router";
 const store = useStore();
 const router = useRouter();

@@ -121,8 +121,8 @@
 </template>
 
 <script setup lang="ts">
-import MdEditor from "@/components/MdEditor.vue";
-import CodeEditor from "@/components/CodeEditor.vue";
+import MdEditor from "@/components/markdown/MdEditor.vue";
+import CodeEditor from "@/components/codeEditor/CodeEditor.vue";
 import judgmentConfig from "@/components/addQuestion/JudgmentConfig.vue";
 import { defaultTemplateCode, defaultMergeCode } from "@/config/codeDefault";
 import { Message, Notification } from "@arco-design/web-vue";

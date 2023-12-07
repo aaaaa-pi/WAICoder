@@ -29,8 +29,8 @@
 import { useStore } from "vuex";
 import { computed } from "vue";
 import { IconUser } from "@arco-design/web-vue/es/icon";
-import { LoginUserVO, UserControllerService } from "../../generated";
-import AuthModal from "@/components/Modals/AuthModal.vue";
+import { LoginUserVO, UserControllerService } from "../../../generated";
+import AuthModal from "@/components/modals/AuthModal.vue";
 import { useRouter } from "vue-router";
 const router = useRouter();
 

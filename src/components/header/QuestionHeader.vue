@@ -3,7 +3,7 @@
     <a-col :span="4">
       <div class="title-bar" @click="doTitleClick">
         <img src="@/assets/logo_light.svg" v-if="theme === 'light'" />
-        <img src="../assets/logo_dark.svg" v-else />
+        <img src="@/assets/logo_dark.svg" v-else />
       </div>
     </a-col>
     <a-col :span="8" :offset="6">
@@ -80,8 +80,8 @@
 
 <script setup lang="ts">
 import { useRouter, useRoute } from "vue-router";
-import userAvatar from "@/components/userAvatar.vue";
-import { QuestionControllerService } from "../../generated";
+import userAvatar from "@/components/setting/userAvatar.vue";
+import { QuestionControllerService } from "../../../generated";
 import { ref, watch, onUnmounted, computed } from "vue";
 import { Message } from "@arco-design/web-vue";
 import { useStore } from "vuex";

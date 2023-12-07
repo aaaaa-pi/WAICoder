@@ -8,7 +8,7 @@ import "@/constant/MarkDownThemes/cyanosis.css";
 import gfm from "@bytemd/plugin-gfm";
 import highlight from "@bytemd/plugin-highlight";
 import "highlight.js/styles/docco.css";
-import zhHans from "../config/zh_Hans.json";
+import zhHans from "@/config/zh_Hans.json";
 import { computed, onMounted, watch } from "vue";
 import { useStore } from "vuex";
 const store = useStore();

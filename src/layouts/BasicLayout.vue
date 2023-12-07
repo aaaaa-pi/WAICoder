@@ -948,7 +948,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import GlobalHeader from "../components/GlobalHeader.vue";
+import GlobalHeader from "../components/header/GlobalHeader.vue";
 </script>
 
 <style scoped>

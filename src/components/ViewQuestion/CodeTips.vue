@@ -21,7 +21,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import MdViewer from "@/components/MdViewer.vue";
+import MdViewer from "@/components/markdown/MdViewer.vue";
 
 /**
  * 定义组件属性类型
