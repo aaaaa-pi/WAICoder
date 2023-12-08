@@ -37,6 +37,7 @@
 
 <script setup lang="ts">
 import { toRefs } from "vue";
+import { IconDelete } from "@arco-design/web-vue/es/icon";
 interface judgeCaseData {
   input: string;
   output: string;

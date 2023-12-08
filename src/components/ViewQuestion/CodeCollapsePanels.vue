@@ -90,6 +90,7 @@
 </template>
 
 <script setup lang="ts">
+import { IconPlayArrow, IconUp } from "@arco-design/web-vue/es/icon";
 import { ref, computed, watch, toRefs } from "vue";
 
 interface ResultData {

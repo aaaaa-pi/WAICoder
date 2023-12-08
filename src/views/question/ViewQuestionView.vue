@@ -128,7 +128,7 @@
                         <p class="runInfo" v-else>N/A</p>
                       </template>
                       <template #createTime="{ record }">
-                        {{ moment(record.createTime).format("YYYY-MM-DD") }}
+                        {{ dayjs(record.createTime).format("YYYY-MM-DD") }}
                       </template>
                     </a-table>
                   </a-card>
@@ -235,6 +235,10 @@
 </template>
 
 <script setup lang="ts">
+import {
+  IconSettings,
+  IconCheckCircleFill,
+} from "@arco-design/web-vue/es/icon";
 import { Message } from "@arco-design/web-vue";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
@@ -246,13 +250,14 @@ import {
   LoginUserVO,
   QuestionSubmitVO,
 } from "../../../generated";
-import CodeEditor from "@/components/codeEditor/CodeEditor.vue";
 import CodeTips from "@/components/ViewQuestion/CodeTips.vue";
 import CodeCollapsePanels from "@/components/ViewQuestion/CodeCollapsePanels.vue";
 import RecordDetail from "@/components/ViewQuestion/RecordDetail.vue";
+import CodeEditor from "@/components/codeEditor/CodeEditor.vue";
 // import ProblemSolve from "@/components/ViewQuestion/ProblemSolve.vue";
 import MdViewer from "@/components/markdown/MdViewer.vue";
 import { ref, onMounted, watchEffect, watch, computed } from "vue";
+
 const question = ref<QuestionVO>();
 const codeLanguages = ref(["java"]);
 const resizeBoxWidth = ref(600);
@@ -264,7 +269,7 @@ const waitting = ref(false);
 const submitDataList = ref([]);
 const activeKey = ref("question");
 const total = ref(0);
-import moment from "moment";
+import dayjs from "dayjs";
 const store = useStore();
 const isTipsShow = ref(false);
 const codeMode = ref("1");
@@ -533,10 +538,10 @@ const doRun = async (runContent: RunContent) => {
 onMounted(() => {
   loadQuestionData();
   loadSubmitData();
-  if (localStorage.getItem("theme") === "light") {
-    document.body.removeAttribute("arco-theme");
-  } else {
+  if (localStorage.getItem("theme") === "dark") {
     document.body.setAttribute("arco-theme", "dark");
+  } else {
+    document.body.removeAttribute("arco-theme");
   }
   if (localStorage.getItem("codePatterns")) {
     codeMode.value = localStorage.getItem("codePatterns")!;

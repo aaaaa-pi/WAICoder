@@ -13,7 +13,6 @@
           </div>
         </a-menu-item>
         <a-menu-item v-for="item in visibleRoutes" :key="item.path">
-          <!-- <icon :name="item.meta?.icon" /> -->
           <component :is="item.meta?.icon"> </component>
           <span>{{ item.name }}</span>
         </a-menu-item>

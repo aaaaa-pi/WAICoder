@@ -28,7 +28,7 @@
 <script setup lang="ts">
 import { useStore } from "vuex";
 import { computed } from "vue";
-import { IconUser } from "@arco-design/web-vue/es/icon";
+import { IconUser, IconHome, IconExport } from "@arco-design/web-vue/es/icon";
 import { LoginUserVO, UserControllerService } from "../../../generated";
 import AuthModal from "@/components/modals/AuthModal.vue";
 import { useRouter } from "vue-router";

@@ -48,7 +48,7 @@
 </template>
 
 <script setup>
-import { IconUser } from "@arco-design/web-vue/es/icon";
+import { IconUser, IconIdcard } from "@arco-design/web-vue/es/icon";
 import { useStore } from "vuex";
 import { computed } from "vue";
 import { CalendarHeatmap } from "vue3-calendar-heatmap";

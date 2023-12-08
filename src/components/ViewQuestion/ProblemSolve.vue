@@ -11,6 +11,7 @@
 </template>
 
 <script setup lang="ts">
+import { IconClose } from "@arco-design/web-vue/es/icon";
 import MdViewer from "@/components/MdViewer.vue";
 interface Props {
   answer: string;

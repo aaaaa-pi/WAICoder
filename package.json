@@ -13,13 +13,14 @@
     "@bytemd/vue-next": "^1.21.0",
     "axios": "^1.4.0",
     "core-js": "^3.8.3",
+    "dayjs": "^1.11.10",
     "highlight.js": "^11.8.0",
-    "moment": "^2.29.4",
     "monaco-editor": "^0.41.0",
     "monaco-editor-webpack-plugin": "^7.1.0",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
-    "vuex": "^4.0.0"
+    "vuex": "^4.0.0",
+    "webpack-bundle-analyzer": "^4.10.1"
   },
   "devDependencies": {
     "@arco-design/web-vue": "^2.49.2",
@@ -32,6 +33,7 @@
     "@vue/cli-plugin-vuex": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
     "@vue/eslint-config-typescript": "^9.1.0",
+    "compression-webpack-plugin": "^10.0.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",

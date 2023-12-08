@@ -121,14 +121,24 @@
 </template>
 
 <script setup lang="ts">
+import { IconPlus } from "@arco-design/web-vue/es/icon";
 import MdEditor from "@/components/markdown/MdEditor.vue";
-import CodeEditor from "@/components/codeEditor/CodeEditor.vue";
 import judgmentConfig from "@/components/addQuestion/JudgmentConfig.vue";
 import { defaultTemplateCode, defaultMergeCode } from "@/config/codeDefault";
 import { Message, Notification } from "@arco-design/web-vue";
 import { QuestionControllerService } from "../../../generated";
-import { ref, computed, onMounted, watch, toRef } from "vue";
+import {
+  ref,
+  computed,
+  onMounted,
+  watch,
+  toRef,
+  defineAsyncComponent,
+} from "vue";
 import { useStore } from "vuex";
+const CodeEditor = defineAsyncComponent(
+  () => import("@/components/codeEditor/CodeEditor.vue")
+);
 /**
  *  定义组件属性类型
  */

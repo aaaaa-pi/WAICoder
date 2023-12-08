@@ -8,7 +8,8 @@ export const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: "主页",
-    component: () => import("../views/home/HomeView.vue"),
+    component: () =>
+      import(/* webpackChunkName: "home" */ "../views/home/HomeView.vue"),
     meta: {
       hideInMenu: true,
       layout: BasicLayout,
@@ -17,7 +18,10 @@ export const routes: Array<RouteRecordRaw> = [
   {
     path: "/questions",
     name: "浏览题目",
-    component: () => import("../views/question/QuestionsView.vue"),
+    component: () =>
+      import(
+        /* webpackChunkName: "questionView" */ "../views/question/QuestionsView.vue"
+      ),
     meta: {
       icon: IconList,
       layout: BasicLayout,
@@ -26,7 +30,10 @@ export const routes: Array<RouteRecordRaw> = [
   {
     path: "/question_submit",
     name: "题目提交",
-    component: () => import("../views/question/QuestionSubmitView.vue"),
+    component: () =>
+      import(
+        /* webpackChunkName: "questionSubmitView" */ "../views/question/QuestionSubmitView.vue"
+      ),
     meta: {
       icon: IconBookmark,
       layout: BasicLayout,
@@ -35,7 +42,10 @@ export const routes: Array<RouteRecordRaw> = [
   {
     path: "/view/question/:id",
     name: "在线做题",
-    component: () => import("../views/question/ViewQuestionView.vue"),
+    component: () =>
+      import(
+        /* webpackChunkName: "viewQuestionView" */ "../views/question/ViewQuestionView.vue"
+      ),
     props: true,
     meta: {
       access: ACCESS_ENUM.USER,
@@ -46,7 +56,10 @@ export const routes: Array<RouteRecordRaw> = [
   {
     path: "/manage/question",
     name: "管理题目",
-    component: () => import("../views/question/ManageQuestionView.vue"),
+    component: () =>
+      import(
+        /* webpackChunkName: "manageQuestionView" */ "../views/question/ManageQuestionView.vue"
+      ),
     meta: {
       access: ACCESS_ENUM.ADMIN,
       icon: IconBook,
@@ -56,7 +69,8 @@ export const routes: Array<RouteRecordRaw> = [
   {
     path: "/about",
     name: "个人中心",
-    component: () => import("../views/user/AboutView.vue"),
+    component: () =>
+      import(/* webpackChunkName: "aboutView" */ "../views/user/AboutView.vue"),
     meta: {
       access: ACCESS_ENUM.USER,
       hideInMenu: true,
@@ -66,7 +80,8 @@ export const routes: Array<RouteRecordRaw> = [
   {
     path: "/profile/info",
     name: "编辑资料",
-    component: () => import("../views/user/UserView.vue"),
+    component: () =>
+      import(/* webpackChunkName: "userView" */ "../views/user/UserView.vue"),
     meta: {
       hideInMenu: true,
       layout: BasicLayout,
@@ -75,7 +90,8 @@ export const routes: Array<RouteRecordRaw> = [
   {
     path: "/noAuth",
     name: "无权限",
-    component: () => import("../views/error/401.vue"),
+    component: () =>
+      import(/* webpackChunkName: "401" */ "../views/error/401.vue"),
     meta: {
       hideInMenu: true,
       layout: BasicLayout,
@@ -84,7 +100,8 @@ export const routes: Array<RouteRecordRaw> = [
   {
     path: "/404",
     name: "404",
-    component: () => import("../views/error/404.vue"),
+    component: () =>
+      import(/* webpackChunkName: "404" */ "../views/error/404.vue"),
     meta: {
       hideInMenu: true,
       layout: BasicLayout,

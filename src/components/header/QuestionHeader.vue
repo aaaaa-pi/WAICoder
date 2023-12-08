@@ -11,12 +11,12 @@
         <a-space size="medium">
           <!-- <a-button size="mini">题库</a-button> -->
           <a-button size="mini" type="outline" @click="getPrevQuestion">
-            <icon-left />
+            <IconLeft />
             <p>上一题</p>
           </a-button>
           <a-button size="mini" type="outline" @click="getNextQuestion">
             <p>下一题</p>
-            <icon-right />
+            <IconRight />
           </a-button>
           <div class="random" @click="matchQuestion">
             <svg
@@ -85,6 +85,12 @@ import { QuestionControllerService } from "../../../generated";
 import { ref, watch, onUnmounted, computed } from "vue";
 import { Message } from "@arco-design/web-vue";
 import { useStore } from "vuex";
+import {
+  IconLoop,
+  IconClockCircle,
+  IconRight,
+  IconLeft,
+} from "@arco-design/web-vue/es/icon";
 
 const store = useStore();
 const theme = computed(() => store.state.theme.theme);

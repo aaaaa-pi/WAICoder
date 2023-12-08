@@ -96,7 +96,7 @@
           {{ record.judgeInfo.memory ? record.judgeInfo.memory : 0 }} KB
         </template>
         <template #createTime="{ record }">
-          {{ moment(record.createTime).format("YYYY-MM-DD") }}
+          {{ dayjs(record.createTime).format("YYYY-MM-DD") }}
         </template>
       </a-table>
     </a-card>
@@ -104,13 +104,14 @@
 </template>
 
 <script setup lang="ts">
+import { IconRefresh, IconSearch } from "@arco-design/web-vue/es/icon";
 import {
   Question,
   QuestionSubmitQueryRequest,
   QuestionControllerService,
 } from "../../../generated";
 import { ref, onMounted, computed, watch } from "vue";
-import moment from "moment";
+import dayjs from "dayjs";
 import { Message } from "@arco-design/web-vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";

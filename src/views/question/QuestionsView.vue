@@ -164,6 +164,13 @@
 </template>
 
 <script setup lang="ts">
+import {
+  IconFindReplace,
+  IconCheckCircle,
+  IconMinusCircle,
+  IconCloseCircle,
+  IconTags,
+} from "@arco-design/web-vue/es/icon";
 import { Message, TableSortable } from "@arco-design/web-vue";
 import {
   Question,

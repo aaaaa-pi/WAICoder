@@ -33,7 +33,7 @@
           </a-space>
         </template>
         <template #createTime="{ record }">
-          {{ moment(record.createTime).format("YYYY-MM-DD") }}
+          {{ dayjs(record.createTime).format("YYYY-MM-DD") }}
         </template>
         <template #optional="{ record }">
           <a-space>
@@ -56,11 +56,12 @@
 </template>
 
 <script setup lang="ts">
+import { IconDelete, IconEdit } from "@arco-design/web-vue/es/icon";
 import { Message } from "@arco-design/web-vue";
 import AddQuestionView from "./AddQuestionView.vue";
 import { Question, QuestionControllerService } from "../../../generated";
 import { ref, watchEffect, onMounted, computed } from "vue";
-import moment from "moment";
+import dayjs from "dayjs";
 import { useStore } from "vuex";
 const store = useStore();
 const tableRef = ref();

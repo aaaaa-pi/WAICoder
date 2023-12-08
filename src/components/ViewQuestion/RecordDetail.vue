@@ -28,7 +28,7 @@
                     <p class="userName">{{ loginUser.userName }}</p>
                     <p class="recordTime">
                       {{
-                        moment(props.recordContent.createTime).format(
+                        dayjs(props.recordContent.createTime).format(
                           "YYYY:MM:DD h:mm:ss"
                         )
                       }}
@@ -80,11 +80,17 @@
 </template>
 
 <script setup lang="ts">
+import {
+  IconCloseCircle,
+  IconCheckCircle,
+  IconUser,
+  IconClose,
+} from "@arco-design/web-vue/es/icon";
 import { LoginUserVO, QuestionSubmitVO } from "../../../generated";
 import MdViewer from "@/components/markdown/MdViewer.vue";
 import { computed, ref, watchEffect } from "vue";
 import { useStore } from "vuex";
-import moment from "moment";
+import dayjs from "dayjs";
 
 interface Props {
   recordContent: QuestionSubmitVO;
