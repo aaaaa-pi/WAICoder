@@ -68,9 +68,9 @@
             </a-upload>
           </a-space> -->
           <a-avatar @click="onClcik" :style="{ backgroundColor: '#0A65CC' }">
-            <IconUser />
+            <icon-user />
             <template #trigger-icon>
-              <IconEdit />
+              <icon-edit />
             </template>
           </a-avatar>
         </div>
@@ -109,6 +109,7 @@ import { IconUser, IconEdit } from "@arco-design/web-vue/es/icon";
 import { useStore } from "vuex";
 import { computed, ref } from "vue";
 import { Message } from "@arco-design/web-vue";
+import "@arco-design/web-vue/es/message/style/css.js";
 import { UserControllerService } from "../../../generated";
 import { useRouter } from "vue-router";
 const store = useStore();

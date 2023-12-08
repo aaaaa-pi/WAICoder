@@ -1,10 +1,13 @@
 const { defineConfig } = require("@vue/cli-service");
 const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
+const Components = require("unplugin-vue-components/webpack");
+const AutoImport = require("unplugin-auto-import/webpack");
+const { ArcoResolver } = require("unplugin-vue-components/resolvers");
 module.exports = defineConfig({
   transpileDependencies: true,
-  configureWebpack: (config) => {
-    let optimization = {
+  configureWebpack: {
+    optimization: {
       splitChunks: {
         chunks: "all",
         minSize: 20000,
@@ -30,10 +33,20 @@ module.exports = defineConfig({
           },
         },
       },
-    };
-    Object.assign(config, {
-      optimization,
-    });
+    },
+    plugins: [
+      Components({
+        resolvers: [
+          ArcoResolver({
+            resolveIcons: true,
+            sideEffect: true,
+          }),
+        ],
+      }),
+      AutoImport({
+        resolvers: [ArcoResolver()],
+      }),
+    ],
   },
   chainWebpack: (config) => {
     config.plugin("monaco").use(

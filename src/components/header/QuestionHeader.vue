@@ -11,12 +11,12 @@
         <a-space size="medium">
           <!-- <a-button size="mini">题库</a-button> -->
           <a-button size="mini" type="outline" @click="getPrevQuestion">
-            <IconLeft />
+            <icon-left />
             <p>上一题</p>
           </a-button>
           <a-button size="mini" type="outline" @click="getNextQuestion">
             <p>下一题</p>
-            <IconRight />
+            <icon-right />
           </a-button>
           <div class="random" @click="matchQuestion">
             <svg
@@ -58,7 +58,7 @@
         <a-space size="medium">
           <div class="startTimer" v-if="!showTimer" @click="startTimer">
             <a-tooltip position="bottom" content="开始计时" mini>
-              <IconClockCircle
+              <icon-clock-circle
                 :style="{
                   fontSize: '22px',
                   color: '#0A65CC',
@@ -69,7 +69,7 @@
           </div>
           <div class="stopTimer" v-if="showTimer" @click="stopTimer">
             <div class="timerText">{{ formatTime(time) }}</div>
-            <IconLoop class="stopTimerIcon" :style="{ color: '#0A65CC' }" />
+            <icon-loop class="stopTimerIcon" :style="{ color: '#0A65CC' }" />
           </div>
           <userAvatar />
         </a-space>
@@ -84,6 +84,7 @@ import userAvatar from "@/components/setting/userAvatar.vue";
 import { QuestionControllerService } from "../../../generated";
 import { ref, watch, onUnmounted, computed } from "vue";
 import { Message } from "@arco-design/web-vue";
+import "@arco-design/web-vue/es/message/style/css.js";
 import { useStore } from "vuex";
 import {
   IconLoop,

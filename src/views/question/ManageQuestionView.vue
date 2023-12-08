@@ -58,6 +58,7 @@
 <script setup lang="ts">
 import { IconDelete, IconEdit } from "@arco-design/web-vue/es/icon";
 import { Message } from "@arco-design/web-vue";
+import "@arco-design/web-vue/es/message/style/css.js";
 import AddQuestionView from "./AddQuestionView.vue";
 import { Question, QuestionControllerService } from "../../../generated";
 import { ref, watchEffect, onMounted, computed } from "vue";

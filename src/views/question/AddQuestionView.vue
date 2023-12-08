@@ -126,6 +126,8 @@ import MdEditor from "@/components/markdown/MdEditor.vue";
 import judgmentConfig from "@/components/addQuestion/JudgmentConfig.vue";
 import { defaultTemplateCode, defaultMergeCode } from "@/config/codeDefault";
 import { Message, Notification } from "@arco-design/web-vue";
+import "@arco-design/web-vue/es/message/style/css.js";
+import "@arco-design/web-vue/es/notification/style/css.js";
 import { QuestionControllerService } from "../../../generated";
 import {
   ref,

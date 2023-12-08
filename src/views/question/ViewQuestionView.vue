@@ -240,6 +240,7 @@ import {
   IconCheckCircleFill,
 } from "@arco-design/web-vue/es/icon";
 import { Message } from "@arco-design/web-vue";
+import "@arco-design/web-vue/es/message/style/css.js";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 import {

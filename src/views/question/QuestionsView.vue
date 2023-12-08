@@ -172,6 +172,7 @@ import {
   IconTags,
 } from "@arco-design/web-vue/es/icon";
 import { Message, TableSortable } from "@arco-design/web-vue";
+import "@arco-design/web-vue/es/message/style/css.js";
 import {
   Question,
   QuestionControllerService,
@@ -322,6 +323,9 @@ const doSubmit = () => {
 </script>
 
 <style scoped>
+:deep(.arco-table-th.arco-table-col-sorted) {
+  background-color: #0a65cc;
+}
 .flex-1 {
   flex: 1;
 }

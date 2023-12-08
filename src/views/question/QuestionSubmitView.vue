@@ -113,6 +113,7 @@ import {
 import { ref, onMounted, computed, watch } from "vue";
 import dayjs from "dayjs";
 import { Message } from "@arco-design/web-vue";
+import "@arco-design/web-vue/es/message/style/css.js";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 const store = useStore();

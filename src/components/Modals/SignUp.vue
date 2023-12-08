@@ -65,6 +65,7 @@
 import { reactive } from "vue";
 import { UserControllerService, UserRegisterRequest } from "../../../generated";
 import { Message } from "@arco-design/web-vue";
+import "@arco-design/web-vue/es/message/style/css.js";
 import store from "../../store";
 
 const toggleLogin = () => {

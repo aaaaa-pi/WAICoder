@@ -20,7 +20,7 @@
                     </template>
                     <template v-else>
                       <a-avatar>
-                        <IconUser />
+                        <icon-user />
                       </a-avatar>
                     </template>
                   </div>

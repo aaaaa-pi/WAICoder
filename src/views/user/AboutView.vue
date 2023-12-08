@@ -12,7 +12,7 @@
               />
             </template>
             <template v-else>
-              <IconUser />
+              <icon-user />
             </template>
           </a-avatar>
         </div>
