@@ -29,10 +29,10 @@ const doInit = () => {
 onMounted(() => {
   doInit();
   theme.value = localStorage.getItem("theme");
-  if (theme.value === "light") {
-    store.commit("theme/toggleTheme", "light");
-  } else {
+  if (theme.value === "dark") {
     store.commit("theme/toggleTheme", "dark");
+  } else {
+    store.commit("theme/toggleTheme", "light");
   }
 });
 </script>
