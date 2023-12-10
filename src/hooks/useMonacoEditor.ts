@@ -2,6 +2,11 @@
 import loader from "@monaco-editor/loader";
 import { ref } from "vue";
 
+loader.config({
+  paths: {
+    vs: "https://cdn.staticfile.org/monaco-editor/0.43.0/min/vs",
+  },
+});
 const monacoRef = ref<any>(null);
 const isLoading = ref<boolean>(false); // 添加一个状态来表示是否正在加载
 const monacoLoader = loader.init();
