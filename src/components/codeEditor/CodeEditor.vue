@@ -1,9 +1,13 @@
 <template>
-  <div id="code-editor" ref="codeEditorRef" />
+  <a-spin :loading="isLoading" tip="加载中，请稍后...">
+    <div id="code-editor" ref="codeEditorRef" />
+  </a-spin>
 </template>
 
 <script setup lang="ts">
-import * as monaco from "monaco-editor";
+// import * as monaco from "monaco-editor";
+import { useMonacoEditor } from "@/hooks/useMonacoEditor";
+const { monacoRef, initMonaco, isLoading } = useMonacoEditor();
 import { ref, onMounted, toRaw, watch, computed } from "vue";
 import { useStore } from "vuex";
 const store = useStore();
@@ -33,13 +37,13 @@ const props = withDefaults(defineProps<Props>(), {
 const codeEditorRef = ref();
 const codeEditor = ref();
 const themeChange = (val: string) => {
-  monaco.editor.setTheme(val);
+  monacoRef.value.editor.setTheme(val);
 };
 
 watch(
   () => props.language,
   () => {
-    monaco.editor.setModelLanguage(
+    monacoRef.value.editor.setModelLanguage(
       toRaw(codeEditor.value).getModel(),
       props.language
     );
@@ -63,12 +67,13 @@ watch(
     }
   }
 );
-onMounted(() => {
+onMounted(async () => {
   if (!codeEditorRef.value) {
     return;
   }
+  await initMonaco();
 
-  codeEditor.value = monaco.editor.create(codeEditorRef.value, {
+  codeEditor.value = monacoRef.value.editor.create(codeEditorRef.value, {
     value: props.value, //编辑器初始显示文字
     language: props.language, //语言支持自行查阅demo
     automaticLayout: true, //自动布局
@@ -92,4 +97,8 @@ onMounted(() => {
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+#code-editor {
+  height: 100%;
+}
+</style>

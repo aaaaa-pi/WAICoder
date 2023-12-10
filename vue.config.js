@@ -1,5 +1,5 @@
 const { defineConfig } = require("@vue/cli-service");
-const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
+// const { resolve } = require("path");
 const CompressionPlugin = require("compression-webpack-plugin");
 const Components = require("unplugin-vue-components/webpack");
 const AutoImport = require("unplugin-auto-import/webpack");
@@ -7,6 +7,10 @@ const { ArcoResolver } = require("unplugin-vue-components/resolvers");
 module.exports = defineConfig({
   transpileDependencies: true,
   configureWebpack: {
+    output: {
+      filename: "[name].[contenthash:8].js",
+      chunkFilename: "chunk_[name]_[contenthash:8].js",
+    },
     optimization: {
       splitChunks: {
         chunks: "all",
@@ -15,19 +19,19 @@ module.exports = defineConfig({
         maxInitialRequests: 30,
         enforceSizeThreshold: 50000,
         cacheGroups: {
-          monacoEditor: {
-            chunks: "all",
-            name: "chunk-monaco-editor",
-            priority: 22,
-            test: /[\\/]node_modules[\\/]monaco-editor[\\/]/,
-            enforce: true,
-            reuseExistingChunk: true,
-          },
           arcoDesignUI: {
             chunks: "all",
             name: "chunk-arco-design",
             priority: 21,
             test: /[\\/]node_modules[\\/]@arco-design[\\/]/,
+            enforce: true,
+            reuseExistingChunk: true,
+          },
+          dayjs: {
+            chunks: "all",
+            name: "chunk-dayjs",
+            priority: 20,
+            test: /[\\/]node_modules[\\/]dayjs[\\/]/,
             enforce: true,
             reuseExistingChunk: true,
           },
@@ -49,12 +53,6 @@ module.exports = defineConfig({
     ],
   },
   chainWebpack: (config) => {
-    config.plugin("monaco").use(
-      new MonacoWebpackPlugin({
-        languages: ["javascript", "css", "html", "json", "java"],
-        features: ["coreCommands", "find"],
-      })
-    );
     config.plugin("compressionPlugin").use(
       new CompressionPlugin({
         filename: "[path][base].gz",
