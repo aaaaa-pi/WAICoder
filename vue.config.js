@@ -1,5 +1,4 @@
 const { defineConfig } = require("@vue/cli-service");
-// const { resolve } = require("path");
 const CompressionPlugin = require("compression-webpack-plugin");
 const Components = require("unplugin-vue-components/webpack");
 const AutoImport = require("unplugin-auto-import/webpack");
@@ -19,10 +18,34 @@ module.exports = defineConfig({
         maxInitialRequests: 30,
         enforceSizeThreshold: 50000,
         cacheGroups: {
+          bytemd: {
+            chunks: "all",
+            name: "chunk-bytemd",
+            priority: 22,
+            test: /[\\/]node_modules[\\/]@bytemd[\\/]/,
+            enforce: true,
+            reuseExistingChunk: true,
+          },
+          "@bytemd": {
+            chunks: "all",
+            name: "chunk-@bytemd",
+            priority: 21,
+            test: /[\\/]node_modules[\\/]bytemd[\\/]/,
+            enforce: true,
+            reuseExistingChunk: true,
+          },
+          codemirror: {
+            chunks: "all",
+            name: "chunk-codemirror",
+            priority: 20,
+            test: /[\\/]node_modules[\\/]codemirror-ssr[\\/]/,
+            enforce: true,
+            reuseExistingChunk: true,
+          },
           arcoDesignUI: {
             chunks: "all",
             name: "chunk-arco-design",
-            priority: 21,
+            priority: 19,
             test: /[\\/]node_modules[\\/]@arco-design[\\/]/,
             enforce: true,
             reuseExistingChunk: true,
@@ -30,13 +53,16 @@ module.exports = defineConfig({
           dayjs: {
             chunks: "all",
             name: "chunk-dayjs",
-            priority: 20,
+            priority: 18,
             test: /[\\/]node_modules[\\/]dayjs[\\/]/,
             enforce: true,
             reuseExistingChunk: true,
           },
         },
       },
+    },
+    externals: {
+      "highlight.js": "highlight",
     },
     plugins: [
       Components({

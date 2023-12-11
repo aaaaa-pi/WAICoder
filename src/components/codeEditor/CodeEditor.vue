@@ -5,7 +5,6 @@
 </template>
 
 <script setup lang="ts">
-// import * as monaco from "monaco-editor";
 import { useMonacoEditor } from "@/hooks/useMonacoEditor";
 const { monacoRef, initMonaco, isLoading } = useMonacoEditor();
 import { ref, onMounted, toRaw, watch, computed } from "vue";
