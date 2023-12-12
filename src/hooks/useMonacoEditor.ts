@@ -4,7 +4,7 @@ import { ref } from "vue";
 
 loader.config({
   paths: {
-    vs: "https://cdn.staticfile.org/monaco-editor/0.43.0/min/vs",
+    vs: "https://cdn.bootcdn.net/ajax/libs/monaco-editor/0.43.0/min/vs",
   },
 });
 const monacoRef = ref<any>(null);

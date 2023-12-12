@@ -19,11 +19,11 @@
     </style>
   </head>
   <body>
-    <script src="https://cdn.staticfile.org/highlight.js/11.9.0/es/highlight.min.js" type="module"></script>
-    <noscript>
-      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
+    <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.8.0/styles/docco.min.css" rel="stylesheet">  
+    <script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script>
+      hljs.initHighlightingOnLoad();
+    </script>
     <div id="app"></div>
-    <!-- built files will be auto injected -->
   </body>
 </html>
