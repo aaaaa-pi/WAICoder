@@ -1,4 +1,5 @@
 const { defineConfig } = require("@vue/cli-service");
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
 const Components = require("unplugin-vue-components/webpack");
 const AutoImport = require("unplugin-auto-import/webpack");
@@ -62,7 +63,7 @@ module.exports = defineConfig({
       },
     },
     externals: {
-      "highlight.js": "highlight",
+      "highlight.js": "hljs",
     },
     plugins: [
       Components({
@@ -75,6 +76,14 @@ module.exports = defineConfig({
       }),
       AutoImport({
         resolvers: [ArcoResolver()],
+      }),
+      // 生产环境移除 控制台输出
+      new UglifyJsPlugin({
+        uglifyOptions: {
+          compress: {
+            drop_console: true,
+          },
+        },
       }),
     ],
   },
