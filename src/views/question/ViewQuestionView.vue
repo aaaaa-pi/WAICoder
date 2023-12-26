@@ -572,7 +572,6 @@ onMounted(() => {
   min-width: 335px;
   padding-left: 10px;
   flex: 1;
-  /* width: 50vw; */
 }
 #codeEditor {
   flex: 1 1 0%;

@@ -38,6 +38,7 @@ onMounted(() => {
 </script>
 <style>
 #app {
-  background-color: var(--color-bg-1);
+  height: 100%;
+  width: fit-content;
 }
 </style>

@@ -16,7 +16,7 @@ import QuestionHeader from "@/components/header/QuestionHeader.vue";
 #questionLayout {
   display: flex;
   flex-direction: column;
-  width: 100vw;
+  min-width: 360px;
   height: 100vh;
 }
 
@@ -26,8 +26,7 @@ import QuestionHeader from "@/components/header/QuestionHeader.vue";
 
 #questionLayout .content {
   flex: 1;
-  background: var(--color-bg-container);
-  /* background-color: var(--color-text-1); */
+  background-color: var(--color-bg-1);
   padding: 10px 10px 0 10px;
   height: calc(100vh - 50px);
 }
@@ -39,5 +38,16 @@ import QuestionHeader from "@/components/header/QuestionHeader.vue";
 :deep(.arco-table-container) {
   border-bottom: 4px solid #0a65cc;
   padding-bottom: 10px;
+}
+
+@media screen and (min-width: 768px) {
+  #questionLayout {
+    width: 100vw;
+  }
+}
+@media screen and (max-width: 768px) {
+  #questionLayout {
+    max-width: 1000px;
+  }
 }
 </style>
